@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="TCP_Interface.js"></script>
+<script type="text/javascript" src="IMAP_Interface.js"></script>
+<script type="text/javascript" src="IMAP_Fetch.js"></script>
+<script type="text/javascript" src="Sync_Module.js"></script>
+<script>
+function startMe(){
+	var s=new Sync_Module();
+	s.getUids();
+}
+</script>
+
+<body>
+	<button type="button" onclick="start();">start</button>
+	<button type="button" onclick="login();">login</button>
+	<button type="button" onclick="select();">select</button>
+	<button type="button" onclick="fetchList();">fetchList</button>
+
+	<button type="button" onclick="startMe();">Click to start</button>
+</body>
+</html>
