@@ -11,4 +11,6 @@ Sync_Module.prototype.getUidsReady = function(){
 	console.log('finished getUids');
 	console.log("final result select= "+result.select);
 	console.log("final result fetchList= "+result.fetchList);
+	console.log("final result fetchListFlags= "+result.fetchListFlags);
+	console.log("final result fetchBody= "+result.fetchBody);
 }
