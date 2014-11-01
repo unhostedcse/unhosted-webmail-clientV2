@@ -2,9 +2,16 @@
 <html>
 <script type="text/javascript" src="TCP_Interface.js"></script>
 <script type="text/javascript" src="IMAP_Interface.js"></script>
-<script type="text/javascript" src="IMAP_Fetch.js"></script>
+<script type="text/javascript" src="IMAP_Fetch.js"></script>  <!-- -->
+
+<!-- <script type="text/javascript" src="SMTP_Interface.js"></script> -->
+<!-- <script type="text/javascript" src="SMTP_Sendmail.js"></script> -->
+
 <script type="text/javascript" src="Sync_Module.js"></script>
 <script type="text/javascript" src="Mail_Settings.js"></script>
+
+
+<script type="text/javascript" src="logger.js"></script>
 
 
 <body>
@@ -80,14 +87,18 @@
 <script>
 
 function startMe(){
-	username
 	var s=new Sync_Module();
 
 	username=document.getElementById('user').value;
 	password=document.getElementById('pass').value;
+
 	host=document.getElementById('imap').value;
 	port=document.getElementById('imapport').value;
 	security=document.getElementById('imapsec').value;
+
+  /*host=document.getElementById('smtp').value;
+  port=document.getElementById('smtpport').value;
+  security=document.getElementById('smtpsec').value;*/
 
 	s.getUids();
 }

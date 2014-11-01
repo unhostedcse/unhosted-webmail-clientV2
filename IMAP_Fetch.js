@@ -6,7 +6,8 @@ var nextFuncIndex=0;
 function result(){}
 
 var func=function(response){
-    console.log(response);
+    //console.log(response);
+    printRes('IMAP> '+response);
     if(tt.onTheResponse){
         var val=tt.onTheResponse(response);
         tt.onTheResponse=null;        
@@ -68,7 +69,7 @@ function select(){
   tt.onTheResponse=cmd.onResponse;
   tt.setVal=function(val,nextFunc){
       result.select=val;
-      //console.log("result select= "+result.select);
+      printCmd("result select= "+result.select);
       nextFunc();
   }
 }
@@ -78,7 +79,7 @@ function fetchList(){
   tt.onTheResponse=cmd.onResponse;
   tt.setVal=function(val,nextFunc){
       result.fetchList=val;
-      //console.log("result fetchList= "+result.fetchList);
+      printCmd("result fetchList= "+result.fetchList);
       nextFunc();
   }
 }
@@ -88,18 +89,19 @@ function fetchListFlags(){
   tt.onTheResponse=cmd.onResponse;
   tt.setVal=function(val,nextFunc){
       result.fetchListFlags=val;
-      //console.log("result fetchListFlags= "+result.fetchListFlags);
+      printCmd("result fetchListFlags= "+result.fetchListFlags);
       nextFunc();
   }
 }
 
 function fetchBody(id){
   id=8;
+  id=100003;
   cmd=tt.fetchBody(id,false);
   tt.onTheResponse=cmd.onResponse;
   tt.setVal=function(val,nextFunc){
       result.fetchBody=val;
-      //console.log("result fetchBody= "+result.fetchBody);
+      printCmd("result fetchBody= "+result.fetchBody);
       nextFunc();
   }
 }

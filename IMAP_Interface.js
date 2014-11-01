@@ -135,6 +135,8 @@ function Command(request, onResponse, responseStart, responseEnd) {
 function IMAPCommand(tag,request, onResponse, responseStart, responseEnd) {
 	this.request = tag + " " + request;
 	this.onResponse = onResponse;
-	this.responseStart = new RegExp("(^|\r\n)" + tag + " OK");
-	this.responseEnd = new RegExp("(^|\r\n)" + tag + " ");
+	//this.responseStart = new RegExp("(^|\r\n)" + tag + " OK");
+	//this.responseEnd = new RegExp("(^|\r\n)" + tag + " ");
+  this.responseStart = "(^|\r\n)" + tag + " OK";
+  this.responseEnd = "(^|\r\n)" + tag + " ";
 }
