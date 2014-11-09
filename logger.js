@@ -1,6 +1,6 @@
 responseLog=false;
 commandLog=true;	
-requestLog=false;
+requestLog=true;
 var i=0;
 
 function printCmd(msg){

@@ -1,146 +1,132 @@
-var cmd;
-var cmds=new Array();
-var nextFunc;
-var nextFuncIndex=0;
-
 function result(){}
 
-var func=function(response){
+IMAP_Fetch.prototype.func=function(response,id){
     //console.log(response);
-    printRes('IMAP> '+response);
-    if(tt.onTheResponse){
-        var val=tt.onTheResponse(response);
-        tt.onTheResponse=null;        
-        if(cmds.length > nextFuncIndex+1){
-          nextFunc=cmds[++nextFuncIndex];
+    printRes('IMAP '+id+'> '+response);
+    if(IMAP_Fetch.imap.onTheResponse){
+        var val=IMAP_Fetch.imap.onTheResponse(response);
+        IMAP_Fetch.imap.onTheResponse=null;        
+        if(IMAP_Fetch.cmds.length > IMAP_Fetch.nextFuncIndex+1){
+          nextFunc=IMAP_Fetch.cmds[++IMAP_Fetch.nextFuncIndex];
         }
-        tt.setVal(val,nextFunc);
+        IMAP_Fetch.imap.setVal(val,nextFunc);
     }else{
-        if(cmds.length > nextFuncIndex+1){
-          nextFunc=cmds[++nextFuncIndex];
+        if(IMAP_Fetch.cmds.length > IMAP_Fetch.nextFuncIndex+1){
+          nextFunc=IMAP_Fetch.cmds[++IMAP_Fetch.nextFuncIndex];
           nextFunc();
         }
     }
 
     
 
-    if(cmds.length == nextFuncIndex+1){
+    if(IMAP_Fetch.cmds.length == IMAP_Fetch.nextFuncIndex+1){
       //IMAP_Fetch.ready();
     }
 }
 
-var tt= new IMAP_Interface(func);
+//var tt= new IMAP_Interface(func);
 
-function start(){
-  var obj={
-        host : "imap.gmail.com",
-        port : 993,
-        sec : "ssl"
-      };
-
-  obj={
-        host : "localhost",
-        port : 143,
-        sec : "no"
-      };
-
+IMAP_Fetch.prototype.start=function(){
   obj={
         host : host,
         port : port,
         sec : security
     };
 
-
-  tt.start(obj);
+  IMAP_Fetch.imap.start(obj);
 }
 
-function login(){
+IMAP_Fetch.prototype.login=function(){
   var obj={
         username : username,
         password : password
       };
 
-  tt.login(obj);
+  IMAP_Fetch.imap.login(obj);
   //tt.login("unhostedcse@gmail.com","unhostedcse12345");
 }
 
-function select(){
-  cmd=tt.select('inbox');
-  tt.onTheResponse=cmd.onResponse;
-  tt.setVal=function(val,nextFunc){
+IMAP_Fetch.prototype.select=function(){
+  cmd=IMAP_Fetch.imap.select('inbox');
+  IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
+  IMAP_Fetch.imap.setVal=function(val,nextFunc){
       result.select=val;
-      printCmd("result select= "+result.select);
+      printCmd("id= "+this.imaps+" result select= "+result.select);
       nextFunc();
   }
 }
 
-function fetchList(){
-  cmd=tt.fetchList();
-  tt.onTheResponse=cmd.onResponse;
-  tt.setVal=function(val,nextFunc){
+IMAP_Fetch.prototype.fetchList=function(){
+  cmd=IMAP_Fetch.imap.fetchList();
+  IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
+  IMAP_Fetch.imap.setVal=function(val,nextFunc){
       result.fetchList=val;
-      printCmd("result fetchList= "+result.fetchList);
+      printCmd("id= "+this.imaps+" result fetchList= "+result.fetchList);
       nextFunc();
   }
 }
 
-function fetchListFlags(){
-  cmd=tt.fetchListFlags();
-  tt.onTheResponse=cmd.onResponse;
-  tt.setVal=function(val,nextFunc){
+IMAP_Fetch.prototype.fetchListFlags=function(){
+  cmd=IMAP_Fetch.imap.fetchListFlags();
+  IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
+  IMAP_Fetch.imap.setVal=function(val,nextFunc){
       result.fetchListFlags=val;
-      printCmd("result fetchListFlags= "+result.fetchListFlags);
+      printCmd("id= "+this.imaps+" result fetchListFlags= "+result.fetchListFlags);
       nextFunc();
   }
 }
 
-function fetchBody(id){
+IMAP_Fetch.prototype.fetchBody=function(id){
   id=8;
-  id=100003;
-  cmd=tt.fetchBody(id,false);
-  tt.onTheResponse=cmd.onResponse;
-  tt.setVal=function(val,nextFunc){
+  id=result.fetchList[2];
+  cmd=IMAP_Fetch.imap.fetchBody(id,false);
+  IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
+  IMAP_Fetch.imap.setVal=function(val,nextFunc){
       result.fetchBody=val;
-      printCmd("result fetchBody= "+result.fetchBody);
+      printCmd("id= "+this.imaps+" result fetchBody= "+result.fetchBody);
       nextFunc();
   }
 }
 
-function expunge() {
-  tt.expunge();
-  tt.onTheResponse=null;
+IMAP_Fetch.prototype.expunge=function() {
+  IMAP_Fetch.imap.expunge();
+  IMAP_Fetch.imap.onTheResponse=null;
 }
 
-function logout () {
-  tt.logout();
-  tt.onTheResponse=null;
+IMAP_Fetch.prototype.logout=function() {
+  IMAP_Fetch.imap.logout();
+  IMAP_Fetch.imap.onTheResponse=null;
 }
 
-function getInboxIDs(f){  
-  cmds.push(start);
-  cmds.push(login);
-  cmds.push(select);
-  cmds.push(fetchList);
-  cmds.push(fetchListFlags);
-  cmds.push(fetchBody);
+IMAP_Fetch.prototype.getInboxIDs =function(f){  
+  IMAP_Fetch.cmds.push(this.start);
+  IMAP_Fetch.cmds.push(this.login);
+  IMAP_Fetch.cmds.push(this.select);
+  IMAP_Fetch.cmds.push(this.fetchList);
+  IMAP_Fetch.cmds.push(this.fetchListFlags);
+  IMAP_Fetch.cmds.push(this.fetchBody);
   //cmds.push(expunge);
-  cmds.push(logout);
+  IMAP_Fetch.cmds.push(this.logout);
 
-  cmds.push(clearCmds);
-  cmds.push(f);                 // called when all command executed
+  IMAP_Fetch.cmds.push(clearCmds);
+  IMAP_Fetch.cmds.push(f);                 // called when all command executed
 
-  nextFuncIndex=0;
-  var f=cmds[nextFuncIndex];
+  IMAP_Fetch.nextFuncIndex=0;
+  var f=IMAP_Fetch.cmds[IMAP_Fetch.nextFuncIndex];
   f();
 }
 
-function IMAP_Fetch(){
+function IMAP_Fetch(i){
+  this.imaps=i;
+  IMAP_Fetch.imap= new IMAP_Interface(this.func,i);
+  IMAP_Fetch.cmds=new Array();
+  IMAP_Fetch.nextFuncIndex=0;
 }
 
 IMAP_Fetch.prototype.getUids = function(func){
-  getInboxIDs(func);                // passs the last function
+  this.getInboxIDs(func);                // passs the last function
 }
 
 function clearCmds(){
-  cmds=[];
+  IMAP_Fetch.cmds=[];
 }

@@ -1,6 +1,6 @@
 
-SMTP_Sendmail.prototype.func=function(response){
-    console.log('SMTP> '+response);
+SMTP_Sendmail.prototype.func=function(response,id){
+    console.log('SMTP '+id+'> '+response);
     if(SMTP_Sendmail.cmds.length > SMTP_Sendmail.nextFuncIndex+1){
           var nextFunc=SMTP_Sendmail.cmds[++SMTP_Sendmail.nextFuncIndex];
           console.log('SMTP> '+SMTP_Sendmail.nextFuncIndex);
@@ -8,8 +8,8 @@ SMTP_Sendmail.prototype.func=function(response){
     }
 }
 
-function SMTP_Sendmail(){
-  SMTP_Sendmail.smtp = new SMTP_Interface(this.func);
+function SMTP_Sendmail(id){
+  SMTP_Sendmail.smtp = new SMTP_Interface(this.func,id);
   SMTP_Sendmail.cmds = new Array();
   SMTP_Sendmail.nextFuncIndex=0;
 }

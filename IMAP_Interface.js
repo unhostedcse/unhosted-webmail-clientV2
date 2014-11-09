@@ -1,4 +1,6 @@
-function IMAP_Interface(res){
+function IMAP_Interface(res,i){
+  this.imaps=i;
+  this.type='IMAP';
 	this.tcp=new TCP_Interface(this);
 	this.tag=0;
 	IMAP_Interface.onResponse=res;
@@ -8,8 +10,8 @@ IMAP_Interface.prototype.send = function(){
 	this.tcp.connect('connect');
 }
 
-IMAP_Interface.prototype.result=function(value){
-	IMAP_Interface.onResponse(value);	
+IMAP_Interface.prototype.result=function(value,id){
+	IMAP_Interface.onResponse(value,id);	
 }
 
 IMAP_Interface.prototype.start = function(obj){

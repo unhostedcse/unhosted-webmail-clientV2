@@ -1,13 +1,12 @@
+var imaps=0;
 function Sync_Module(){
 
 }
 
 Sync_Module.prototype.getUids = function(){
-	var imap=new IMAP_Fetch();
+	var imap=new IMAP_Fetch(++imaps);
 	imap.getUids(this.getUidsReady);
-
-	//var smtp=new SMTP_Sendmail();
-	//smtp.sendmail(this.SendMailReady);
+	console.log('crated imap service');
 }
 
 Sync_Module.prototype.getUidsReady = function(){
@@ -20,4 +19,10 @@ Sync_Module.prototype.getUidsReady = function(){
 
 Sync_Module.prototype.SendMailReady = function(){
 	console.log('finished SendMailReady');
+}
+
+Sync_Module.prototype.SendMail = function(){
+	console.log('SMTP command starting');
+	var smtp=new SMTP_Sendmail(++imaps);
+	smtp.sendmail(this.SendMailReady);
 }

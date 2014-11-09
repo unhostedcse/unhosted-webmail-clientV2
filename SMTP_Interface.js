@@ -1,11 +1,13 @@
-function SMTP_Interface(res){
+function SMTP_Interface(res,i){
+	this.imaps=i;
+	this.type='SMTP';
 	this.tcp=new TCP_Interface(this);
 	this.tag=0;
 	SMTP_Interface.onResponse=res;	
 }
 
-SMTP_Interface.prototype.result=function(value){
-	SMTP_Interface.onResponse(value);	
+SMTP_Interface.prototype.result=function(value,id){
+	SMTP_Interface.onResponse(value,id);	
 }
 
  SMTP_Interface.prototype.start = function(obj) {

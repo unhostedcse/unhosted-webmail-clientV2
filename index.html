@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
+
+
+<script type="text/javascript" src="logger.js"></script>
 <script type="text/javascript" src="TCP_Interface.js"></script>
 <script type="text/javascript" src="IMAP_Interface.js"></script>
 <script type="text/javascript" src="IMAP_Fetch.js"></script>  <!-- -->
 
-<!-- <script type="text/javascript" src="SMTP_Interface.js"></script> -->
-<!-- <script type="text/javascript" src="SMTP_Sendmail.js"></script> -->
+<script type="text/javascript" src="SMTP_Interface.js"></script>  <!-- -->
+<script type="text/javascript" src="SMTP_Sendmail.js"></script>  <!-- -->
 
 <script type="text/javascript" src="Sync_Module.js"></script>
 <script type="text/javascript" src="Mail_Settings.js"></script>
 
 
-<script type="text/javascript" src="logger.js"></script>
 
 
 <body>
@@ -20,7 +22,8 @@
 	<button type="button" onclick="select();">select</button>
 	<button type="button" onclick="fetchList();">fetchList</button>
 
-	<button type="button" onclick="startMe();">Click to start</button>
+	<button type="button" onclick="startMe1();">Start IMAP</button>
+  <button type="button" onclick="startSMTP();">Start SMTP</button>
 
 	<div id="displaydiv">
 
@@ -86,7 +89,7 @@
 </body>
 <script>
 
-function startMe(){
+function startMe1(){
 	var s=new Sync_Module();
 
 	username=document.getElementById('user').value;
@@ -101,6 +104,19 @@ function startMe(){
   security=document.getElementById('smtpsec').value;*/
 
 	s.getUids();
+}
+
+function startSMTP(){
+  var s=new Sync_Module();
+
+  username=document.getElementById('user').value;
+  password=document.getElementById('pass').value;
+
+  host=document.getElementById('smtp').value;
+  port=document.getElementById('smtpport').value;
+  security=document.getElementById('smtpsec').value;
+
+  s.SendMail();
 }
 
  function setSetting(){
