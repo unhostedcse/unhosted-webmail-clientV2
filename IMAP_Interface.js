@@ -39,8 +39,47 @@ IMAP_Interface.prototype.select = function(folder) {
 	return cmd;
 }
 
+
+IMAP_Interface.prototype.ListFolder = function() {
+  var f=function(response) {
+    //alert(response);        
+        //var regexp = /((\HasNoChildren (\w+))[\s)]+){3}/g
+      var getres;
+      res=response;
+      //var regflag1 = /(\\HasNoChildren (\w+))/g;  
+      var regflag1 = /(\\(HasNoChildren|Noselect)( )*(\\(\w+))*)/g;
+      //var regflag1 = /(\\(\w+)( )*(\\(\w+))*)/g;
+      var regflag2 = /\"\/\" \"(.*?)\"/g;  
+      var regflag3 = /\"\/\" \"(.*?)\"/g;  
+      var out=new Array();
+      var type,folder,i=0;
+  while((getres = regflag3.exec(res))){      
+    // console.log(regflag1.exec(res));
+    // console.log(regflag2.exec(res));
+    type=regflag1.exec(res);
+    folder=regflag2.exec(res);
+    //console.log(type[5]+" "+folder[2]);
+    // console.log(type[5]+" "+folder[1]);
+    var ruk={
+     type:  type[5],
+     folder: folder[1]
+    };
+    // console.log(ruk);
+    out[i]=ruk;
+    i++;
+  }
+        
+    return out;
+  }
+  this.tag++;
+  var cmd=new IMAPCommand(this.tag,"LIST \"\" \"*\"",f);
+  this.tcp.connect('ListFolder',JSON.stringify(cmd));
+  return cmd;
+}
+
 IMAP_Interface.prototype.fetchList = function() {
     var f=function(response) {
+      // result.test=response;
       // "UID xx", "RFC822.SIZE yy", "FLAGS (zz)" order may differ
         var regexp = /((UID (\w+)|RFC822.SIZE (\w+)|FLAGS \((.*?)\))[\s)]+){3}/g;
         var regid = /(UID (\w+))/g;
@@ -63,13 +102,14 @@ IMAP_Interface.prototype.fetchList = function() {
 
     this.tag++;
     var cmd=new IMAPCommand(this.tag,"FETCH 1:* (UID RFC822.SIZE FLAGS)",f);
-	this.tcp.connect('fetchList',JSON.stringify(cmd));
-	return cmd;
+	  this.tcp.connect('fetchList',JSON.stringify(cmd));
+	  return cmd;
 
   }
 
 IMAP_Interface.prototype.fetchListFlags = function() {
     var f= function(response) {
+      result.test=response;
       // "UID xx", "RFC822.SIZE yy", "FLAGS (zz)" order may differ
         var regexp = /((UID (\w+)|RFC822.SIZE (\w+)|FLAGS \((.*?)\))[\s)]+){3}/g;
         var regid = /(UID (\w+))/g;

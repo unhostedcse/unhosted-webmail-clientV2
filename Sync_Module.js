@@ -1,6 +1,8 @@
 var imaps=0;
 function Sync_Module(){
-
+	Sync_Module.db=new DBController();
+	Sync_Module.db.create_openDB(username);
+	console.log('username '+username);
 }
 
 Sync_Module.prototype.getUids = function(){
@@ -14,8 +16,33 @@ Sync_Module.prototype.getUidsReady = function(){
 	console.log("final result select= "+result.select);
 	console.log("final result fetchList= "+result.fetchList);
 	console.log("final result fetchListFlags= "+result.fetchListFlags);
-	console.log("final result fetchBody= "+result.fetchBody);
+	// console.log("final result fetchBody= "+result.fetchBody);
+	Sync_Module.prototype.getBody();
 }
+
+Sync_Module.prototype.getBody = function(){
+	var imap=new IMAP_Fetch(++imaps);
+	imap.getGetBody(this.getBodyReady);
+	console.log('crated imap body service');
+}
+
+Sync_Module.prototype.getBodyReady = function(){
+	
+	console.log('finished getbody');
+	console.log("final result select= "+result.select);
+	console.log("final result fetchList= "+result.fetchList);
+	console.log("final result fetchListFlags= "+result.fetchListFlags);
+	console.log("final result fetchBody= "+result.fetchBody);
+
+	for (var i = 0; i < result.fetchBody.length; i++) {
+		var record={};
+		record.mid=i;
+		record.body=result.fetchBody[i];
+		Sync_Module.db.add(record);
+	};
+	
+}
+
 
 Sync_Module.prototype.SendMailReady = function(){
 	console.log('finished SendMailReady');
@@ -26,3 +53,20 @@ Sync_Module.prototype.SendMail = function(){
 	var smtp=new SMTP_Sendmail(++imaps);
 	smtp.sendmail(this.SendMailReady);
 }
+
+Sync_Module.prototype.StartDB = function(){
+	this.db=new DBController();
+	this.db.create_openDB('nilushan');
+}
+
+ Sync_Module.prototype.add = function(){
+ 	this.db.add();
+ }
+
+Sync_Module.prototype.viewDB = function(){
+	// Sync_Module.db=new DBController();
+	// console.log(username);
+	// Sync_Module.db.create_openDB(username);
+ 	Sync_Module.db.view();
+ }
+
