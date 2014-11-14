@@ -19,12 +19,13 @@ IMAP_Fetch.prototype.func=function(response,id){
     }else{
         if(IMAP_Fetch.cmds.length > IMAP_Fetch.nextFuncIndex+1){
           nextFunc=IMAP_Fetch.cmds[++IMAP_Fetch.nextFuncIndex];
+          // console.log(nextFunc);
           para="";
           if(nextFunc instanceof Array){
             para=nextFunc[1];
             nextFunc=nextFunc[0];
           }
-          // console.log(nextFunc);
+           
           nextFunc(para);
         }
     }   
@@ -169,12 +170,17 @@ IMAP_Fetch.prototype.getGetBody =function(f){
   IMAP_Fetch.cmds.push(this.start);
   IMAP_Fetch.cmds.push(this.login);
   IMAP_Fetch.cmds.push(this.select);
+
   for(var i=0;i<result.fetchList.length;i++){
       var id=result.fetchList[i];
-      //IMAP_Fetch.id=id;
-      IMAP_Fetch.cmds.push([this.fetchBody,id]);
+      if(result.keys.indexOf(parseInt(id))<0){
+        IMAP_Fetch.cmds.push([this.fetchBody,id]);
+        console.log('id '+id+" not in DB");
+        // console.log(typeof(id)+" "+typeof(result.keys[i]));
+      }
+      else
+        console.log('id '+id+" alread in DB");
   }
-  // IMAP_Fetch.cmds.push(this.expunge);
   IMAP_Fetch.cmds.push(this.logout);
 
   
@@ -191,6 +197,9 @@ function IMAP_Fetch(i){
   IMAP_Fetch.imap= new IMAP_Interface(this.func,i);
   IMAP_Fetch.cmds=new Array();
   IMAP_Fetch.nextFuncIndex=0;
+
+  
+
 }
 
 IMAP_Fetch.prototype.getUids = function(func){

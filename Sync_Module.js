@@ -21,12 +21,13 @@ Sync_Module.prototype.getUidsReady = function(){
 	console.log("final result fetchList= "+result.fetchList);
 	console.log("final result fetchListFlags= "+result.fetchListFlags);
 	// console.log("final result fetchBody= "+result.fetchBody);
-	Sync_Module.prototype.getBody();
+	// Sync_Module.prototype.getBody();
+	Sync_Module.db.getKeys(Sync_Module.prototype.getBody);
 }
 
 Sync_Module.prototype.getBody = function(){
 	var imap=new IMAP_Fetch(++imaps);
-	imap.getGetBody(this.getBodyReady);
+	imap.getGetBody(Sync_Module.prototype.getBodyReady);
 	console.log('crated imap body service');
 }
 
@@ -36,17 +37,22 @@ Sync_Module.prototype.getBodyReady = function(){
 	console.log("final result select= "+result.select);
 	console.log("final result fetchList= "+result.fetchList);
 	console.log("final result fetchListFlags= "+result.fetchListFlags);
-	console.log("final result fetchBody= "+result.fetchBody);
+	console.log("final result fetchBody= "+ (result.fetchBody || 'empty'));
 
-	for (var i = 0; i < result.fetchBody.length; i++) {
+	if(result.fetchBody){
+		for (var i = 0; result.fetchBody && i < result.fetchBody.length; i++) {
 
-		var record={};
-		record.mid=i;
-		record.body=result.fetchBody[i];
-		if(record.body){
-			Sync_Module.db.addContain(record,i);
-		}
-	};
+			var record={};
+			record.mid=i;
+			record.body=result.fetchBody[i];
+			if(record.body){
+				Sync_Module.db.addContain(record,i);
+			}
+		};
+	}else{
+		console.log("DB is upto date");
+	}
+
 	result.fetchBody=new Array();
 	console.log("finished adding DB");
 	
@@ -79,6 +85,6 @@ Sync_Module.prototype.viewDB = function(){
  	Sync_Module.db.view();
  }
 
-Sync_Module.prototype.contain = function(){
- 	Sync_Module.db.contain();
+Sync_Module.prototype.test = function(){
+ 	Sync_Module.db.getKeys();
  }

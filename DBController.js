@@ -72,11 +72,11 @@ DBController.prototype.addContain=function(record,id){
 	var self=this;
 
    	this.database.transaction("notes").objectStore("notes").get(parseInt(id)).onsuccess = function(event) {
-   		dbt=event;   		
+   		//dbt=event;   		
 	  	var transaction = self.database.transaction(["notes"], "readwrite");
 	    var objectStore = transaction.objectStore("notes");
    		
-   		if(dbt.target.result){
+   		if(event.target.result){
    			console.log('id '+id + ' already in database' );
    		}else{
    			var request=objectStore.add(record,id);
@@ -89,4 +89,23 @@ DBController.prototype.addContain=function(record,id){
 		   	}	
    		}
 	};
+}
+
+
+DBController.prototype.getKeys=function(func){
+	result.keys=new Array();
+	var objectStore = this.database.transaction("notes").objectStore("notes");
+    objectStore.openCursor().onsuccess = function(event) {
+    	var cursor = event.target.result;    	
+    	if (cursor) {	    	
+    		if(cursor.value.body){
+		    	// console.log(cursor.key);
+		    	result.keys.push(cursor.key);
+		    }	
+		    cursor.continue();
+	    }else{
+	    	console.log('cursor.key over '+result.keys);
+	    	func();
+	    }	
+    }	
 }

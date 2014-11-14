@@ -22,7 +22,7 @@ TCP_Interface.prototype.ExtensionAnswer=function(EvtAnswer,server,id){
 	var value=EvtAnswer.target.getAttribute("value");
 	var type=EvtAnswer.target.getAttribute("server");
 	var conID=EvtAnswer.target.getAttribute("conID");
-	//console.log(type);
+	// console.log(type);
 	//console.log('conID '+conID);
 	if(id==conID){
 		server.result(value,conID);
