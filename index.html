@@ -34,6 +34,7 @@
   <button type="button" onclick="addDB();">Add to DB</button>
   <button type="button" onclick="test();">Test</button>
   <button type="button" onclick="viewDB();">viewDB</button>
+  <button type="button" onclick="deleteDB;">delete current DB</button>
 
 
 	<div id="displaydiv">
@@ -111,6 +112,8 @@ BYE.
 </body>
 <script>
 username=document.getElementById('user').value;
+var sync=new Sync_Module(); 
+sync.init();
 var result;
 
 function obj(){};
@@ -120,13 +123,7 @@ obj.prototype.b=function(c){
 }
 
 function test(){  
-
-   var A=new obj();
-   var cmd=new Array();
-   var aa=obj.prototype.b('aaaaa');
-   cmd.push(aa);
-   var f=cmd[0];
-   //f;
+  sync.contain();
 }
 
 function startMe1(){
@@ -146,6 +143,10 @@ function startMe1(){
 	s.getUids();
 }
 
+function deleteDB(){
+  indexedDB.deleteDatabase(username);
+  console.log('DB '+username+' deleted');
+}
 function startSMTP(){
   var s=new Sync_Module();
 
@@ -161,17 +162,22 @@ function startSMTP(){
   s.SendMail();
 }
 
-var s=new Sync_Module(); 
+
 function startDB(){  
   s.StartDB();
 }
 
 function addDB(){
-  s.add();
+  for (var i = 1; i < 10; i++) {
+    var record={};
+    record.mid=i;
+    record.body=i+''+i+''+i;
+    Sync_Module.db.add(record,10000+i);
+  }
 }
 
 function viewDB(){
-  s.viewDB();
+  sync.viewDB();
 }
 
 
@@ -214,7 +220,8 @@ function viewDB(){
 		document.getElementById('imapport').value='993';		 	
  	}	
   username=document.getElementById('user').value;
-  console.log(username);
+  // console.log(username);
+  sync.init();
  } 
 
 </script>

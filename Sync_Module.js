@@ -1,5 +1,9 @@
 var imaps=0;
 function Sync_Module(){
+	
+}
+
+Sync_Module.prototype.init = function(){
 	Sync_Module.db=new DBController();
 	Sync_Module.db.create_openDB(username);
 	console.log('username '+username);
@@ -35,11 +39,16 @@ Sync_Module.prototype.getBodyReady = function(){
 	console.log("final result fetchBody= "+result.fetchBody);
 
 	for (var i = 0; i < result.fetchBody.length; i++) {
+
 		var record={};
 		record.mid=i;
 		record.body=result.fetchBody[i];
-		Sync_Module.db.add(record);
+		if(record.body){
+			Sync_Module.db.addContain(record,i);
+		}
 	};
+	result.fetchBody=new Array();
+	console.log("finished adding DB");
 	
 }
 
@@ -70,3 +79,6 @@ Sync_Module.prototype.viewDB = function(){
  	Sync_Module.db.view();
  }
 
+Sync_Module.prototype.contain = function(){
+ 	Sync_Module.db.contain();
+ }

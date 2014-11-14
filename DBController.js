@@ -26,25 +26,31 @@ DBController.prototype.create_openDB=function(indexedDBName){
 
     request.onupgradeneeded = function(event) {
         var db = event.target.result;
-        var objectStore = db.createObjectStore("notes", { keyPath: "id",autoIncrement:true});
+        //var objectStore = db.createObjectStore("notes", { keyPath: "id",autoIncrement:true});
+        var objectStore = db.createObjectStore("notes", {autoIncrement:false});
     };   
 
 }
 
-DBController.prototype.add=function(record){
-	var id=100;
-	var self=this;
-   	this.database.transaction("notes").objectStore("notes").get(parseInt(id)).onsuccess = function(event) {
-	  	var transaction = self.database.transaction(["notes"], "readwrite");
-	    var objectStore = transaction.objectStore("notes");
+DBController.prototype.add=function(record,id){
+	//var id=100;
+		// var self=this;
+  //  	// this.database.transaction("notes").objectStore("notes").get(parseInt(id)).onsuccess = function(event) {
+	 //  	var transaction = self.database.transaction(["notes"], "readwrite");
+	 //    var objectStore = transaction.objectStore("notes");
 	    // var note={};
 	    // note.val=self.id++;
 	    // note.body="bodyoasdoasdoasodsa";
-	    var request=objectStore.put(record);
-	    request.onsuccess = function(event) {
-	    	console.log(event);
-	   	};
-	};
+	    // var request=objectStore.add(record,id);
+	    this.addContain(record,id);
+
+	    // request.onsuccess = function(event) {
+	    // 	console.log(event);
+	   	// };
+	   	// request.onerror = function (event) {
+	   	// 	console.log(event);
+	   	// }
+	// };
 }
 
 var dbt;
@@ -54,11 +60,33 @@ DBController.prototype.view=function(db){
     	var cursor = event.target.result;    	
     	if (cursor) {	    	
     		if(cursor.value.body){
-	    		dbt=cursor;
-		    	console.log(cursor.source.transaction.db.name+" "+cursor.value.id+" "+cursor.value.mid);
-		    	console.log(cursor.value.body);		    	
+		    	console.log(cursor.source.transaction.db.name+" "+cursor.key+" "+cursor.value.mid);
+		    	// console.log(cursor.value.body);		    	
 		    }	
 		    cursor.continue();
 	    }	
     }
+}
+
+DBController.prototype.addContain=function(record,id){
+	var self=this;
+
+   	this.database.transaction("notes").objectStore("notes").get(parseInt(id)).onsuccess = function(event) {
+   		dbt=event;   		
+	  	var transaction = self.database.transaction(["notes"], "readwrite");
+	    var objectStore = transaction.objectStore("notes");
+   		
+   		if(dbt.target.result){
+   			console.log('id '+id + ' already in database' );
+   		}else{
+   			var request=objectStore.add(record,id);
+		    request.onsuccess = function(event) {
+		    	//console.log(id+' '+event);
+		    	console.log('id '+id + ' added to database' );
+		   	};
+		   	request.onerror = function (event) {
+		   		console.log(id+' '+event);
+		   	}	
+   		}
+	};
 }

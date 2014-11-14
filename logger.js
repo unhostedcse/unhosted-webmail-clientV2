@@ -1,5 +1,5 @@
 responseLog=false;
-commandLog=true;	
+commandLog=false;	
 requestLog=true;
 var i=0;
 
