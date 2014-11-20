@@ -122,8 +122,44 @@ obj.prototype.b=function(c){
   console.log(c);
 }
 
+var res=new Array();
 function test(){  
-  sync.test();
+  //sync.test();
+
+  var mail=
+        "Content-Type: text/plain; charset=UTF-8 \n"+
+        "MIME-Version: 1.0 \n"+
+        "x-no-auto-attachment: 1 \n"+
+        "Received: by 10.60.41.195; Wed, 10 Sep 2014 00:24:10 -0700 (PDT) \n"+
+        "Date: Wed, 10 Sep 2014 00:24:10 -0700 \n"+
+        "Message-ID: <CAEbMfJLbWOV2OohyRZ2ibvXEBhJjryt1XsDa=xC-C6wRnTu9pw@mail.gmail.com> \n"+
+        "Subject: Three tips to get the most out of Gmail \n"+
+        "From: Gmail Team <mail-noreply@google.com> \n"+
+        "To: unhosted cse <unhostedcse@gmail.com> \n"+        
+        "Content-Transfer-Encoding: quoted-printable \n"+
+        "Hi,\n"+ 
+        "This is mail from HTML5.\n"+ 
+        "MAIL will accept by extension.\n"+ 
+        "BYE.";
+
+console.log(mail);
+
+
+  // var regexp = /(\w+): (\w+)/g;
+  //var reg = /(.+?): (\w+| )+\r\n\s/g;
+  var reg = /(.+?): ((.)+)\n/g;
+  var regexp = /(\w+): (\w+| \r\n\s)+/g;
+  // var reg= /^Subject: (\w+| )/g;
+
+  // // reg.exec(a);
+  // var headerRegExp = /^(.+?): ((.|\r\n\s)+)\r\n/g;
+  var getres;
+  while((getres = regexp.exec(mail))){
+      var a=reg.exec(mail);
+      //res[a[1]]=a[2];
+      console.log(a);
+  }
+
 }
 
 function startMe1(){
@@ -194,8 +230,8 @@ function viewDB(){
 		document.getElementById('imapsec').value='ssl';	
 		document.getElementById('smtpsec').value='ssl';	
  	}else if(x=='hotmail'){ 	
- 		document.getElementById('user').value='unhostedcse@outlook.com';
-		document.getElementById('pass').value='projects12345';
+ 		document.getElementById('user').value='unhostedcse@outlook.com';//dW5ob3N0ZWRjc2VAb3V0bG9vay5jb20=
+		document.getElementById('pass').value='projects12345';//cHJvamVjdHMxMjM0NQ==
 		document.getElementById('smtp').value='Smtp-mail.outlook.com';
 		document.getElementById('smtpport').value='587';
 		document.getElementById('imap').value='imap-mail.outlook.com';

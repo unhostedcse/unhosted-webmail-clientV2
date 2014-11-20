@@ -145,6 +145,8 @@ IMAP_Interface.prototype.fetchListFlags = function() {
     return cmd;
   }
 
+  
+
 IMAP_Interface.prototype.expunge = function() {
 
   var f=function(response) {

@@ -59,9 +59,16 @@ DBController.prototype.view=function(db){
     objectStore.openCursor().onsuccess = function(event) {
     	var cursor = event.target.result;    	
     	if (cursor) {	    	
-    		if(cursor.value.body){
-		    	console.log(cursor.source.transaction.db.name+" "+cursor.key+" "+cursor.value.mid);
-		    	// console.log(cursor.value.body);		    	
+    		if(cursor.value){
+		    	console.log("DB "+cursor.source.transaction.db.name);//+" "+cursor.value.mid
+		    	console.log("MID "+cursor.key);		    	
+		    	console.log("TO "+cursor.value.To);		    	
+		    	console.log("FROM "+cursor.value.From);
+		    	console.log("Subject "+cursor.value.Subject);		    	
+		    	console.log("DATE "+cursor.value.Date);
+		    	console.log("Received "+cursor.value.Received);	
+				console.log("Body "+cursor.value.body);			    		    	
+		    	console.log("");		    	
 		    }	
 		    cursor.continue();
 	    }	
@@ -98,7 +105,7 @@ DBController.prototype.getKeys=function(func){
     objectStore.openCursor().onsuccess = function(event) {
     	var cursor = event.target.result;    	
     	if (cursor) {	    	
-    		if(cursor.value.body){
+    		if(cursor.value){
 		    	// console.log(cursor.key);
 		    	result.keys.push(cursor.key);
 		    }	
