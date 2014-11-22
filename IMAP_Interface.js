@@ -134,7 +134,7 @@ IMAP_Interface.prototype.fetchListFlags = function() {
     return cmd;
   }
 
-   IMAP_Interface.prototype.fetchBody = function(uid, headersOnly) {
+  IMAP_Interface.prototype.fetchBody = function(uid, headersOnly) {
 
     var f=function(response) {
         return response.replace(/^.*\r\n|\)?\r\n.*\r\n.*\r\n$/g, "");
@@ -145,6 +145,17 @@ IMAP_Interface.prototype.fetchListFlags = function() {
     return cmd;
   }
 
+IMAP_Interface.prototype.fetchOnlyBody = function(uid) {
+
+    var f=function(response) {
+        return response.replace(/^.*\r\n|\)?\r\n.*\r\n.*\r\n$/g, "");
+    }
+    this.tag++;
+    //4 uid fetch "+getid[2]+" (body.peek[text])"
+    var cmd=new IMAPCommand(this.tag,"UID FETCH " + uid + " (body.peek[text])",f);
+    this.tcp.connect('fetchOnlyBody',JSON.stringify(cmd));
+    return cmd;
+}
   
 
 IMAP_Interface.prototype.expunge = function() {

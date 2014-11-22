@@ -21,6 +21,8 @@ DBController.prototype.create_openDB=function(indexedDBName){
 
     request.onsuccess = function(event) {
         self.database=request.result;
+
+        // self.update(3,'body body body body');
       	//console.log(event.target);             	
     };
 
@@ -116,3 +118,44 @@ DBController.prototype.getKeys=function(func){
 	    }	
     }	
 }
+
+DBController.prototype.update=function(id,val){
+
+	// this.database.transaction(["notes"], "readwrite").objectStore("notes").get(id).onsuccess = function(event) {
+ //    	var cursor = event.target.result;    	
+ //    	if (cursor) {	    	
+ //    		console.log(cursor);
+ //    		cursor.body=val;    		
+ //    		console.log('body updated as '+cursor.body);	
+
+	//     }else{
+	//     	console.log('cursor.key not present '+id);
+	//     }	
+ //    }	
+
+    var objectStore = this.database.transaction(["notes"], "readwrite").objectStore("notes");
+	var request = objectStore.get(id);
+
+	request.onerror = function(event) {
+	  // Handle errors!
+	};
+
+	request.onsuccess = function(event) {
+	  // Get the old value that we want to update
+	  var data = request.result;
+
+	  // update the value(s) in the object that you want to change
+	  data.body = val;
+
+	  // Put this updated object back into the database.
+	  var requestUpdate = objectStore.put(data,id);
+	   requestUpdate.onerror = function(event) {
+	     console.log(event);
+	   };
+	   requestUpdate.onsuccess = function(event) {
+	   	console.log("id " +id +" update "+event.type);
+	   };
+	};
+
+}
+

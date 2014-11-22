@@ -35,6 +35,9 @@
   <button type="button" onclick="test();">Test</button>
   <button type="button" onclick="viewDB();">viewDB</button>
   <button type="button" onclick="deleteDB;">delete current DB</button>
+  <br/>
+  <input type="text" id="" value="indexedDB.deleteDatabase(username);">
+  
 
 
 	<div id="displaydiv">
@@ -125,6 +128,12 @@ obj.prototype.b=function(c){
 var res=new Array();
 function test(){  
   //sync.test();
+var db=new DBController();
+db.create_openDB(username);
+
+// db.update(3,'body body body body');
+
+return;
 
   var mail=
         "Content-Type: text/plain; charset=UTF-8 \n"+
@@ -141,9 +150,32 @@ function test(){
         "This is mail from HTML5.\n"+ 
         "MAIL will accept by extension.\n"+ 
         "BYE.";
+mailto=mail;
+var a=JSON.parse(mail);
 
-console.log(mail);
+console.log(a);
+  function getUrlParameter(name) {
+    var regexp = new RegExp("[?&]" + name + "=([^&]*)", "i");
+    var result = regexp.exec(mailto);
+    return result ? decodeURIComponent(result[1]) : null;
+  }
 
+  var to = decodeURIComponent(/mailto:([^?&]*)/.exec(mailto)[1]);
+  var cc = getUrlParameter("cc");
+  var bcc = getUrlParameter("bcc");
+  var subject = getUrlParameter("subject");
+  var html = getUrlParameter("body");
+  console.log(cc);
+  console.log(bcc);
+  console.log(subject);
+  console.log(html);
+
+//console.log(mail);
+// var reg1 = /(.+?): ((.)+)\n/g;
+// var reg1=/((.+?): ((.)+)\n)(?=(.+?))/g;
+var re=/((.+): (.+)\n)+/g;
+var a=mail.replace(re,'');
+// console.log(a);
 
   // var regexp = /(\w+): (\w+)/g;
   //var reg = /(.+?): (\w+| )+\r\n\s/g;
@@ -157,7 +189,7 @@ console.log(mail);
   while((getres = regexp.exec(mail))){
       var a=reg.exec(mail);
       //res[a[1]]=a[2];
-      console.log(a);
+      // console.log(a);
   }
 
 }

@@ -116,11 +116,13 @@ IMAP_Fetch.prototype.fetchBody=function(id){
       }
 
       
-      result.fetchBody[id]=val;
-      // console.log(val);
+      // var regBody=/(.+): (.+)\n/g;
+      // var re=/((.+): (.+))+/g;
+      // regBody=re;
+      // var msg=val.replace(regBody,'');
+      // result.fetchBody[id]=msg
 
       var header=function(){
-        this.To="";
         this.To="";
         this.From="";
         this.Subject="";
@@ -130,7 +132,7 @@ IMAP_Fetch.prototype.fetchBody=function(id){
       };
 
       head=new header();
-      head.body=val;
+      // head.body=val;
       var reg = /(.+?): ((.)+)/g;
       var regexp = /(\w+): (\w+| \r\n\s)+/g;
       var getres;
@@ -164,12 +166,18 @@ IMAP_Fetch.prototype.fetchBody=function(id){
   }
 }
 
-IMAP_Fetch.prototype.fetchBodys=function(id){
+IMAP_Fetch.prototype.fetchBodyOnly=function(id){
+  cmd=IMAP_Fetch.imap.fetchOnlyBody(id);
+  IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
+  IMAP_Fetch.imap.setVal=function(val,nextFunc,para){     
+     
+      if(!result.fetchOnlyBody)
+        result.fetchOnlyBody=new Array();
 
-  for(var i=0;i<result.fetchList.length;i++){
-      var id=result.fetchList[i];
-      IMAP_Fetch.fetchBody(id);
-  }  
+      result.fetchOnlyBody[id]=val;      
+      // console.log("id= "+this.imaps+" result onlyBody= "+id+" "+val);
+      nextFunc(para);      
+  }
 }
 
 IMAP_Fetch.prototype.expunge=function() {
@@ -210,7 +218,7 @@ IMAP_Fetch.prototype.getInboxIDs =function(f){
   f();
 }
 
-IMAP_Fetch.prototype.getGetBody =function(f){  
+IMAP_Fetch.prototype.getHeaderScenario =function(f){  
   IMAP_Fetch.cmds.push(this.start);
   IMAP_Fetch.cmds.push(this.login);
   IMAP_Fetch.cmds.push(this.select);
@@ -236,20 +244,18 @@ IMAP_Fetch.prototype.getGetBody =function(f){
 
 }
 
-IMAP_Fetch.prototype.getGetBody =function(f){  
+IMAP_Fetch.prototype.getBodyScenario =function(f){  
   IMAP_Fetch.cmds.push(this.start);
   IMAP_Fetch.cmds.push(this.login);
   IMAP_Fetch.cmds.push(this.select);
 
   for(var i=0;i<result.fetchList.length;i++){
       var id=result.fetchList[i];
-      if(result.keys.indexOf(parseInt(id))<0){
-        IMAP_Fetch.cmds.push([this.fetchBody,id]);
-        console.log('id '+id+" not in DB");
-        // console.log(typeof(id)+" "+typeof(result.keys[i]));
-      }
-      else
-        console.log('id '+id+" alread in DB");
+      // if(result.keys.indexOf(parseInt(id))>0){
+        IMAP_Fetch.cmds.push([this.fetchBodyOnly,id]);
+      // }
+      // else
+        // console.log('id '+id+" not in DB");
   }
   IMAP_Fetch.cmds.push(this.logout);
 

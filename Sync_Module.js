@@ -9,12 +9,14 @@ Sync_Module.prototype.init = function(){
 	console.log('username '+username);
 }
 
+//start IMAP service
 Sync_Module.prototype.getUids = function(){
 	var imap=new IMAP_Fetch(++imaps);
 	imap.getUids(this.getUidsReady);
 	console.log('crated imap service');
 }
 
+//Finished IMAP service
 Sync_Module.prototype.getUidsReady = function(){
 	console.log('finished getUids');
 	console.log("final result select= "+result.select);
@@ -22,22 +24,18 @@ Sync_Module.prototype.getUidsReady = function(){
 	console.log("final result fetchListFlags= "+result.fetchListFlags);
 	// console.log("final result fetchBody= "+result.fetchBody);
 	// Sync_Module.prototype.getBody();
-	Sync_Module.db.getKeys(Sync_Module.prototype.getBody);
+	Sync_Module.db.getKeys(Sync_Module.prototype.getHeaders);
 }
 
-Sync_Module.prototype.getBody = function(){
+//start to fetch headers
+Sync_Module.prototype.getHeaders = function(){
 	var imap=new IMAP_Fetch(++imaps);
-	imap.getGetBody(Sync_Module.prototype.getBodyReady);
+	imap.getHeaderScenario(Sync_Module.prototype.getHeadersReady);
 	console.log('crated imap body service');
 }
 
-Sync_Module.prototype.getBodyHeader = function(){
-	var imap=new IMAP_Fetch(++imaps);
-	imap.getGetBody(Sync_Module.prototype.getTextReady);
-	console.log('crated imap body header service');
-}
-
-Sync_Module.prototype.getBodyReady = function(){
+//call after fetch haders
+Sync_Module.prototype.getHeadersReady = function(){
 	
 	console.log('finished getbodyheader');
 	console.log("final result select= "+result.select);
@@ -59,7 +57,32 @@ Sync_Module.prototype.getBodyReady = function(){
 
 	result.fetchMIME=new Array();
 	console.log("finished adding DB");
+
+	Sync_Module.prototype.getBody();
 	
+}
+
+//start to fetch Mail body
+Sync_Module.prototype.getBody = function(){
+	var imap=new IMAP_Fetch(++imaps);
+	imap.getBodyScenario(Sync_Module.prototype.getBodyFinished);
+	console.log('crated imap body service');
+}
+
+Sync_Module.prototype.getBodyFinished = function(){
+	if(result.fetchOnlyBody){
+		for (var i = 0; result.fetchOnlyBody && i < result.fetchOnlyBody.length; i++) {
+			var record=result.fetchOnlyBody[i];
+			if(record){
+				Sync_Module.db.update(i,record);
+			}
+		}
+	}else{
+		console.log("DB is upto date");
+	}
+
+	result.fetchOnlyBody=new Array();
+	console.log('finisehd imap body header service');
 }
 
 Sync_Module.prototype.SendMailReady = function(){
