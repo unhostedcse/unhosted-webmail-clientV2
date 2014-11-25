@@ -10,7 +10,7 @@ TCP_Interface.prototype.connect = function(act,cmd,settings){
 	element.setAttribute("command",cmd);		
 	element.setAttribute("server",this.server.type);
 	element.setAttribute("conID",this.server.imaps);
-	printReq('request '+this.server.imaps+' '+act +'< '+JSON.parse(cmd).request+' \>');
+	// printReq('request '+this.server.imaps+' '+act +'< '+JSON.parse(cmd).request+' \>');
 	element.setAttribute("settings",settings);		
 	document.documentElement.appendChild(element);
 	var evt = document.createEvent("Events");
@@ -22,8 +22,10 @@ TCP_Interface.prototype.ExtensionAnswer=function(EvtAnswer,server,id){
 	var value=EvtAnswer.target.getAttribute("value");
 	var type=EvtAnswer.target.getAttribute("server");
 	var conID=EvtAnswer.target.getAttribute("conID");
-	// console.log(type);
-	//console.log('conID '+conID);
+
+	if(value=="test_connect_pass")
+		server.result(value);
+
 	if(id==conID){
 		server.result(value,conID);
 	}

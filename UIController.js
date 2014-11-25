@@ -11,28 +11,7 @@ security='ssl';
 var sync=new Sync_Module();
 sync.init();
 
-var x = document.createElement("a");
-x.setAttribute("id", "click"); 
-x.setAttribute("type", "hidden"); 
-x.setAttribute("href", "../xpi/unhosted@unhosted.projects.uom.lk.xpi"); 
-x.setAttribute("iconURL", "../xpi/icon.png"); 
-x.setAttribute("onclick", "return install(event);"); 
-x.click();
 
-function install (aEvent)
-{
-  for (var a = aEvent.target; a.href === undefined;) a = a.parentNode;
-  var params = {
-    "Foo": { URL: aEvent.target.href,
-             IconURL: aEvent.target.getAttribute("iconURL"),
-             Hash: aEvent.target.getAttribute("hash"),
-             toString: function () { return this.URL; }
-    }
-  };
-  InstallTrigger.install(params);
-
-  return false;
-}
 
 function view(){
 	try{
@@ -81,10 +60,9 @@ function addMsg(mails){
 		$(".subject").html(sub);
 		
 		var body=$(this).find(".body").text();
-
-		//$(".fixed.leftAlign").html(body);
+		$(".fixed.leftAlign").html(body);
 		// document.getElementsByClassName('.fixed.leftAlign').innerHTML=body;
-		document.getElementById('bodyDisplay').innerHTML=body;
+		// document.getElementById('bodyDisplay').innerHTML=body;
 
     	}
     );

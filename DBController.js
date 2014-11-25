@@ -21,7 +21,7 @@ DBController.prototype.create_openDB=function(indexedDBName){
 
     request.onsuccess = function(event) {
         self.database=request.result;
-      	console.log(event);             	
+      	// console.log(event);             	
     };
 
     request.onupgradeneeded = function(event) {
@@ -32,25 +32,8 @@ DBController.prototype.create_openDB=function(indexedDBName){
 
 }
 
-DBController.prototype.add=function(record,id){
-	//var id=100;
-		// var self=this;
-  //  	// this.database.transaction("notes").objectStore("notes").get(parseInt(id)).onsuccess = function(event) {
-	 //  	var transaction = self.database.transaction(["notes"], "readwrite");
-	 //    var objectStore = transaction.objectStore("notes");
-	    // var note={};
-	    // note.val=self.id++;
-	    // note.body="bodyoasdoasdoasodsa";
-	    // var request=objectStore.add(record,id);
-	    this.addContain(record,id);
-
-	    // request.onsuccess = function(event) {
-	    // 	console.log(event);
-	   	// };
-	   	// request.onerror = function (event) {
-	   	// 	console.log(event);
-	   	// }
-	// };
+DBController.prototype.add=function(record,id){	
+    this.addContain(record,id);	
 }
 
 var dbt;
