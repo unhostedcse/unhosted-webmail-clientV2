@@ -21,9 +21,7 @@ DBController.prototype.create_openDB=function(indexedDBName){
 
     request.onsuccess = function(event) {
         self.database=request.result;
-
-        // self.update(3,'body body body body');
-      	//console.log(event.target);             	
+      	console.log(event);             	
     };
 
     request.onupgradeneeded = function(event) {
@@ -74,6 +72,53 @@ DBController.prototype.view=function(db){
 		    }	
 		    cursor.continue();
 	    }	
+    }
+}
+
+
+
+var UIresult=new Array();		
+
+DBController.prototype.getMessages=function(cllBack){
+	UIresult=new Array();		
+
+	if(!this.database){
+		console.log('empty DB');
+		return;
+	}
+	var objectStore = this.database.transaction("notes").objectStore("notes");
+
+	if(!objectStore){
+		console.log('empty DB');
+		return;
+	}
+
+    objectStore.openCursor().onsuccess = function(event) {
+    	var obj=function(id,from,sub,date,body){
+			this.id=id;
+			this.from=from;
+			this.subject=sub;
+			this.date=date;
+			this.body=body;
+		}
+
+    	var cursor = event.target.result;    	
+    	if(cursor==null){
+    		console.log(UIresult.length);
+    		cllBack(UIresult);
+    	}		
+		
+    	if (cursor) {	    	
+    		if(cursor.value){		    		
+				var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,cursor.value.body);
+				UIresult.push(msg);
+				// console.log(msg);
+				console.log("DB "+cursor.source.transaction.db.name);
+		    }	
+
+		    cursor.continue();
+	    }
+		
     }
 }
 
