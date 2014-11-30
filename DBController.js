@@ -24,6 +24,10 @@ DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
     	console.log(event.target.errorCode);
     };
 
+    request.onblocked=function(event){
+	   	console.log('open onblocked '+event);    	
+	}
+
     request.onsuccess = function(event) {
         self.database=request.result;
         // self.getMessages(func,folder);
@@ -41,8 +45,8 @@ DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
         //var objectStore = db.createObjectStore("notes", { keyPath: "id",autoIncrement:true});
         console.log('DB folder: '+folder);
 
-        if(folder)
-        	var objectStore = db.createObjectStore(folder, {autoIncrement:false});
+        // if(folder)
+        	// var objectStore = db.createObjectStore(folder, {autoIncrement:false});
 
         var objectStore = db.createObjectStore(self.mailBoxTableName, {keyPath: "id",autoIncrement:true});
     };   	
@@ -153,8 +157,6 @@ DBController.prototype.addContain=function(record,id,folder){
 
 DBController.prototype.addMailBoxes=function(name,path){
 
-	
-
 	var self=this;
 	var fun=function(boxes){		
 
@@ -171,7 +173,7 @@ DBController.prototype.addMailBoxes=function(name,path){
 		    	createMailBox(path);
 		   	};
 		   	request.onerror = function (event) {
-		   		console.log(id+' '+event);
+		   		console.log(event);
 		   	}	
 		}else{
 			console.log(path+' already in database' );
@@ -187,10 +189,10 @@ DBController.prototype.addMailBoxes=function(name,path){
 		    alert("Sorry!Your browser doesn't support IndexedDB");
 		}
 
-		// dbVersion++;
-		console.log('current version'+dbVersion);
+		dbVersion++;
+		console.log('current version '+dbVersion);
 
-	    var request = window.indexedDB.open(username,10);
+	    var request = window.indexedDB.open(username,dbVersion);
 
 	    request.onerror = function(event) {
 	    	console.log(event.target.errorCode);
@@ -201,22 +203,31 @@ DBController.prototype.addMailBoxes=function(name,path){
 	        console.log('open mailBox '+folder);    
 	    };
 
+	    request.onblocked=function(event){
+	    	console.log('open onblocked '+event);    	
+	    	self.database.close();
+	    }
+
 	    request.onupgradeneeded = function(event) {
 	    	console.log('created mailBox '+folder);    
 	        var db = event.target.result;
         	var objectStore = db.createObjectStore(folder, {autoIncrement:false});
-
 	    }; 
 	}
 
-    // this.getMailBoxes(fun);
-    createMailBox(path);
+    this.getMailBoxes(fun);
+    // createMailBox(path);
 
 }
 
 DBController.prototype.getMailBoxes=function(func){
 	var boxes=new Array();
 	self=this;
+
+	if(!this.database){
+		return;
+	}
+
 	var objectStore = this.database.transaction(self.mailBoxTableName).objectStore(self.mailBoxTableName);
     objectStore.openCursor().onsuccess = function(event) {
     	var cursor = event.target.result;    	
@@ -236,12 +247,14 @@ DBController.prototype.getKeys=function(func,folder){
 	result.keys=new Array();
 
 	if(!this.database){
+		func();
 		return;
 	}
 
 	console.log('getKeys '+folder);
 
 	var objectStore = this.database.transaction(folder).objectStore(folder);
+	
     objectStore.openCursor().onsuccess = function(event) {
     	var cursor = event.target.result;    	
     	if (cursor) {	    	

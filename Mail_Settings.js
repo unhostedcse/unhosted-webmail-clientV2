@@ -6,4 +6,4 @@ var security="";
 var result={};
 var selectFolder;
 var dbSelectFolder;
-var dbVersion=1;
+var dbVersion=10;

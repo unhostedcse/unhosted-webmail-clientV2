@@ -110,7 +110,7 @@ $(document).on("click",'.horde-subnavi-point',
 		selectFolder=mailBox;
 		dbSelectFolder=selectFolder;
 		initUnhosted();
-		// sync.getUids();
+		sync.getUids();
 	}
 );
 //321 index.html
