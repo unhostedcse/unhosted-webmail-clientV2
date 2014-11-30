@@ -19,6 +19,9 @@
  
 <button type="button" onclick="startMe1();">Start IMAP</button>
 <button type="button" onclick="startSMTP();">Start SMTP</button>
+<button type="button" onclick="startMailBoxesScenario();">Start MailBoxesScenario</button>
+<button type="button" onclick="addMailBox();">Start addMailBox</button>
+<button type="button" onclick="setMailBoxBar();">Set MailBox</button>
   
 <table>
     <tr>
@@ -287,7 +290,9 @@
      <div id="messageBody" class="messageBody allowTextSelection">
 		<div class="mimePartBase">
 			<div class="mimePartData">
-				<div class="fixed leftAlign" id='bodyDisplay'>					
+        <!-- display -->
+				<div class="fixed leftAlign editable" id='bodyDisplay'>					
+          <!-- <iframe id="iframe"></iframe> -->
 				</div> 
 				</div>
 			</div>
@@ -315,8 +320,15 @@
 
 
 <div id="imp-specialmboxes">
-	<div class="horde-info">No items to display
-	</div>
+	<div class="horde-info">No items to display	</div>
+
+  <!-- <div class="horde-subnavi imp-sidebar-mbox DropElt DragElt horde-subnavi-active" title="Inbox" id="anonymous_element_15">
+    <div class="horde-subnavi-icon inboxImg"></div>
+    <div class="horde-subnavi-point">
+      <a>Inbox</a>
+    </div>
+  </div> -->
+
 </div>
 
 <div id="horde-slideleft" class="horde-splitbar-vert DragElt" style="left: 210px; height: 624px;">

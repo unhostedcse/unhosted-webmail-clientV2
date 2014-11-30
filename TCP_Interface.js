@@ -10,7 +10,10 @@ TCP_Interface.prototype.connect = function(act,cmd,settings){
 	element.setAttribute("command",cmd);		
 	element.setAttribute("server",this.server.type);
 	element.setAttribute("conID",this.server.imaps);
-	// printReq('request '+this.server.imaps+' '+act +'< '+JSON.parse(cmd).request+' \>');
+
+	var res=cmd ? JSON.parse(cmd).request : 'null';
+	printReq('request '+this.server.imaps+' '+act +'< '+res+' \>');
+
 	element.setAttribute("settings",settings);		
 	document.documentElement.appendChild(element);
 	var evt = document.createEvent("Events");

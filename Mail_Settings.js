@@ -4,3 +4,6 @@ var host="";
 var port="";
 var security="";
 var result={};
+var selectFolder;
+var dbSelectFolder;
+var dbVersion=1;

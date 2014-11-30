@@ -8,10 +8,18 @@ security='ssl';
 // var db=new DBController();
 // db.create_openDB(username);
 
-var sync=new Sync_Module();
-sync.init();
+var sync=new Sync_Module(clearBody);
+selectFolder='INBOX';
+// dbSelectFolder='notes';
+dbSelectFolder=selectFolder;
+sync.init(addMsg,dbSelectFolder,setMailBoxBar);
+// sync.init(addMsg,'sent');
 
-
+function initUnhosted(){
+	dbSelectFolder=selectFolder;
+	sync=new Sync_Module(clearBody);
+	sync.init(addMsg,dbSelectFolder,setMailBoxBar);
+}
 
 function view(){
 	try{
@@ -22,6 +30,21 @@ function view(){
 	}catch(e){
 		console.log(e);
 	}
+}
+var i=100;
+function addMailBox(){
+	try{
+		Sync_Module.db.addMailBoxes('test','test'+(i++));
+	}catch(e){
+		console.log(e);
+	}
+}
+
+function clearBody(){
+	$(".vpRowHoriz.vpRow.DragElt").replaceWith('<div></div>');
+
+	// $("#imp-specialmboxes").replaceWith('<div id="imp-specialmboxes"></div>');
+	$("#imp-specialmboxes").empty();
 }
 
 function addMsg(mails){
@@ -40,7 +63,10 @@ function addMsg(mails){
 		$good.append('<div class="msgSubject sep" title="Tested">'+msg.subject+'</div>');
 		$good.append('<div class="msgDate sep">'+msg.date+'</div>');
 		$good.append('<div class="msgSize sep">1 KB</div>');
-		$good.append('<div class="body" style="display: none;">'+msg.body+'</div>');
+		//$good.append('<a id="body" class="body" href="'+msg.body+'" style="display: none;"></a>');
+		// alert(msg.body);
+		$good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
+		
 
 	}
 
@@ -60,20 +86,62 @@ function addMsg(mails){
 		$(".subject").html(sub);
 		
 		var body=$(this).find(".body").text();
-		$(".fixed.leftAlign").html(body);
+		// $(".fixed.leftAlign").html(body);
 		// document.getElementsByClassName('.fixed.leftAlign').innerHTML=body;
-		// document.getElementById('bodyDisplay').innerHTML=body;
 
+		//var body =document.getElementsByClassName('body').value;
+
+		document.getElementById('bodyDisplay').innerHTML=body;
+
+		// document.getElementById('iframe').contentWindow.document.write(body);
+		// document.getElementById('iframe').src=body;
+
+		// alert(body);
     	}
     );
 // }
 
+$(document).on("click",'.horde-subnavi-point',
+	function() {
+		// console.log('clicked');
+		var mailBox=$(this).find("a").text();
+		$('.horde-subnavi .imp-sidebar-mbox .DropElt .DragElt').addClass('horde-subnavi-active');
+
+		selectFolder=mailBox;
+		dbSelectFolder=selectFolder;
+		initUnhosted();
+		// sync.getUids();
+	}
+);
+//321 index.html
+function setMailBoxBar(mail){
+
+	for (var i = 0; i < mail.length; i++) {
+		var name=mail[i];
+		var div=""+
+		'<div class="horde-subnavi imp-sidebar-mbox DropElt DragElt" title="'+name+'" id="anonymous_element_15">'+
+	    	'<div class="horde-subnavi-icon inboxImg"></div>'+
+			'<div class="horde-subnavi-point">'+
+	  			'<a>'+name+'</a>'+
+			'</div>'+
+	  	'</div>';
+
+		var $good=$("#imp-specialmboxes").last();
+		
+		$good.append(div);
+	};
+	
+}
 
 function startMe1(){
 	// var s=new Sync_Module();
 	sync.getUids();
 }
 
+function startMailBoxesScenario(){
+	// var s=new Sync_Module();
+	sync.getMailBoxesScenario();
+}
 
 
 function setSetting(){
@@ -105,8 +173,12 @@ function setSetting(){
  	}	
   //username=document.getElementById('user').value;
   	console.log(username);
-  	db=new DBController();
-	db.create_openDB(username);
+ //  	db=new DBController();
+	// db.create_openDB(username);
 
-  	sync.init();
+ //  	sync.init();
+ 	//sync=new Sync_Module(clearBody);
+ 	//sync.init(addMsg,dbSelectFolder);
+	// sync.init(addMsg);
+	initUnhosted();
  } 

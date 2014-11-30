@@ -64,15 +64,16 @@ IMAP_Fetch.prototype.ListFolder=function(){
   IMAP_Fetch.imap.setVal=function(val,nextFunc,para){
       result.ListFolder=val;
       //+result.ListFolder
-      printCmd("id= "+this.imaps+" result ListFolder= ");
-      for(var i=0;i<val.length;i++){
-        console.log(val[i].type+" "+val[i].folder);
-      }
+      // printCmd("id= "+this.imaps+" result ListFolder= ");
+      // for(var i=0;i<val.length;i++){
+      //   console.log(val[i].type+" "+val[i].folder);
+      // }
       nextFunc(para);
   }
 }
 
 IMAP_Fetch.prototype.select=function(folder){
+  folder=selectFolder;
   cmd=IMAP_Fetch.imap.select(folder || 'inbox');
   //cmd=IMAP_Fetch.imap.select('[Gmail]/Drafts');
   IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
@@ -190,10 +191,24 @@ IMAP_Fetch.prototype.logout=function() {
   IMAP_Fetch.imap.onTheResponse=null;
 }
 
-IMAP_Fetch.prototype.getInboxIDs =function(f){  
+IMAP_Fetch.prototype.getMailBoxesScenario =function(f){ 
   IMAP_Fetch.cmds.push(this.start);
   IMAP_Fetch.cmds.push(this.login);
   IMAP_Fetch.cmds.push(this.ListFolder);
+  
+  IMAP_Fetch.cmds.push(this.logout);  
+  IMAP_Fetch.cmds.push(f);                 // called when all command executed
+  IMAP_Fetch.cmds.push(this.clearCmds);
+
+  IMAP_Fetch.nextFuncIndex=0;
+  var f=IMAP_Fetch.cmds[IMAP_Fetch.nextFuncIndex];
+  f(); 
+}
+
+IMAP_Fetch.prototype.getInboxIDs =function(f){  
+  IMAP_Fetch.cmds.push(this.start);
+  IMAP_Fetch.cmds.push(this.login);
+  // IMAP_Fetch.cmds.push(this.ListFolder);
 
 
   IMAP_Fetch.cmds.push(this.select);
@@ -271,9 +286,7 @@ function IMAP_Fetch(i){
   this.imaps=i;
   IMAP_Fetch.imap= new IMAP_Interface(this.func,i);
   IMAP_Fetch.cmds=new Array();
-  IMAP_Fetch.nextFuncIndex=0;
-
-  
+  IMAP_Fetch.nextFuncIndex=0;  
 
 }
 
