@@ -7,3 +7,4 @@ var result={};
 var selectFolder;
 var dbSelectFolder;
 var dbVersion=10;
+var refresh_interval=60;

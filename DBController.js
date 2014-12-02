@@ -2,6 +2,7 @@ function DBController(){
 	this.database;
 	this.id=0;
 	this.mailBoxTableName='mailBoxes';
+	this.offlineMboxName='unhostedOfflineMbox';
 }
 
 DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
@@ -49,12 +50,91 @@ DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
         	// var objectStore = db.createObjectStore(folder, {autoIncrement:false});
 
         var objectStore = db.createObjectStore(self.mailBoxTableName, {keyPath: "id",autoIncrement:true});
+
+        // for offline sendmail
+        var objectStore = db.createObjectStore(self.offlineMboxName, {keyPath: "id",autoIncrement:true});
     };   	
 
 }
 
 DBController.prototype.add=function(record,id,folder){	
     this.addContain(record,id,folder);	
+}
+
+// save msg for offline send
+DBController.prototype.saveSendMail=function(text,to,cc,bcc){	
+    // this.addContain(record,id,folder);	
+    var transaction = self.database.transaction([self.offlineMboxName], "readwrite");    
+    var objectStore = transaction.objectStore(self.offlineMboxName);		
+
+	var record={
+		text: text,
+		to: to,
+		cc: cc,
+		bcc: bcc,
+		status: 'tosend'
+	};
+
+	var request=objectStore.add(record);
+    request.onsuccess = function(event) {
+    	console.log('Msg added to database' );
+    	$.event.trigger({type:"newSendMail"});
+   	};
+   	request.onerror = function (event) {
+   		console.log(event);
+   	}	
+}
+
+DBController.prototype.getSaveSendMail=function(){	
+	self=this;
+	console.log('getSaveSendMail');
+	var objectStore = this.database.transaction(this.offlineMboxName).objectStore(this.offlineMboxName);
+	    objectStore.openCursor().onsuccess = function(event) {
+	    	var cursor = event.target.result;    	
+	    	if (cursor) {	    	
+	    		if(cursor.value){
+	    			var status=cursor.value.status;
+	    			// console.log('send mail: '+status);
+	    			if(status=='tosend'){
+		    			var body=cursor.value.text;
+						var to=cursor.value.to;
+						var cc=cursor.value.cc;
+						var bcc=cursor.value.bcc;
+
+						//send
+						console.log('send mail: '+body+' id: '+cursor.key);
+						self.updateSaveSendMail(cursor.key);
+			    	}
+			    }	
+			    cursor.continue();
+		    }	
+	    }
+}
+
+DBController.prototype.updateSaveSendMail=function(id){	
+	var objectStore = this.database.transaction([this.offlineMboxName], "readwrite").objectStore(this.offlineMboxName);
+	var request = objectStore.get(id);
+
+	request.onerror = function(event) {
+	  // Handle errors!
+	};
+
+	request.onsuccess = function(event) {
+	  // Get the old value that we want to update
+	  var data = request.result;
+
+	  // update the value(s) in the object that you want to change
+	  data.status = 'sent';
+
+	  // Put this updated object back into the database.
+	  var requestUpdate = objectStore.put(data,id);
+	   requestUpdate.onerror = function(event) {
+	     console.log(event);
+	   };
+	   requestUpdate.onsuccess = function(event) {
+	   	console.log("id " +id +" update to sent");
+	   };
+	};
 }
 
 var dbt;

@@ -21,6 +21,43 @@ function initUnhosted(){
 	sync.init(addMsg,dbSelectFolder,setMailBoxBar);
 }
 
+function startSMTP(){
+  // var s=new Sync_Module();
+
+  username=document.getElementById('user').value;
+  password=document.getElementById('pass').value;
+
+  host=document.getElementById('smtp').value;
+  port=document.getElementById('smtpport').value;
+  security=document.getElementById('smtpsec').value;
+
+  body=document.getElementById('body').value;
+
+  sync.SendMail();
+}
+
+//send mail when new mail is waiting
+$(document).on("newSendMail", 
+	function(e){
+		console.log(e.type);
+		try{
+			Sync_Module.db.getSaveSendMail();
+		}catch(e){
+			console.log(e);
+		}
+	}
+);
+
+function saveSendMail(){
+	var status="tosend";
+	var text="text";
+	var to="to";
+	var cc="cc";
+	var bcc="bcc";
+
+	Sync_Module.db.saveSendMail(text,to,cc,bcc);
+}
+
 function view(){
 	try{
 		// var db=new DBController();
@@ -101,6 +138,7 @@ function addMsg(mails){
     );
 // }
 
+// select mailboxs
 $(document).on("click",'.horde-subnavi-point',
 	function() {
 		// console.log('clicked');

@@ -1,4 +1,5 @@
 var imaps=0;
+var mboxCount=0;
 function Sync_Module(clearBody){
 	clearBody();
 }
@@ -20,7 +21,7 @@ Sync_Module.prototype.DBReady = function(addMsg,folder,setMailBoxBar){
 		function(boxs){
 			// console.log(boxs[0]);
 			if(boxs && boxs.length>0){
-				Sync_Module.db.getMessages(Sync_Module.addMsg,Sync_Module.folder);
+				Sync_Module.db.getMessages(Sync_Module.addMsg,Sync_Module.folder); 
 			}else{
 				console.log('Empty Mbox list');
 			}
@@ -46,6 +47,7 @@ Sync_Module.prototype.getMailBoxesReady = function(mailBoxes){
   	}
 
 	// selectFolder=val[0].folder;
+	// mboxCount=val.length
 	dbSelectFolder=selectFolder;
 	console.log('getMailBoxesReady choose '+selectFolder);
 	Sync_Module.prototype.getUids();
@@ -135,8 +137,14 @@ Sync_Module.prototype.getBodyFinished = function(){
 	}
 
 	result.fetchOnlyBody=new Array();
-	console.log('finisehd imap body header service');
+	console.log('finished imap body service');
 	initUnhosted();
+	// if(mboxCount< result.ListFolder.length){
+	// 	selectFolder=result.ListFolder[++mboxCount];
+	// 	dbSelectFolder=selectFolder;
+	// 	console.log('getMailBoxesReady choose '+selectFolder);
+	// 	Sync_Module.prototype.getUids();
+	// }
 }
 
 Sync_Module.prototype.SendMailReady = function(){

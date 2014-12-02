@@ -10,7 +10,7 @@
   <link href="ui/screen(2).css" rel="stylesheet" type="text/css">
   <link href="ui/webkit.css" rel="stylesheet" type="text/css">      
   <title>Mail :: Inbox</title>
- <link type="image/x-icon" rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACiUlEQVQ4T6WTS2gTURSGz42ZvMlLcOEmlJZ0ssjCIEVTk3TVlkISdVMJNIg12RRRIUpMwLqoorQqUjeFQnWRRWxdNNSFIlTqoiSLNMFgghAr1dhQIWWgyZiZycQ706YPFLvogeHOnDnnO//9Zy6CIwY6Yj8gs9k8iBDq2wE18SpcQjRxiGsrh+vEe57nxbxEIvmAFhcXJxOJxEgymdwVs9PYem4BD4i12WzcwMDANLLb7SuRSGQNg/qLxaIMT/nvrgR4W1sb43Q6l8bHx00CgDUYDFmfz0dlMpnuQqEgJwjinxCWZYEkScZqtSZnZ2eNlUqFRA6HQ9gTq9Vqc8Fg8Gsul7uYSqWQVCqFlhphKsdx0NXV1bRYLImZmZl2iqJI7IEUYSlNpVIJ1Wq1gccu45cf4/F4GHsiQk7VKfBWN8DE1w+o+oWkMI20gFwuV9NoNIJOp2sMDw8vh8Ph16FQ6AxW4c3n8/KJzS/oZL8HFFdvADp+AqD+G5h380BP3IVVILYBWBbb09OTi8Viq+Vy2avX63N+v38d++G6tfRKqX76Eo51kEBP3gfC2QuE7SzUnowC+34B0NDQEOt2u7Nzc3NUqVTqluPAZnEKhSIfCAQ+9U5Gffu1qx9NgdR6eg+QTqdXotHoGjalX6VSydRqNdTrdajVanyj0fj+RrJhagGUt8dA1ncBGsUCbF33A9BVQB6P5zl2cwQ3g0ajEZ0XXKdpGhiGgamfabFfdechEL0e4Nd/AP1sDLjkkphHuPgSXlu/8l/fn3KaLysCN0E+eGW7+fEocJnUbt2hh2nzXMc37YsFk6S9cw9eq2IP7gHzdj57OMDRfv7zFvtALkHkfnkc3yx1aohrfwD2NhkComD5ewAAAABJRU5ErkJggg=="></head>
+ <link type="image/x-icon" rel="icon" href="http://cse.rukspot.com/horde/imp/themes/default/graphics/favicon.ico"></head>
 
  <body class="horde-ajax">
  <button class='addi'>CLICK</button>
@@ -22,6 +22,7 @@
 <button type="button" onclick="startMailBoxesScenario();">Start MailBoxesScenario</button>
 <button type="button" onclick="addMailBox();">Start addMailBox</button>
 <button type="button" onclick="setMailBoxBar();">Set MailBox</button>
+<button type="button" onclick="saveSendMail();">saveSendMail</button>
   
 <table>
     <tr>
@@ -35,7 +36,7 @@
             </td>
       </tr>       
     </table>  
-
+<!-- 
 <div id="horde-head">
   <div id="horde-logo"><a class="icon" href="http://cse.rukspot.com/horde/services/portal/"></a></div>
   <div id="horde-version">Groupware 5.2.0</div>
@@ -52,7 +53,8 @@
       <input type="image" id="horde-search-icon" src="./Mail    Inbox_files/search-topbar.png">
     </form>
   </div>
-</div>
+</div> -->
+
 <div id="horde-sub">
   <div id="horde-date">12/11/14</div>
   <div id="horde-info"><span id="mailboxLabel">
@@ -312,7 +314,7 @@
 <div id="horde-sidebar" style="width: 210px;">
 
   <div class="horde-new">
-    <span class="horde-new-link"><a id="composelink" class="icon">New Message</a></span>
+    <span class="horde-new-link"><a href="./write.html" onclick="javascript:void window.open('./write.html','1417505292623','width=750,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');return false;" id="composelink" class="icon">New Message</a></span>
   </div>
 
 <div id="foldersLoading" style="display: none;">Loading...</div>

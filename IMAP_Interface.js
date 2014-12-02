@@ -34,7 +34,7 @@ IMAP_Interface.prototype.select = function(folder) {
       var count = regexp.exec(response)[1];
       return parseInt(count, 10);
     };
-	var cmd=new IMAPCommand(this.tag,"SELECT " + folder,f);
+	var cmd=new IMAPCommand(this.tag,'SELECT "' + folder+'"',f);
 	this.tcp.connect('select',JSON.stringify(cmd));
 	return cmd;
 }
