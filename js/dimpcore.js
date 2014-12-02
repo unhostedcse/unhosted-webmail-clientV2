@@ -408,6 +408,7 @@ var DimpCore = {
         }
 
         /* Set popup height. */
+        return;
         HordeCore.conf.popup_height = screen.availHeight - 50 -
             ((window.outerHeight && window.innerHeight) ? (window.outerHeight - window.innerHeight) : 150);
     }

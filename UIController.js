@@ -7,6 +7,11 @@ port='993';
 security='ssl';	
 // var db=new DBController();
 // db.create_openDB(username);
+document.addEventListener("testEvent",
+	function(e) {  
+		console.log(e);
+	}
+,false);
 
 var sync=new Sync_Module(clearBody);
 selectFolder='INBOX';
@@ -48,12 +53,20 @@ $(document).on("newSendMail",
 	}
 );
 
+$(document).on("composeMail", 
+	function(e){
+		alert(e.type);
+		console.log(e.type);		
+	}
+);
+// call when send button click
 function saveSendMail(){
+
 	var status="tosend";
-	var text="text";
-	var to="to";
-	var cc="cc";
-	var bcc="bcc";
+	var text=document.getElementById('subject').value;
+	var to=document.getElementById('to').value;
+	var cc=document.getElementById('cc').value;
+	var bcc=document.getElementById('bcc').value;
 
 	Sync_Module.db.saveSendMail(text,to,cc,bcc);
 }
@@ -109,6 +122,13 @@ function addMsg(mails){
 
 	UIresult="";
 }
+
+//send_button
+// $(document).on("click",'#send_button',
+// 	function(e) {
+// 		alert('send'+e);
+// 	}
+// );
 
 // function showBody() {
     $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {

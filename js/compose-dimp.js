@@ -117,6 +117,7 @@ var DimpCompose = {
             return false;
         }
 
+        return;
         var identity = ImpComposeBase.identities[$F('identity')];
 
         this.setPopdownLabel('sm', identity.sm_name, identity.sm_display, {
@@ -238,6 +239,7 @@ var DimpCompose = {
 
         switch (action) {
         case 'sendMessage':
+            
             if (!this.skip_spellcheck &&
                 DimpCore.conf.spellcheck &&
                 sc &&
@@ -1135,7 +1137,7 @@ var DimpCompose = {
 
         case 'send_button':
             if (!this.disabled) {
-                this.uniqueSubmit('sendMessage');
+                // this.uniqueSubmit('sendMessage');
             }
             break;
 

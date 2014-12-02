@@ -70,11 +70,15 @@ var HordeCore = {
     // opts: (Object) ajaxopts, callback, loading, uri
     doAction: function(action, params, opts)
     {
-        params = $H(params).clone();
-        opts = opts || {};
+        console.log('push');
+        return;
+        // params = $H(params).clone();
+        // opts = opts || {};
+        // return;
 
         var ajaxopts = Object.extend(this.doActionOpts(), opts.ajaxopts || {}),
             request;
+
 
         if (this.regenerate_sid) {
             ajaxopts.asynchronous = false;
@@ -191,11 +195,13 @@ var HordeCore = {
         if (sid) {
             params.update(sid.toQueryParams());
         }
-        params.set('token', this.conf.TOKEN);
+        //params.set('token', this.conf.TOKEN);
     },
 
     sessionId: function(sid)
     {
+        if(!conf)
+            return;
         var conf = this.baseWindow().HordeCore.conf;
 
         if (conf.SID) {
@@ -763,6 +769,11 @@ var HordeCore = {
         } catch (e) {}
 
         /* Add Growler notification handler. */
+
+        if(!this.conf){
+            return;
+        }
+
         if (window.Growler) {
             if (this.conf.growler_log) {
                 this.Growler = new Growler({
