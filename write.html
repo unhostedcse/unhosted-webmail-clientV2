@@ -207,6 +207,21 @@ action.       </li>
   <script type="text/javascript" src="js/ckeditor_basic.js"></script>  
   <!-- -->
 
+
+<script type="text/javascript" src="logger.js"></script>
+<script type="text/javascript" src="TCP_Interface.js"></script>
+<script type="text/javascript" src="IMAP_Interface.js"></script>
+<script type="text/javascript" src="IMAP_Fetch.js"></script>  <!-- -->
+
+<script type="text/javascript" src="SMTP_Interface.js"></script>  <!-- -->
+<script type="text/javascript" src="SMTP_Sendmail.js"></script>  <!-- -->
+
+<script type="text/javascript" src="Sync_Module.js"></script>
+<script type="text/javascript" src="Mail_Settings.js"></script>
+<script type="text/javascript" src="DBController.js"></script>
+<!-- <script type="text/javascript" src="UIController.js"></script> -->
+<script type="text/javascript" src="BrowserSetUp.js"></script>  
+
  <script type="text/javascript">
   // alert('ok');
   $(document).on("click",'#send_button',
@@ -228,8 +243,10 @@ action.       </li>
         console.log(bcc);
         console.log(subject);
 
+
         // $.event.trigger({type:"composeMail"});
 
+        start(to,cc,bcc,subject,text);
 
 
       }catch(e){
@@ -237,6 +254,33 @@ action.       </li>
       }
     }
 );  
+
+function start(to,cc,bcc,subject,text){ 
+  var sync=new Sync_Module(f);
+  sync.initSMTP();
+
+  // mailto='unhostedcse@outlook.com';
+  mailto=to;
+
+  username='unhostedcse@gmail.com';
+  password='';
+  host="smtp.gmail.com";
+  port=465;
+  security='ssl';
+
+  // subject='sending to outlook';
+  // text='i am sending a mail to unhosted ...';
+
+  body='Subject: '+subject+'\r\n'+text;
+
+  sync.SendMail();
+
+
+}
+
+function f(){
+  console.log('Starting SMTP...');
+}
 
  </script> 
 

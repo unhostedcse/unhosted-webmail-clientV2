@@ -18,7 +18,7 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 	// element.dispatchEvent(evt);
 
 
-	var editorExtensionId = 'ikhibemopdnmbjfnhoepochhedbodhih';
+	var editorExtensionId = 'aiclbiicflakbolmkbdkchmmlkcibfdj';
 	try{
 		chrome.runtime.sendMessage(editorExtensionId, {actionEvt: act, command: cmd, settings:settings},
   		function(response) {
@@ -26,7 +26,7 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 				self.server.result(response.message);
 			}
 			else
-				//alert(response);
+				console.log('error');
   	});
  	}catch(e){
 		alert(e);

@@ -2,8 +2,6 @@ var imaps=0;
 var mboxCount=0;
 function Sync_Module(clearBody){
 	clearBody();
-	
-
 }
 
 Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar){
@@ -20,6 +18,16 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar){
 		console.log("refreshing.....");
 		// Sync_Module.prototype.getMailBoxesScenario();  // uncomment
 	}, refresh_interval);
+}
+
+Sync_Module.prototype.initSMTP = function(){
+	// Sync_Module.setMailBoxBar=setMailBoxBar;
+	// Sync_Module.addMsg=addMsg;
+	// Sync_Module.folder=folder;
+
+	Sync_Module.db=new DBController();
+	Sync_Module.db.create_openDB(username);
+	console.log('username '+username);
 }
 
 Sync_Module.prototype.DBReady = function(addMsg,folder,setMailBoxBar){

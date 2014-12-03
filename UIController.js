@@ -1,7 +1,7 @@
 // username='unhostedcse@gmail.com';
 
 username='unhostedcse@gmail.com';
-password='unhostedcse12345';
+password='';
 host='imap.gmail.com';
 port='993';	
 security='ssl';	
@@ -29,14 +29,14 @@ function initUnhosted(){
 function startSMTP(){
   // var s=new Sync_Module();
 
-  username=document.getElementById('user').value;
-  password=document.getElementById('pass').value;
+  username='unhostedcse@gmail.com';
+  password='unhostedcse12345';
 
-  host=document.getElementById('smtp').value;
-  port=document.getElementById('smtpport').value;
-  security=document.getElementById('smtpsec').value;
+  host="smtp.gmail.com";
+  port=465;
+  security='ssl';
 
-  body=document.getElementById('body').value;
+  body='test mail';
 
   sync.SendMail();
 }
