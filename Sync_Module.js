@@ -2,6 +2,8 @@ var imaps=0;
 var mboxCount=0;
 function Sync_Module(clearBody){
 	clearBody();
+	
+
 }
 
 Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar){
@@ -12,6 +14,12 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar){
 	Sync_Module.db=new DBController();
 	Sync_Module.db.create_openDB(username,folder,Sync_Module.prototype.DBReady);
 	console.log('username '+username);
+
+	self=this;
+	setInterval(function () {
+		console.log("refreshing.....");
+		// Sync_Module.prototype.getMailBoxesScenario();  // uncomment
+	}, refresh_interval);
 }
 
 Sync_Module.prototype.DBReady = function(addMsg,folder,setMailBoxBar){
@@ -48,9 +56,14 @@ Sync_Module.prototype.getMailBoxesReady = function(mailBoxes){
 
 	// selectFolder=val[0].folder;
 	// mboxCount=val.length
-	dbSelectFolder=selectFolder;
-	console.log('getMailBoxesReady choose '+selectFolder);
-	Sync_Module.prototype.getUids();
+
+	// mailBoxesDownloaded event
+	$.event.trigger({type:"mailBoxesDownloaded"});
+
+
+	// dbSelectFolder=selectFolder;
+	// console.log('getMailBoxesReady choose '+selectFolder);
+	// Sync_Module.prototype.getUids();
 }
 
 Sync_Module.prototype.refresh = function(){
@@ -115,6 +128,7 @@ Sync_Module.prototype.getHeadersReady = function(){
 		Sync_Module.prototype.getBody();
 	}else{
 		console.log("DB is upto date");
+		$.event.trigger({type:"mailBoxesReadNext"});
 	}
 
 	result.fetchMIME=new Array();
@@ -152,6 +166,8 @@ Sync_Module.prototype.getBodyFinished = function(){
 	// 	console.log('getMailBoxesReady choose '+selectFolder);
 	// 	Sync_Module.prototype.getUids();
 	// }
+
+	$.event.trigger({type:"mailBoxesReadNext"});
 }
 
 Sync_Module.prototype.SendMailReady = function(){

@@ -45,23 +45,59 @@ function startSMTP(){
 $(document).on("click",'#checkmaillink',
 	function(e) {
 		console.log('refresh mail boxes');
-		Sync_Module.db.getMailBoxes();
+
+		sync.getMailBoxesScenario();  // uncomment
+
 		// sync.refresh();
 	}
 );
 
+//after download mboxes
+$(document).on("mailBoxesDownloaded", 
+	function(e){
+		console.log('mailBoxesDownloaded');
+		Sync_Module.db.getMailBoxes();
+	}
+);
+
+
 //After read mail boxes
+var mboxCnt=0;
+var mboxList;
 $(document).on("mailBoxesRead", 
 	function(e){
 		console.log(e.type);
 		
 		var mboxes=e.folders;
-		if(mboxes && mboxes.length>0){
+		mboxList=mboxes;
 
-			for(var i=0;i<mboxes.length;i++){
-				console.log(mboxes[i]);
-			}
-			
+		if(mboxes && mboxes.length>0){
+			console.log(mboxes[mboxCnt]);
+			selectFolder=mboxes[mboxCnt];
+			dbSelectFolder=selectFolder;
+			// initUnhosted();
+			sync.getUids();
+			mboxCnt++;
+		}
+	}
+);
+
+$(document).on("mailBoxesReadNext", 
+
+	function continueRefresh(){
+		var mboxes=mboxList;
+		if(mboxes && mboxes.length>mboxCnt){
+
+				if(mboxes[mboxCnt]=='[Gmail]'){
+					mboxCnt++;
+				}
+
+					console.log(mboxes[mboxCnt]);
+					selectFolder=mboxes[mboxCnt];
+					dbSelectFolder=selectFolder;
+					// initUnhosted();
+					sync.getUids();
+			mboxCnt++;
 		}
 	}
 );
@@ -183,7 +219,7 @@ $(document).on("click",'.horde-subnavi-point',
 		selectFolder=mailBox;
 		dbSelectFolder=selectFolder;
 		initUnhosted();
-		sync.getUids();
+		// sync.getUids();
 	}
 );
 //321 index.html
