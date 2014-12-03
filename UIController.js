@@ -41,6 +41,31 @@ function startSMTP(){
   sync.SendMail();
 }
 
+//checkmaillink
+$(document).on("click",'#checkmaillink',
+	function(e) {
+		console.log('refresh mail boxes');
+		Sync_Module.db.getMailBoxes();
+		// sync.refresh();
+	}
+);
+
+//After read mail boxes
+$(document).on("mailBoxesRead", 
+	function(e){
+		console.log(e.type);
+		
+		var mboxes=e.folders;
+		if(mboxes && mboxes.length>0){
+
+			for(var i=0;i<mboxes.length;i++){
+				console.log(mboxes[i]);
+			}
+			
+		}
+	}
+);
+
 //send mail when new mail is waiting
 $(document).on("newSendMail", 
 	function(e){
@@ -130,7 +155,6 @@ function addMsg(mails){
 // 	}
 // );
 
-// function showBody() {
     $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 
 		$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
@@ -143,20 +167,11 @@ function addMsg(mails){
 		$(".subject").html(sub);
 		
 		var body=$(this).find(".body").text();
-		// $(".fixed.leftAlign").html(body);
-		// document.getElementsByClassName('.fixed.leftAlign').innerHTML=body;
-
-		//var body =document.getElementsByClassName('body').value;
 
 		document.getElementById('bodyDisplay').innerHTML=body;
 
-		// document.getElementById('iframe').contentWindow.document.write(body);
-		// document.getElementById('iframe').src=body;
-
-		// alert(body);
     	}
     );
-// }
 
 // select mailboxs
 $(document).on("click",'.horde-subnavi-point',

@@ -53,6 +53,13 @@ Sync_Module.prototype.getMailBoxesReady = function(mailBoxes){
 	Sync_Module.prototype.getUids();
 }
 
+Sync_Module.prototype.refresh = function(){
+	selectFolder=result.ListFolder ? result.ListFolder[0]: selectFolder;
+	dbSelectFolder=selectFolder;
+	console.log('getMailBoxesReady choose '+selectFolder);
+	Sync_Module.prototype.getUids();
+}
+
 //start IMAP service
 Sync_Module.prototype.getUids = function(){
 	var imap=new IMAP_Fetch(++imaps);

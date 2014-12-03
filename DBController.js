@@ -302,6 +302,7 @@ DBController.prototype.addMailBoxes=function(name,path){
 
 DBController.prototype.getMailBoxes=function(func){
 	var boxes=new Array();
+	result.ListFolder=new Array();
 	self=this;
 
 	if(!this.database){
@@ -314,11 +315,18 @@ DBController.prototype.getMailBoxes=function(func){
     	if (cursor) {	    	
     		if(cursor.value){
 		    	boxes.push(cursor.value.path);
+		    	// result.ListFolder.push(cursor.value.path);
 		    }	
 		    cursor.continue();
 	    }else{
 	    	console.log('cursor.key over ');
-	    	func(boxes);
+
+	    	if(func)
+	    		func(boxes);
+	    	else{
+	    		$.event.trigger({type:"mailBoxesRead",folders: boxes});
+	    	}
+
 	    }	
     }	
 }
