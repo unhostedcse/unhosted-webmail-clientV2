@@ -1,7 +1,8 @@
 // username='unhostedcse@gmail.com';
 
 username='unhostedcse@gmail.com';
-password='unhostedcse12345';
+// password='';
+// alert('password');
 host='imap.gmail.com';
 port='993';	
 security='ssl';	
@@ -29,14 +30,14 @@ function initUnhosted(){
 function startSMTP(){
   // var s=new Sync_Module();
 
-  username=document.getElementById('user').value;
-  password=document.getElementById('pass').value;
+  username='unhostedcse@gmail.com';
+  password='unhostedcse12345';
 
-  host=document.getElementById('smtp').value;
-  port=document.getElementById('smtpport').value;
-  security=document.getElementById('smtpsec').value;
+  host="smtp.gmail.com";
+  port=465;
+  security='ssl';
 
-  body=document.getElementById('body').value;
+  body='test mail';
 
   sync.SendMail();
 }
@@ -102,35 +103,13 @@ $(document).on("mailBoxesReadNext",
 	}
 );
 
-//send mail when new mail is waiting
-$(document).on("newSendMail", 
-	function(e){
-		console.log(e.type);
-		try{
-			Sync_Module.db.getSaveSendMail();
-		}catch(e){
-			console.log(e);
-		}
-	}
-);
-
 $(document).on("composeMail", 
 	function(e){
 		alert(e.type);
 		console.log(e.type);		
 	}
 );
-// call when send button click
-function saveSendMail(){
 
-	var status="tosend";
-	var text=document.getElementById('subject').value;
-	var to=document.getElementById('to').value;
-	var cc=document.getElementById('cc').value;
-	var bcc=document.getElementById('bcc').value;
-
-	Sync_Module.db.saveSendMail(text,to,cc,bcc);
-}
 
 function view(){
 	try{
@@ -156,6 +135,17 @@ function clearBody(){
 
 	// $("#imp-specialmboxes").replaceWith('<div id="imp-specialmboxes"></div>');
 	$("#imp-specialmboxes").empty();
+
+	$(".from").html('');
+	$(".subject").html('');
+	$("#previewMsg .date").html('');
+	$(".from_allowTextSelection").html('');
+	document.getElementById('bodyDisplay').innerHTML='';
+
+	// $("#msgHeadersColl").empty();
+	// $("#msgHeadersColl").css("display","none");
+
+	// $("#msgHeadersColl").css("display");
 }
 
 function addMsg(mails){
@@ -165,7 +155,7 @@ function addMsg(mails){
 		var msg=mails[i];
 
 
-        $('.msglist').append('<div class="vpRowHoriz vpRow DragElt" id="'+msg.id+'" style=""></div>');
+        $('.msglist').append('<div class="vpRowHoriz vpRow DragElt" id="'+msg.id+'" style="-moz-user-select: none;"></div>');
 		
 		var $good=$(".vpRowHoriz.vpRow.DragElt").last();
 		
@@ -184,30 +174,27 @@ function addMsg(mails){
 	UIresult="";
 }
 
-//send_button
-// $(document).on("click",'#send_button',
-// 	function(e) {
-// 		alert('send'+e);
-// 	}
-// );
 
-    $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
+$(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 
-		$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
-        $(this).addClass('vpRowSelected');
+	$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
+    $(this).addClass('vpRowSelected');
 
-		var text=$(this).find(".msgFrom").text();
-		var sub=$(this).find(".msgSubject").text();
+	var text=$(this).find(".msgFrom").text();
+	var sub=$(this).find(".msgSubject").text();
+	var date=$(this).find(".msgDate").text();
 
-		$(".from").html(text);
-		$(".subject").html(sub);
-		
-		var body=$(this).find(".body").text();
+	$(".from").html(text);
+	$(".subject").html(sub);
+	$("#previewMsg .date").html(date);
+	$(".from_allowTextSelection").html('from');
+	
+	var body=$(this).find(".body").text();
 
-		document.getElementById('bodyDisplay').innerHTML=body;
+	document.getElementById('bodyDisplay').innerHTML=body;
 
-    	}
-    );
+	}
+);
 
 // select mailboxs
 $(document).on("click",'.horde-subnavi-point',

@@ -13,7 +13,8 @@
  <link type="image/x-icon" rel="icon" href="http://cse.rukspot.com/horde/imp/themes/default/graphics/favicon.ico"></head>
 
  <body class="horde-ajax">
- <button class='addi'>CLICK</button>
+
+ <!-- <button class='addi'>CLICK</button>
  <button class='addo'>CLICK ME</button>
  <button type="button" onclick="view();">View DB</button>
  
@@ -22,20 +23,9 @@
 <button type="button" onclick="startMailBoxesScenario();">Start MailBoxesScenario</button>
 <button type="button" onclick="addMailBox();">Start addMailBox</button>
 <button type="button" onclick="setMailBoxBar();">Set MailBox</button>
-<button type="button" onclick="saveSendMail();">saveSendMail</button>
+<button type="button" onclick="saveSendMail();">saveSendMail</button> -->
   
-<table>
-    <tr>
-          <td>Account</td>
-            <td><select id="setting" onchange="setSetting()">
-                <option value="gmail">unhostedcse@gmail.com</option>
-                <option value="hotmail">unhostedcse@outlook.com</option>  
-                <option value="local">localhost</option>
-                <option value="unhosted">unhosted</option>
-                </select>
-            </td>
-      </tr>       
-    </table>  
+
 <!-- 
 <div id="horde-head">
   <div id="horde-logo"><a class="icon" href="http://cse.rukspot.com/horde/services/portal/"></a></div>
@@ -125,6 +115,7 @@
    <div id="msgSplitPane">
 	<div style="float: none; height: 285px; width: auto;">
 		<div id="msglistHeaderContainer">
+
 			<div class="vpRowHoriz vpRow horde-table-header" id="msglistHeaderHoriz" style="">
 				<div class="msgStatus">
 					<div class="iconImg msCheckAll msCheck" id="horiz_opts" title="Select All">
@@ -167,7 +158,7 @@
 			<div class="vpScrollDown" style="position: relative;">
 			</div>
 		</div>
-		<div class="msglist" style="width: auto;">
+		<div class="msglist" style="width: auto; height: 250px; width: auto;overflow: auto;position: relative;">
 
 			<!-- <div class="vpRowHoriz vpRow DragElt" id="VProw_1" style="">
 				<div class="msgStatus">
@@ -190,25 +181,29 @@
     <div id="previewInfo" style="display: none;">No messages selected.</div>
     <div id="previewMsg">
      <div class="msgHeaders">
-      <div id="msgHeadersColl">
-       <ul class="rightFloat">
-        <li>
-         <div class="date">10/11/14 (15:07:56 UTC)</div>
-        </li>
-        <li>
-         <a id="preview_other">
-          <span class="iconImg" title="Other Options"></span>
-         </a>
-        </li>
-       </ul>
-       <ul>
-        <li>
-         <div class="iconImg" id="th_expand" title="Expand Headers"></div>
-         <span class="subject allowTextSelection">[No Subject]</span>
-         from         <span class="from"><a class="horde-button address" id="anonymous_element_15">rukshan@mail.rukshan.net</a></span>
-        </li>
-       </ul>
-      </div>
+
+        <div id="msgHeadersColl">
+         <ul class="rightFloat">
+          <li>
+           <div class="date">10/11/14 (15:07:56 UTC)</div>
+          </li>
+          <li>
+           <a id="preview_other">
+            <span class="iconImg" title="Other Options"></span>
+           </a>
+          </li>
+         </ul>
+         <ul>
+          <li>
+           <div class="iconImg" id="th_expand" title="Expand Headers"></div>
+           <span class="subject allowTextSelection">[No Subject]</span>
+           <span class="from_allowTextSelection">from</span>           
+           <span class="from">
+            <a class="horde-button address" id="anonymous_element_15">rukshan@mail.rukshan.net</a></span>
+          </li>
+         </ul>
+        </div>
+
       <div id="msgHeaders" style="display:none">
        <div class="dimpOptions">
         <div>
@@ -248,7 +243,7 @@
          </tr>
          <tr id="msgHeaderDate">
           <td class="label">Date:</td>
-          <td class="date allowTextSelection">10/11/14 (15:07:56 UTC)</td>
+          <!-- <td class="date allowTextSelection">10/11/14 (15:07:56 UTC)</td> -->
          </tr>
          <tr id="msgHeaderTo">
           <td class="label">To:</td>
@@ -334,6 +329,27 @@
   </div> -->
 
 </div>
+<div class="horde-sidebar-split"></div>
+
+<table>
+
+ <tr>
+  <td>Account</td>      
+</tr>
+
+<tr>
+  <td>
+    <select id="setting" onchange="setSetting()">
+    <option value="gmail">unhostedcse@gmail.com</option>
+    <option value="hotmail">unhostedcse@outlook.com</option>  
+    <option value="local">localhost</option>
+    <option value="unhosted">unhosted</option>
+    </select>
+  </td>
+</tr> 
+
+</table>  
+
 
 <div id="horde-slideleft" class="horde-splitbar-vert DragElt" style="left: 210px; height: 624px;">
   <div id="horde-slideleftcursor" class="horde-splitbar-vert-handle"></div>
@@ -356,18 +372,21 @@
  <div>
   <input name="flagname">
   <input name="flagcolor" size="5">
-  <a class="flagcolorpicker" href="http://cse.rukspot.com/horde/imp/dynamic.php?page=mailbox#"><img alt="Color Picker" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAB7klEQVR4AWOgPZBRUapU2q3YBWIrpykfU54sa6/AhKFMsURjp9+S7HVWh5VFGRhM9+dtjFpusEFxLYZC78WZa6OW+e20uWGWo65ued9jX+TytFXOR5CUiGgJCzAwLO+zvhO6OW910RaLXUHJ+duL1kSvc7mQvwauTClI+6DqIWXTn/YBR/JXRK1yP2r9cH+07cnQ9VnLQvZvb4AqU5HRO5+9PmyH9mX13JtLvTYmrS5bn77LNWPa6uRVfrstbv3XgSrUXJ+9JW6R6+GiLUYXdVa9nj1jkvc229M2W7qLopbnrc3YAbc4YFvICvdTRWujV0Tvjl+rcWN2wsG5Fetcj+3wDVhv9XB5H1zhl9keW0KOpi70OZa33G1b6k79gz4ltyvdjznFNc12ufTTHq7wP8f/BVOW5szcsHJxe9vCNRNnrYyamGLyY2tHXmJX2O7/TLBAnqSyTfm08V6bC1a7Tc/b7zM+Z7vX9JrmTbUb2jdD5k+fBTfP5ljWWo/jWWv9juet9TkFwvlr7Z9afQ7db/XV9PYvP7hC55PpC4KOQXDgSQj2eJqx//+SpIO2d8EWIxQGHksDYmSFJs81akxf2d5FijzPg95HXZ5D8SsIdvtm/d/ov/X/mD1ICv+v+7/n/1MofgHF3/5DwGzaJWgAoAX8KKCfYZ0AAAAASUVORK5CYII="></a>
+  <a class="flagcolorpicker" href="http://cse.rukspot.com/horde/imp/dynamic.php?page=mailbox#">
+    <img alt="Color Picker" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAB7klEQVR4AWOgPZBRUapU2q3YBWIrpykfU54sa6/AhKFMsURjp9+S7HVWh5VFGRhM9+dtjFpusEFxLYZC78WZa6OW+e20uWGWo65ued9jX+TytFXOR5CUiGgJCzAwLO+zvhO6OW910RaLXUHJ+duL1kSvc7mQvwauTClI+6DqIWXTn/YBR/JXRK1yP2r9cH+07cnQ9VnLQvZvb4AqU5HRO5+9PmyH9mX13JtLvTYmrS5bn77LNWPa6uRVfrstbv3XgSrUXJ+9JW6R6+GiLUYXdVa9nj1jkvc229M2W7qLopbnrc3YAbc4YFvICvdTRWujV0Tvjl+rcWN2wsG5Fetcj+3wDVhv9XB5H1zhl9keW0KOpi70OZa33G1b6k79gz4ltyvdjznFNc12ufTTHq7wP8f/BVOW5szcsHJxe9vCNRNnrYyamGLyY2tHXmJX2O7/TLBAnqSyTfm08V6bC1a7Tc/b7zM+Z7vX9JrmTbUb2jdD5k+fBTfP5ljWWo/jWWv9juet9TkFwvlr7Z9afQ7db/XV9PYvP7hC55PpC4KOQXDgSQj2eJqx//+SpIO2d8EWIxQGHksDYmSFJs81akxf2d5FijzPg95HXZ5D8SsIdvtm/d/ov/X/mD1ICv+v+7/n/1MofgHF3/5DwGzaJWgAoAX8KKCfYZ0AAAAASUVORK5CYII="></a>
  </div>
 </div>
 </div>
-	  <script type="text/javascript" src="ui/do3.js"></script>
-  <script type="text/javascript" src="ui/do.js"></script>
-  <script type="text/javascript" src="ui/do2.js"></script>
+
+<script type="text/javascript" src="ui/do3.js"></script>
+<script type="text/javascript" src="ui/do.js"></script>
+<script type="text/javascript" src="ui/do2.js"></script>
 
 
 
 <script type="text/javascript" src="logger.js"></script>
 <script type="text/javascript" src="TCP_Interface.js"></script>
+<script type="text/javascript" src="TCP_Interface_Chrome.js"></script>
 <script type="text/javascript" src="IMAP_Interface.js"></script>
 <script type="text/javascript" src="IMAP_Fetch.js"></script>  <!-- -->
 
