@@ -25,8 +25,8 @@ Sync_Module.prototype.initSMTP = function(){
 	// Sync_Module.addMsg=addMsg;
 	// Sync_Module.folder=folder;
 
-	Sync_Module.db=new DBController();
-	Sync_Module.db.create_openDB(username);
+	this.db=new DBController();
+	this.db.create_openDB(username);
 	console.log('username '+username);
 }
 
@@ -101,7 +101,7 @@ Sync_Module.prototype.getUidsReady = function(){
 	// 	function(){
 	// 		console.log('starting gettting headers');
 	// Sync_Module.db=new DBController();
-			Sync_Module.db.getKeys(Sync_Module.prototype.getHeaders,dbSelectFolder);
+	Sync_Module.db.getKeys(Sync_Module.prototype.getHeaders,dbSelectFolder);
 	// 	}
 	// );
 // }catch(e){

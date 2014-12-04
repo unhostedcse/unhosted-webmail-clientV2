@@ -2,6 +2,7 @@
 
 username='unhostedcse@gmail.com';
 password='';
+alert('password');
 host='imap.gmail.com';
 port='993';	
 security='ssl';	
@@ -102,35 +103,13 @@ $(document).on("mailBoxesReadNext",
 	}
 );
 
-//send mail when new mail is waiting
-$(document).on("newSendMail", 
-	function(e){
-		console.log(e.type);
-		try{
-			Sync_Module.db.getSaveSendMail();
-		}catch(e){
-			console.log(e);
-		}
-	}
-);
-
 $(document).on("composeMail", 
 	function(e){
 		alert(e.type);
 		console.log(e.type);		
 	}
 );
-// call when send button click
-function saveSendMail(){
 
-	var status="tosend";
-	var text=document.getElementById('subject').value;
-	var to=document.getElementById('to').value;
-	var cc=document.getElementById('cc').value;
-	var bcc=document.getElementById('bcc').value;
-
-	Sync_Module.db.saveSendMail(text,to,cc,bcc);
-}
 
 function view(){
 	try{
@@ -165,7 +144,7 @@ function addMsg(mails){
 		var msg=mails[i];
 
 
-        $('.msglist').append('<div class="vpRowHoriz vpRow DragElt" id="'+msg.id+'" style=""></div>');
+        $('.msglist').append('<div class="vpRowHoriz vpRow DragElt" id="'+msg.id+'" style="-moz-user-select: none;"></div>');
 		
 		var $good=$(".vpRowHoriz.vpRow.DragElt").last();
 		
@@ -184,30 +163,24 @@ function addMsg(mails){
 	UIresult="";
 }
 
-//send_button
-// $(document).on("click",'#send_button',
-// 	function(e) {
-// 		alert('send'+e);
-// 	}
-// );
 
-    $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
+$(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 
-		$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
-        $(this).addClass('vpRowSelected');
+	$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
+    $(this).addClass('vpRowSelected');
 
-		var text=$(this).find(".msgFrom").text();
-		var sub=$(this).find(".msgSubject").text();
+	var text=$(this).find(".msgFrom").text();
+	var sub=$(this).find(".msgSubject").text();
 
-		$(".from").html(text);
-		$(".subject").html(sub);
-		
-		var body=$(this).find(".body").text();
+	$(".from").html(text);
+	$(".subject").html(sub);
+	
+	var body=$(this).find(".body").text();
 
-		document.getElementById('bodyDisplay').innerHTML=body;
+	document.getElementById('bodyDisplay').innerHTML=body;
 
-    	}
-    );
+	}
+);
 
 // select mailboxs
 $(document).on("click",'.horde-subnavi-point',

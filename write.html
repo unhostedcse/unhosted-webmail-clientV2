@@ -224,6 +224,17 @@ action.       </li>
 
  <script type="text/javascript">
   // alert('ok');
+
+  username='unhostedcse@gmail.com';
+  password='';
+  alert('password');
+  host="smtp.gmail.com";
+  port=465;
+  security='ssl';
+  
+  var sync=new Sync_Module(f);
+  sync.initSMTP();
+
   $(document).on("click",'#send_button',
     function(e) {
       // alert('send'+e);
@@ -247,7 +258,7 @@ action.       </li>
         // $.event.trigger({type:"composeMail"});
 
         start(to,cc,bcc,subject,text);
-
+        
 
       }catch(e){
         console.log(e);
@@ -256,31 +267,37 @@ action.       </li>
 );  
 
 function start(to,cc,bcc,subject,text){ 
-  var sync=new Sync_Module(f);
-  sync.initSMTP();
-
   // mailto='unhostedcse@outlook.com';
   mailto=to;
-
-  username='unhostedcse@gmail.com';
-  password='';
-  host="smtp.gmail.com";
-  port=465;
-  security='ssl';
-
-  // subject='sending to outlook';
-  // text='i am sending a mail to unhosted ...';
-
   body='Subject: '+subject+'\r\n'+text;
 
   sync.SendMail();
-
+  saveSendMail(to,cc,bcc,subject,text);
 
 }
 
 function f(){
   console.log('Starting SMTP...');
 }
+
+// call when send button click
+function saveSendMail(to,cc,bcc,subject,text){
+
+  text='Subject: '+subject+'\r\n'+text;
+  sync.db.saveSendMail(text,to,cc,bcc);
+}
+
+//send mail when new mail is waiting
+$(document).on("newSendMail", 
+  function(e){
+    console.log(e.type);
+    try{
+      Sync_Module.db.getSaveSendMail();
+    }catch(e){
+      console.log(e);
+    }
+  }
+);
 
  </script> 
 

@@ -64,8 +64,9 @@ DBController.prototype.add=function(record,id,folder){
 // save msg for offline send
 DBController.prototype.saveSendMail=function(text,to,cc,bcc){	
     // this.addContain(record,id,folder);	
-    var transaction = self.database.transaction([self.offlineMboxName], "readwrite");    
-    var objectStore = transaction.objectStore(self.offlineMboxName);		
+
+    var transaction = this.database.transaction([this.offlineMboxName], "readwrite");    
+    var objectStore = transaction.objectStore(this.offlineMboxName);		
 
 	var record={
 		text: text,
@@ -78,7 +79,7 @@ DBController.prototype.saveSendMail=function(text,to,cc,bcc){
 	var request=objectStore.add(record);
     request.onsuccess = function(event) {
     	console.log('Msg added to database' );
-    	$.event.trigger({type:"newSendMail"});
+    	// $.event.trigger({type:"newSendMail"});
    	};
    	request.onerror = function (event) {
    		console.log(event);
