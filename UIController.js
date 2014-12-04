@@ -1,8 +1,8 @@
 // username='unhostedcse@gmail.com';
 
 username='unhostedcse@gmail.com';
-password='';
-alert('password');
+// password='';
+// alert('password');
 host='imap.gmail.com';
 port='993';	
 security='ssl';	
@@ -135,6 +135,17 @@ function clearBody(){
 
 	// $("#imp-specialmboxes").replaceWith('<div id="imp-specialmboxes"></div>');
 	$("#imp-specialmboxes").empty();
+
+	$(".from").html('');
+	$(".subject").html('');
+	$("#previewMsg .date").html('');
+	$(".from_allowTextSelection").html('');
+	document.getElementById('bodyDisplay').innerHTML='';
+
+	// $("#msgHeadersColl").empty();
+	// $("#msgHeadersColl").css("display","none");
+
+	// $("#msgHeadersColl").css("display");
 }
 
 function addMsg(mails){
@@ -171,9 +182,12 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 
 	var text=$(this).find(".msgFrom").text();
 	var sub=$(this).find(".msgSubject").text();
+	var date=$(this).find(".msgDate").text();
 
 	$(".from").html(text);
 	$(".subject").html(sub);
+	$("#previewMsg .date").html(date);
+	$(".from_allowTextSelection").html('from');
 	
 	var body=$(this).find(".body").text();
 

@@ -181,25 +181,29 @@
     <div id="previewInfo" style="display: none;">No messages selected.</div>
     <div id="previewMsg">
      <div class="msgHeaders">
-      <div id="msgHeadersColl">
-       <ul class="rightFloat">
-        <li>
-         <div class="date">10/11/14 (15:07:56 UTC)</div>
-        </li>
-        <li>
-         <a id="preview_other">
-          <span class="iconImg" title="Other Options"></span>
-         </a>
-        </li>
-       </ul>
-       <ul>
-        <li>
-         <div class="iconImg" id="th_expand" title="Expand Headers"></div>
-         <span class="subject allowTextSelection">[No Subject]</span>
-         from         <span class="from"><a class="horde-button address" id="anonymous_element_15">rukshan@mail.rukshan.net</a></span>
-        </li>
-       </ul>
-      </div>
+
+        <div id="msgHeadersColl">
+         <ul class="rightFloat">
+          <li>
+           <div class="date">10/11/14 (15:07:56 UTC)</div>
+          </li>
+          <li>
+           <a id="preview_other">
+            <span class="iconImg" title="Other Options"></span>
+           </a>
+          </li>
+         </ul>
+         <ul>
+          <li>
+           <div class="iconImg" id="th_expand" title="Expand Headers"></div>
+           <span class="subject allowTextSelection">[No Subject]</span>
+           <span class="from_allowTextSelection">from</span>           
+           <span class="from">
+            <a class="horde-button address" id="anonymous_element_15">rukshan@mail.rukshan.net</a></span>
+          </li>
+         </ul>
+        </div>
+
       <div id="msgHeaders" style="display:none">
        <div class="dimpOptions">
         <div>
@@ -239,7 +243,7 @@
          </tr>
          <tr id="msgHeaderDate">
           <td class="label">Date:</td>
-          <td class="date allowTextSelection">10/11/14 (15:07:56 UTC)</td>
+          <!-- <td class="date allowTextSelection">10/11/14 (15:07:56 UTC)</td> -->
          </tr>
          <tr id="msgHeaderTo">
           <td class="label">To:</td>
