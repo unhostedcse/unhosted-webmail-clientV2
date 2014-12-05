@@ -5,7 +5,8 @@ username='unhostedcse@gmail.com';
 // alert('password');
 host='imap.gmail.com';
 port='993';	
-security='ssl';	
+security='ssl';
+	
 // var db=new DBController();
 // db.create_openDB(username);
 document.addEventListener("testEvent",
