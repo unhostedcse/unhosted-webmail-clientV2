@@ -70,12 +70,17 @@
      <td class="label">
       <span class="composeAddrbook">To:</span>
      </td>
-     <td>
-      <span id="to_loading_img" class="loadingImg" style="display:none"></span>
-      <div class="hordeACBox impACBox impACBoxFocus">
-        <ul class="hordeACList impACList"><li>
-        <input style="width: 500px;" class="hordeACTrigger impACTrigger" autocomplete="off"></li></ul>
-        <textarea style="display: none;" cols="75" id="to" name="to" rows="1"></textarea></div>     </td>
+      <td>
+        <span id="to_loading_img" class="loadingImg" style="display:none"></span>
+        <div class="hordeACBox impACBox impACBoxFocus">
+          <ul class="hordeACList impACList">
+            <li>
+              <input style="width: 500px;" class="hordeACTrigger impACTrigger" autocomplete="off">
+            </li>
+          </ul>
+          <textarea style="display: none;" cols="75" id="to" name="to" rows="1"></textarea>
+        </div>
+      </td>
     </tr>
     <tr id="sendcc" style="display:none">
      <td class="label">
@@ -225,6 +230,13 @@ action.       </li>
  <script type="text/javascript">
   // alert('ok');
 
+  var text=document.getElementById('composeMessage').value='Hi, this is test text!';
+  var subject=document.getElementById('subject').value='Unhosted subject';
+  var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
+  data[0].value='unhostedcse@outlook.com';
+  data[1].value='unhostedcse@gmail.com,unhostedcse@outlook.com';
+  // data[2].value='unhostedcse,unhostedcse';
+
   username='unhostedcse@gmail.com';
   password='rusasuergi@150';
   // alert('password');
@@ -268,8 +280,41 @@ action.       </li>
 
 function start(to,cc,bcc,subject,text){ 
   // mailto='unhostedcse@outlook.com';
-  mailto=to;
-  body='Subject: '+subject+'\r\n'+text;
+  mailto=to.split(",");
+  var mailcc=cc.split(",");
+  var mailbcc=bcc.split(",");
+
+  // var u1='unhostedcse@gmail.com';
+  // var u2='unhostedcse@gmail.com';
+  var to="To: ";
+  for(var i=0;i<mailto.length;i++){
+    to+='"'+mailto[i]+'" <'+mailto[i]+'>,';
+  }
+
+  var cc="CC: ";
+  for(var i=0;i<mailcc.length;i++){
+    cc+='"'+mailcc[i]+'" <'+mailcc[i]+'>,';
+    mailto.push(mailcc[i]);
+  }
+
+  // var bcc="CC: ";
+  for(var i=0;i<mailbcc.length;i++){
+    // cc+='"'+mailbcc[i]+'" <'+mailbcc[i]+'>,';
+    mailto.push(mailbcc[i]);
+  }
+
+  mailto.push('rcrukshan17@gmail.com');
+  mailto.push('rukspot@outlook.com');
+
+  body='Subject: '+subject+'\r\n'+
+        'From: "'+username+'" <'+username+'>'+'\r\n'+
+        to+'\r\n'+
+        cc+'\r\n'+
+        //'CC: "rukshan" <rcrukshan17@gmail.com>'+'\r\n'+        
+        // 'To: "'+u2+'" <'+u2+'>'+'\r\n'+
+        '\r\n'+
+        text;
+  // body=text;
 
   sync.SendMail();
   saveSendMail(to,cc,bcc,subject,text);

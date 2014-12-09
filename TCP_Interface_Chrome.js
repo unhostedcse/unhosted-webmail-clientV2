@@ -23,7 +23,8 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 		chrome.runtime.sendMessage(editorExtensionId, {actionEvt: act, command: cmd, settings:settings},
   		function(response) {
 			if(response){
-				self.server.result(response.message);
+				self.server.result(response);
+				// console.log(response);
 			}
 			else
 				console.log('error');
