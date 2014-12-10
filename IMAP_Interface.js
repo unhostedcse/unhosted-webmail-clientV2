@@ -107,6 +107,7 @@ IMAP_Interface.prototype.fetchList = function() {
           if (!flags.match(/Deleted/)) {
             sizes[getid[2]] = getsize[2];
             ids[i++]=getid[2];
+            //ids[i++]=[getid[2],getflag[2]];
           }
         }
         return ids;
@@ -152,7 +153,11 @@ IMAP_Interface.prototype.fetchListFlags = function() {
         return response.replace(/^.*\r\n|\)?\r\n.*\r\n.*\r\n$/g, "");
     }
     this.tag++;
-    var cmd=new IMAPCommand(this.tag,"UID FETCH " + uid + (headersOnly ? " BODY[HEADER]" : " BODY[]"),f);
+
+    //not update seen flag on server
+    var cmd=new IMAPCommand(this.tag,"UID FETCH " + uid + (headersOnly ? " (body.peek[header])" : " (body.peek[])"),f);
+    
+    //var cmd=new IMAPCommand(this.tag,"UID FETCH " + uid + (headersOnly ? " BODY[HEADER]" : " BODY[]"),f);
     this.tcp.connect('fetchBody',JSON.stringify(cmd));
     return cmd;
   }

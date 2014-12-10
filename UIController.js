@@ -157,12 +157,21 @@ function addMsg(mails){
 	for(var i=0;i<mails.length;i++){
 		var msg=mails[i];
 
+		if(msg.seen.contains('\\Seen')){
+			var seen=true;
+		}else{
+			var seen=false;
+		}
+		
 
-        $('.msglist').append('<div class="vpRowHoriz vpRow DragElt" id="'+msg.id+'" style="-moz-user-select: none;"></div>');
+        $('.msglist').append('<div class="vpRowHoriz vpRow DragElt ' + (seen ? "" : 'flagUnseen') +'" id="'+msg.id+'" style="-moz-user-select: none;"></div>');
 		
 		var $good=$(".vpRowHoriz.vpRow.DragElt").last();
 		
-		$good.append('<div class="msgStatus"><div class="iconImg msCheck"></div></div>');
+		$good.append('<div class="msgStatus">'+
+			'<div class="iconImg msCheck"></div>'+
+			(seen ? "" : '<div class="iconImg msgflags flagUnseen" title="Unseen"></div>')+
+			'</div>');
 		$good.append('<div class="msgFrom sep" title="' + msg.from + '">' + msg.from + '</div>');
 		$good.append('<div class="msgSubject sep" title="Tested">'+msg.subject+'</div>');
 		$good.append('<div class="msgDate sep">'+msg.date+'</div>');

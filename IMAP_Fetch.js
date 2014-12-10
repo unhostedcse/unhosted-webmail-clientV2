@@ -130,6 +130,7 @@ IMAP_Fetch.prototype.fetchBody=function(id){
         this.Date="";
         this.Received="";
         this.body="";
+        this.seen="";
       };
 
       head=new header();
@@ -156,6 +157,16 @@ IMAP_Fetch.prototype.fetchBody=function(id){
           }
           
       }
+
+      // if(result && result.fetchListFlags){
+      //   // var flag=result.fetchListFlags[id];
+      //   console.log("id flag ");
+      // }
+      // else
+        // console.log('no '+result.fetchListFlags[id]);
+
+      var fl= result.fetchListFlags[id] || '';
+      head.seen=fl;
       // console.log("id "+id+" "+head.To);
       if(!result.fetchMIME){
         result.fetchMIME=new Array();
@@ -239,7 +250,9 @@ IMAP_Fetch.prototype.getHeaderScenario =function(f){
   IMAP_Fetch.cmds.push(this.select);
 
   for(var i=0;i<result.fetchList.length;i++){
-      var id=result.fetchList[i];
+      var ids=result.fetchList[i];
+      var id=ids;
+      // console.log('id= '+id+ ' flag= '+ids[1]);
       if(result.keys.indexOf(parseInt(id))<0){
         IMAP_Fetch.cmds.push([this.fetchBody,id]);
         console.log('id '+id+" not in DB");
@@ -274,7 +287,9 @@ IMAP_Fetch.prototype.getBodyScenario =function(f){
   IMAP_Fetch.cmds.push(this.select);
 
   for(var i=0;i<result.fetchList.length;i++){
-      var id=result.fetchList[i];
+      var ids=result.fetchList[i];
+      var id=ids;
+
       if(result.keys.indexOf(parseInt(id))<0){
         IMAP_Fetch.cmds.push([this.fetchBodyOnly,id]);
       }

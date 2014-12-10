@@ -233,7 +233,7 @@ action.       </li>
   var text=document.getElementById('composeMessage').value='Hi, this is test text!';
   var subject=document.getElementById('subject').value='Unhosted subject';
   var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
-  data[0].value='unhostedcse@outlook.com';
+  data[0].value='unhostedcse@gmail.com';
   // data[1].value='unhostedcse@gmail.com,unhostedcse@outlook.com';
   // data[2].value='unhostedcse,unhostedcse';
 
@@ -292,7 +292,7 @@ function start(to,cc,bcc,subject,text){
   // var u2='unhostedcse@gmail.com';
   var to="To: ";
   for(var i=0;i<mailto.length;i++){
-    to+='"'+mailto[i]+'" <'+mailto[i]+'>,';
+    to+=mailto[i]+' <'+mailto[i]+'>,';
   }
 
   if(mailcc){
@@ -308,15 +308,29 @@ function start(to,cc,bcc,subject,text){
       mailto.push(mailbcc[i]);
     }  
 
-  body='Subject: '+subject+'\r\n'+
-        'From: "'+username+'" <'+username+'>'+'\r\n'+
-        to+'\r\n'+
-        cc+'\r\n'+
-        //'CC: "rukshan" <rcrukshan17@gmail.com>'+'\r\n'+        
-        // 'To: "'+u2+'" <'+u2+'>'+'\r\n'+
-        '\r\n'+
-        text;
-  // body=text;
+  var date=(new Date()).toUTCString();
+
+  // body= 'From: '+username+' <'+username+'>'+'\r\n'+  
+  //       to+'\r\n'+
+  //       'Subject: '+subject+'\r\n'+
+  //       'Date: '+date+'\r\n'+        
+  //       cc+'\r\n'+        
+  //       '\r\n'+
+  //       text;
+
+var head=""+
+"MIME-Version: 1.0"+"\r\n"+
+"x-no-auto-attachment: 1"+"\r\n"+
+//"Received: by 10.60.41.195; Wed, 10 Sep 2014 00:24:10 -0700 (PDT)"+"\r\n"+
+"Date: "+date+"\r\n"+
+// "Message-ID: <CAEbMfJLbWOV2OohyRZ2ibvXEBhJjryt1XsDa=xC-C6wRnTu9pw@mail.gmail.com>"+"\r\n"+
+"Subject: "+subject+"\r\n"+
+'From: '+username+' <'+username+'>'+'\r\n'+  
+to+'\r\n'+
+//"To: unhosted cse <unhostedcse@gmail.com>"+"\r\n"+
+"Content-Type: multipart/alternative; boundary=089e01293fa625798e0502b0f0ce"+"\r\n";
+
+body=head+'\r\n'+text;
 
   sync.SendMail();
   saveSendMail(to,cc,bcc,subject,text);
@@ -345,6 +359,14 @@ $(document).on("newSendMail",
     }
   }
 );
+
+function setForwardComposeMail(){
+
+}
+
+function setReplyComposeMail(){
+
+}
 
  </script> 
 
