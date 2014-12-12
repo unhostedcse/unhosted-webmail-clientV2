@@ -1,14 +1,8 @@
-// username='unhostedcse@gmail.com';
-
 username='unhostedcse@gmail.com';
-// password='';
-// alert('password');
-host='imap.gmail.com';
-port='993';	
-security='ssl';
+imaphost='imap.gmail.com';
+imapport='993';	
+imapsecurity='ssl';
 	
-// var db=new DBController();
-// db.create_openDB(username);
 document.addEventListener("testEvent",
 	function(e) {  
 		console.log(e);
@@ -17,10 +11,8 @@ document.addEventListener("testEvent",
 
 var sync=new Sync_Module(clearBody);
 selectFolder='INBOX';
-// dbSelectFolder='notes';
 dbSelectFolder=selectFolder;
 sync.init(addMsg,dbSelectFolder,setMailBoxBar);
-// sync.init(addMsg,'sent');
 
 function initUnhosted(){
 	dbSelectFolder=selectFolder;
@@ -30,7 +22,6 @@ function initUnhosted(){
 }
 
 function startSMTP(){
-  // var s=new Sync_Module();
 
   username='unhostedcse@gmail.com';
   password='unhostedcse12345';
@@ -145,7 +136,7 @@ function clearBody(){
 	$(".from_allowTextSelection").html('');
 	document.getElementById('bodyDisplay').innerHTML='';
 
-	// $("#msgHeadersColl").empty();
+	$("#setting").empty();
 	// $("#msgHeadersColl").css("display","none");
 
 	// $("#msgHeadersColl").css("display");
@@ -261,12 +252,10 @@ function setMailBoxBar(mail){
 }
 
 function startMe1(){
-	// var s=new Sync_Module();
 	sync.getUids();
 }
 
 function startMailBoxesScenario(){
-	// var s=new Sync_Module();
 	sync.getMailBoxesScenario();
 }
 
@@ -274,38 +263,14 @@ function startMailBoxesScenario(){
 function setSetting(){
 
  	var x = document.getElementById("setting").value;
- 	if (x=='gmail') {
- 		username='unhostedcse@gmail.com';
-		password='unhostedcse12345';
-		host='imap.gmail.com';
-		port='993';	
-		security='ssl';	
- 	}else if(x=='hotmail'){ 	
- 		username='unhostedcse@outlook.com';//dW5ob3N0ZWRjc2VAb3V0bG9vay5jb20=
-		password='projects12345';//cHJvamVjdHMxMjM0NQ==
-		host='imap-mail.outlook.com';
-		port='993';		
-    	security='ssl'; 
- 	}else if(x=='local'){ 	
- 		username='rukshan';
-		password='17806';
-		host='localhost';
-		port='143';		 	
-		security='no';	
- 	}else if(x=='unhosted'){ 	
- 		username='rukshan';
-		password='rukshan17806';
-		host='unhosted.projects.uom.lk';
-		port='993';		 	
- 	}	
-  //username=document.getElementById('user').value;
-  	console.log(username);
- //  	db=new DBController();
-	// db.create_openDB(username);
+ 	
+  	console.log('select Account '+x);
+	Sync_Module.db.loadAccount(x); 	
+ }
 
- //  	sync.init();
- 	//sync=new Sync_Module(clearBody);
- 	//sync.init(addMsg,dbSelectFolder);
-	// sync.init(addMsg);
-	initUnhosted();
- } 
+ $(document).on("loadAccount",
+ 		function(){
+			initUnhosted();
+			console.log('loading....');
+		}
+); 

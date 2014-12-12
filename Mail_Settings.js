@@ -1,8 +1,12 @@
 var username="";
 var password="rusasuergi@150";
-var host="";
-var port="";
-var security="";
+var imaphost="";
+var imapport="";
+var imapsecurity="";
+var smtphost="";
+var smtpport="";
+var smtpsecurity="";
+
 var result={};
 var selectFolder;
 var dbSelectFolder;

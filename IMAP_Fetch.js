@@ -39,9 +39,9 @@ IMAP_Fetch.prototype.func=function(response,id){
 
 IMAP_Fetch.prototype.start=function(){
   obj={
-        host : host,
-        port : port,
-        sec : security
+        host : imaphost,
+        port : imapport,
+        sec : imapsecurity
     };
 
   IMAP_Fetch.imap.start(obj);

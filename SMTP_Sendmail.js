@@ -32,9 +32,9 @@ function SMTP_Sendmail(id){
 
 SMTP_Sendmail.prototype.start = function(){
     var obj={
-        host : host,
-        port : port,
-        sec : security
+        host : smtphost,
+        port : smtpport,
+        sec : smtpsecurity
     };
 
     SMTP_Sendmail.smtp.start(obj);
@@ -90,14 +90,14 @@ SMTP_Sendmail.prototype.send = function(fun){
   SMTP_Sendmail.cmds.push(this.start);
   SMTP_Sendmail.cmds.push(this.ehlo);
   
-  if(security=='tls'){
+  if(smtpsecurity=='tls'){
     //alert('tls');
     SMTP_Sendmail.cmds.push(this.authTls);
     //SMTP_Sendmail.cmds.push(this.ehlo);
     SMTP_Sendmail.cmds.push(this.authLogin);
     SMTP_Sendmail.cmds.push(this.authLoginLogin);
     SMTP_Sendmail.cmds.push(this.authLoginPassword);
-  }else if(security=='ssl'){
+  }else if(smtpsecurity=='ssl'){
     //alert('ssl');
     SMTP_Sendmail.cmds.push(this.authLogin);
     SMTP_Sendmail.cmds.push(this.authLoginLogin);

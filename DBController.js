@@ -3,6 +3,110 @@ function DBController(){
 	this.id=0;
 	this.mailBoxTableName='mailBoxes';
 	this.offlineMboxName='unhostedOfflineMbox';
+	this.accountDBName='accounts';
+	this.accountTableName='accounts';
+	this.account_database;
+}
+
+DBController.prototype.create_open_account_DB=function(){
+  window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+  window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+  window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;  
+  var self=this;
+  if (!window.indexedDB) {
+      alert("Sorry!Your browser doesn't support IndexedDB");
+  }
+
+    var request = window.indexedDB.open(this.accountDBName);
+
+    request.onerror = function(event) {
+      console.log(event.target.errorCode);
+    };
+
+    request.onblocked=function(event){
+      console.log('open onblocked '+event);     
+  	}
+
+    request.onsuccess = function(event) {
+        self.account_database=request.result;        
+        console.log(self.accountDBName+' DB ready');
+        self.viewAccounts();
+        
+    };
+
+    request.onupgradeneeded = function(event) {
+        var db = event.target.result;
+        var objectStore = db.createObjectStore(self.accountTableName, {keyPath: "id",autoIncrement:true});
+        objectStore.createIndex("usernameIndex", "username", { multiEntry: true });
+    };
+}
+
+DBController.prototype.viewAccounts=function(){
+	// $("#setting").empty();          
+  var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
+  objectStore.openCursor().onsuccess = function(event) {
+    var cursor = event.target.result;     
+    if (cursor && cursor.value) {       
+      // console.log("DB "+cursor.source.transaction.db.name);
+      var val=cursor.value.username;
+      console.log("username "+val);
+      if(val==username){
+      	$("#setting").append('<option value="'+val+'" selected>'+val+'</option>');
+      }else{
+      	$("#setting").append('<option value="'+val+'">'+val+'</option>');          
+      }
+      cursor.continue();
+    } 
+  }
+}
+
+DBController.prototype.addAccount=function(){
+  var transaction = this.account_database.transaction([this.accountTableName], "readwrite");
+  var objectStore = transaction.objectStore(this.accountTableName);
+
+  var record={
+	  username:document.getElementById('user').value,
+	  password:document.getElementById('pass').value,
+	  imaphost:document.getElementById('imap').value,
+	  imapport:document.getElementById('imapport').value,
+	  imapsecurity:document.getElementById('imapsec').value,
+	  smtphost:document.getElementById('smtp').value,
+	  smtpport:document.getElementById('smtpport').value,
+	  smtpsecurity:document.getElementById('smtpsec').value
+  };
+
+  var userName=document.getElementById('user').value;
+  objectStore.index("usernameIndex").get(userName).onsuccess = function(e) {   
+      if(e.target.result){
+        console.log(userName+' Already Exist!');
+      }else{
+          var request=objectStore.add(record);
+          request.onsuccess = function(event) {
+              console.log(userName+' added to database' );
+          };
+          request.onerror = function (event) {
+              console.log(event);
+          }
+      }
+  }
+}
+
+DBController.prototype.loadAccount=function(userName){
+  var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
+  objectStore.index("usernameIndex").get(userName).onsuccess = function(e) {   
+  		var cursor = e.target.result;
+      username=cursor.username;
+      // console.log(username);
+      password=cursor.password;
+      imaphost=cursor.imaphost;
+      imapport=cursor.imapport;
+      imapsecurity=cursor.imapsecurity;
+      smtphost=cursor.smtphost;
+      smtpport=cursor.smtpport;
+      smtpsecurity=cursor.smtpsecurity;   
+      
+      $.event.trigger({type:"loadAccount"});   
+    }
 }
 
 DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
@@ -53,6 +157,8 @@ DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
 
         // for offline sendmail
         var objectStore = db.createObjectStore(self.offlineMboxName, {keyPath: "id",autoIncrement:true});
+
+        var objectStore = db.createObjectStore(self.accountTableName, {keyPath: "id",autoIncrement:true});
     };   	
 
 }
@@ -223,7 +329,7 @@ DBController.prototype.addContain=function(record,id,folder){
 	    var objectStore = transaction.objectStore(folder);
    		
    		if(event.target.result){
-   			console.log('id '+id + ' already in database' );
+   			console.log('id '+id + ' atlready in database' );
    		}else{
    			var request=objectStore.add(record,id);
 		    request.onsuccess = function(event) {

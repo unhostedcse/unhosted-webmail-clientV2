@@ -11,6 +11,8 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar){
 
 	Sync_Module.db=new DBController();
 	Sync_Module.db.create_openDB(username,folder,Sync_Module.prototype.DBReady);
+	Sync_Module.db.create_open_account_DB();
+
 	console.log('username '+username);
 
 	self=this;
