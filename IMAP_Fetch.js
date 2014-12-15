@@ -53,8 +53,7 @@ IMAP_Fetch.prototype.login=function(){
         password : password
       };
 
-  IMAP_Fetch.imap.login(obj);
-  //tt.login("unhostedcse@gmail.com","unhostedcse12345");
+  IMAP_Fetch.imap.login(obj);  
 }
 
 
@@ -116,13 +115,6 @@ IMAP_Fetch.prototype.fetchBody=function(id){
         result.fetchBody=new Array();
       }
 
-      
-      // var regBody=/(.+): (.+)\n/g;
-      // var re=/((.+): (.+))+/g;
-      // regBody=re;
-      // var msg=val.replace(regBody,'');
-      // result.fetchBody[id]=msg
-
       var header=function(){
         this.To="";
         this.From="";
@@ -133,37 +125,23 @@ IMAP_Fetch.prototype.fetchBody=function(id){
         this.seen="";
       };
 
-      head=new header();
-      // head.body=val;
-      var reg = /(.+?): ((.)+)/g;
-      var regexp = /(\w+): (\w+| \r\n\s)+/g;
-      var getres;
-      var i=0;
-      while((getres = regexp.exec(val))){
-          var a=reg.exec(val);
-          if(!a)
-            continue;
+       var DateParse = function(date) {
+          // Convert short year to full
+          date = date.replace(/(\w+, \d+ \w+) (\d{2}) /, "$1 20$2 ");
+          return Date.parse(date);
+        }
 
-          if(a[1]=="To"){
-            head.To=a[2];
-          }else if(a[1]=="From"){
-            head.From=a[2];
-          }else if(a[1]=="Subject"){
-            head.Subject=a[2];
-          }else if(a[1]=="Date"){
-            head.Date=a[2];
-          }else if(a[1]=="Received"){
-            head.Received=a[2];
-          }
-          
-      }
+      head=new header();     
 
-      // if(result && result.fetchListFlags){
-      //   // var flag=result.fetchListFlags[id];
-      //   console.log("id flag ");
-      // }
-      // else
-        // console.log('no '+result.fetchListFlags[id]);
+      var part = new Part(val);      
+      
+      head.To=part.getHeader('To');
+      head.From=part.getHeader('From');
+      head.Subject=part.getHeader('Subject');
+      head.Date=DateParse(part.getHeader('Date'));           
+      head.body=part.toHtml();
+      head.size=val.length; 
+
 
       var fl= result.fetchListFlags[id] || '';
       head.seen=fl;
@@ -330,3 +308,4 @@ IMAP_Fetch.prototype.clearCmds=function (){
   IMAP_Fetch.cmds=[];
   IMAP_Fetch.imap.onTheResponse=null;
 }
+

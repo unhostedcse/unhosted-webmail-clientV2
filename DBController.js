@@ -1,14 +1,14 @@
-function DBController(){
-	this.database;
-	this.id=0;
-	this.mailBoxTableName='mailBoxes';
-	this.offlineMboxName='unhostedOfflineMbox';
-	this.accountDBName='accounts';
-	this.accountTableName='accounts';
-	this.account_database;
+function DBController() {
+    this.database;
+    this.id = 0;
+    this.mailBoxTableName = 'mailBoxes';
+    this.offlineMboxName = 'unhostedOfflineMbox';
+    this.accountDBName = 'accounts';
+    this.accountTableName = 'accounts';
+    this.account_database;
 }
 
-DBController.prototype.create_open_account_DB=function(){
+DBController.prototype.create_open_account_DB=function(fun){
   window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
   window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
   window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;  
@@ -31,7 +31,9 @@ DBController.prototype.create_open_account_DB=function(){
         self.account_database=request.result;        
         console.log(self.accountDBName+' DB ready');
         self.viewAccounts();
-        
+
+        if(fun) // only one time, when refresh
+        	fun();
     };
 
     request.onupgradeneeded = function(event) {
@@ -44,8 +46,10 @@ DBController.prototype.create_open_account_DB=function(){
 DBController.prototype.viewAccounts=function(){
 	// $("#setting").empty();          
   var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
+  self=this;
   objectStore.openCursor().onsuccess = function(event) {
-    var cursor = event.target.result;     
+    var cursor = event.target.result;   
+
     if (cursor && cursor.value) {       
       // console.log("DB "+cursor.source.transaction.db.name);
       var val=cursor.value.username;
@@ -245,24 +249,24 @@ DBController.prototype.updateSaveSendMail=function(id){
 }
 
 var dbt;
-DBController.prototype.view=function(db){
-	var objectStore = this.database.transaction("notes").objectStore("notes");
+DBController.prototype.view = function(db) {
+    var objectStore = this.database.transaction("notes").objectStore("notes");
     objectStore.openCursor().onsuccess = function(event) {
-    	var cursor = event.target.result;    	
-    	if (cursor) {	    	
-    		if(cursor.value){
-		    	console.log("DB "+cursor.source.transaction.db.name);//+" "+cursor.value.mid
-		    	console.log("MID "+cursor.key);		    	
-		    	console.log("TO "+cursor.value.To);		    	
-		    	console.log("FROM "+cursor.value.From);
-		    	console.log("Subject "+cursor.value.Subject);		    	
-		    	console.log("DATE "+cursor.value.Date);
-		    	console.log("Received "+cursor.value.Received);	
-				console.log("Body "+cursor.value.body);			    		    	
-		    	console.log("");		    	
-		    }	
-		    cursor.continue();
-	    }	
+        var cursor = event.target.result;
+        if (cursor) {
+            if (cursor.value) {
+                console.log("DB " + cursor.source.transaction.db.name);//+" "+cursor.value.mid
+                console.log("MID " + cursor.key);
+                console.log("TO " + cursor.value.To);
+                console.log("FROM " + cursor.value.From);
+                console.log("Subject " + cursor.value.Subject);
+                console.log("DATE " + cursor.value.Date);
+                console.log("Received " + cursor.value.Received);
+                console.log("Body " + cursor.value.body);
+                console.log("");
+            }
+            cursor.continue();
+        }
     }
 }
 
@@ -290,14 +294,15 @@ DBController.prototype.getMessages=function(cllBack,folder){
 		return;
 	}
 
-    objectStore.openCursor().onsuccess = function(event) {
-    	var obj=function(id,from,sub,date,body,seen){
+    objectStore.openCursor(null, "prev").onsuccess = function(event) {
+    	var obj=function(id,from,sub,date,body,seen,size){
 			this.id=id;
 			this.from=from;
 			this.subject=sub;
 			this.date=date;
 			this.body=body;
 			this.seen=seen;
+			this.size=size;
 		}
 
     	var cursor = event.target.result;    	
@@ -308,7 +313,7 @@ DBController.prototype.getMessages=function(cllBack,folder){
 		
     	if (cursor) {	    	
     		if(cursor.value){		    		
-				var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,cursor.value.body,cursor.value.seen);
+				var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,cursor.value.body,cursor.value.seen,cursor.value.size);
 				UIresult.push(msg);
 				// console.log(msg);
 				// console.log("DB "+cursor.source.transaction.db.name);

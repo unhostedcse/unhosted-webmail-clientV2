@@ -1,7 +1,7 @@
-username='unhostedcse@gmail.com';
-imaphost='imap.gmail.com';
-imapport='993';	
-imapsecurity='ssl';
+// username='unhostedcse@gmail.com';
+// imaphost='imap.gmail.com';
+// imapport='993';	
+// imapsecurity='ssl';
 	
 document.addEventListener("testEvent",
 	function(e) {  
@@ -14,6 +14,13 @@ selectFolder='INBOX';
 dbSelectFolder=selectFolder;
 sync.init(addMsg,dbSelectFolder,setMailBoxBar);
 
+// var adb=new DBController();
+// adb.create_open_account_DB(
+// 	function(){
+// 		adb.loadAccount('unhostedcse@gmail.com'); 	
+// 	};
+// );
+
 function initUnhosted(){
 	dbSelectFolder=selectFolder;
 	sync=new Sync_Module(clearBody);
@@ -21,16 +28,7 @@ function initUnhosted(){
 
 }
 
-function startSMTP(){
-
-  username='unhostedcse@gmail.com';
-  password='unhostedcse12345';
-
-  host="smtp.gmail.com";
-  port=465;
-  security='ssl';
-
-  body='test mail';
+function startSMTP(){ 
 
   sync.SendMail();
 }
@@ -116,6 +114,7 @@ function view(){
 	}
 }
 var i=100;
+
 function addMailBox(){
 	try{
 		Sync_Module.db.addMailBoxes('test','test'+(i++));
@@ -166,7 +165,7 @@ function addMsg(mails){
 		$good.append('<div class="msgFrom sep" title="' + msg.from + '">' + msg.from + '</div>');
 		$good.append('<div class="msgSubject sep" title="Tested">'+msg.subject+'</div>');
 		$good.append('<div class="msgDate sep">'+msg.date+'</div>');
-		$good.append('<div class="msgSize sep">1 KB</div>');
+		$good.append('<div class="msgSize sep">'+msg.size+' KB</div>');
 		//$good.append('<a id="body" class="body" href="'+msg.body+'" style="display: none;"></a>');
 		// alert(msg.body);
 		$good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
@@ -194,7 +193,8 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 	
 	var body=$(this).find(".body").text();
 
-	document.getElementById('bodyDisplay').innerHTML=QPDec(body);
+	//document.getElementById('bodyDisplay').innerHTML=QPDec(body);
+	document.getElementById('bodyDisplay').innerHTML=body;
 
 	}
 );
@@ -233,6 +233,7 @@ $(document).on("click",'.horde-subnavi-point',
 );
 //321 index.html
 function setMailBoxBar(mail){
+	$("#imp-specialmboxes").empty();
 
 	for (var i = 0; i < mail.length; i++) {
 		var name=mail[i];
@@ -262,8 +263,7 @@ function startMailBoxesScenario(){
 
 function setSetting(){
 
- 	var x = document.getElementById("setting").value;
- 	
+ 	var x = document.getElementById("setting").value; 	
   	console.log('select Account '+x);
 	Sync_Module.db.loadAccount(x); 	
  }

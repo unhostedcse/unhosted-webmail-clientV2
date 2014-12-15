@@ -59,26 +59,27 @@ IMAP_Interface.prototype.ListFolder = function() {
       var getres;
       res=response;
       //var regflag1 = /(\\HasNoChildren (\w+))/g;  
+       var regexp = /\((.+?)\)/g;
       var regflag1 = /(\\(HasNoChildren|Noselect)( )*(\\(\w+))*)/g;
       //var regflag1 = /(\\(\w+)( )*(\\(\w+))*)/g;
       var regflag2 = /\"\/\" \"(.*?)\"/g;  
       var regflag3 = /\"\/\" \"(.*?)\"/g;  
       var out=new Array();
-      var type,folder,i=0;
+      var type,folder,i=0,tmp;
   while((getres = regflag3.exec(res))){      
-    // console.log(regflag1.exec(res));
-    // console.log(regflag2.exec(res));
     type=regflag1.exec(res);
     folder=regflag2.exec(res);
-    //console.log(type[5]+" "+folder[2]);
-    // console.log(type[5]+" "+folder[1]);
-    var ruk={
-     type:  type[5],
-     folder: folder[1]
-    };
-    // console.log(ruk);
-    out[i]=ruk;
-    i++;
+    tmp=regexp.exec(res);
+
+    if(tmp[1].contains('HasNoChildren')){ 
+        var ruk={
+         type:  type[5],
+         folder: folder[1]
+        };
+        out[i]=ruk;
+        i++;
+    }
+    
   }
         
     return out;

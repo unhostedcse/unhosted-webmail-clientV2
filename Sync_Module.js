@@ -33,7 +33,7 @@ Sync_Module.prototype.initSMTP = function(){
 }
 
 Sync_Module.prototype.DBReady = function(addMsg,folder,setMailBoxBar){
-	console.log('DB READY ');
+	console.log('DB READY ');	
 	// Sync_Module.db.getMailBoxes(Sync_Module.setMailBoxBar);
 	Sync_Module.db.getMailBoxes(
 		function(boxs){
@@ -142,7 +142,12 @@ Sync_Module.prototype.getHeadersReady = function(){
 				Sync_Module.db.addContain(record,i,dbSelectFolder);
 			}
 		};
-		Sync_Module.prototype.getBody();
+
+		// Sync_Module.prototype.getBody(); // removed to optimised
+
+		initUnhosted();
+		$.event.trigger({type:"mailBoxesReadNext"});
+
 	}else{
 		console.log("DB is upto date");
 		$.event.trigger({type:"mailBoxesReadNext"});
