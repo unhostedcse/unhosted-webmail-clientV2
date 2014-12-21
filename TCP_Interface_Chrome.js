@@ -28,9 +28,9 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 			}
 			else
 				console.log('error');
-  	});
+  		});
  	}catch(e){
-		alert(e);
+		console.log(e);
  	}
 }
 

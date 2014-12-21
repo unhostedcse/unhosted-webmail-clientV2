@@ -40,6 +40,7 @@ DBController.prototype.create_open_account_DB=function(fun){
         var db = event.target.result;
         var objectStore = db.createObjectStore(self.accountTableName, {keyPath: "id",autoIncrement:true});
         objectStore.createIndex("usernameIndex", "username", { multiEntry: true });
+        objectStore.createIndex("idIndex", "id", { multiEntry: true });
     };
 }
 
@@ -53,10 +54,14 @@ DBController.prototype.viewAccounts=function(){
     if (cursor && cursor.value) {       
       // console.log("DB "+cursor.source.transaction.db.name);
       var val=cursor.value.username;
+      var id=cursor.key;
+
       console.log("username "+val);
-      if(val==username){
+      console.log("userID "+id);
+
+      if(val==username && $("#setting") ){
       	$("#setting").append('<option value="'+val+'" selected>'+val+'</option>');
-      }else{
+      }else if($("#setting")){
       	$("#setting").append('<option value="'+val+'">'+val+'</option>');          
       }
       cursor.continue();
@@ -108,8 +113,27 @@ DBController.prototype.loadAccount=function(userName){
       smtphost=cursor.smtphost;
       smtpport=cursor.smtpport;
       smtpsecurity=cursor.smtpsecurity;   
-      
+      userID=cursor.id;
+
       $.event.trigger({type:"loadAccount"});   
+    }
+}
+
+DBController.prototype.loadAccountById=function(id){
+  var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
+  objectStore.index("idIndex").get(id).onsuccess = function(e) {   
+  	  var cursor = e.target.result;
+      username=cursor.username;
+      console.log(username);
+      password=cursor.password;
+      imaphost=cursor.imaphost;
+      imapport=cursor.imapport;
+      imapsecurity=cursor.imapsecurity;
+      smtphost=cursor.smtphost;
+      smtpport=cursor.smtpport;
+      smtpsecurity=cursor.smtpsecurity;   
+      userID=cursor.id;
+
     }
 }
 

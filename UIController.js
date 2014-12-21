@@ -147,7 +147,9 @@ function addMsg(mails){
 	for(var i=0;i<mails.length;i++){
 		var msg=mails[i];
 
-		if(msg.seen.contains('\\Seen')){
+		//chrome not support contain
+		if(msg.seen.indexOf('\\Seen') >= 0 ) {
+		//if(msg.seen.contains('\\Seen')){
 			var seen=true;
 		}else{
 			var seen=false;
@@ -274,3 +276,9 @@ function setSetting(){
 			console.log('loading....');
 		}
 ); 
+
+function openWriteWindow(){
+	var url='./write.html?id='+userID;
+	javascript:void window.open(url,'1417505292623',
+      'width=750,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+}

@@ -1,4 +1,5 @@
 var username="";
+var userID="";
 var password="rusasuergi@150";
 var imaphost="";
 var imapport="";

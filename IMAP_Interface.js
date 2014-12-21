@@ -71,7 +71,9 @@ IMAP_Interface.prototype.ListFolder = function() {
     folder=regflag2.exec(res);
     tmp=regexp.exec(res);
 
-    if(tmp[1].contains('HasNoChildren')){ 
+    // true || crome not support contain
+    //if(tmp[1].contains('HasNoChildren')){ 
+    if(tmp[1].indexOf('HasNoChildren') >= 0){   
         var ruk={
          type:  type[5],
          folder: folder[1]
