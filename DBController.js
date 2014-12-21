@@ -40,12 +40,13 @@ DBController.prototype.create_open_account_DB=function(fun){
         var db = event.target.result;
         var objectStore = db.createObjectStore(self.accountTableName, {keyPath: "id",autoIncrement:true});
         objectStore.createIndex("usernameIndex", "username", { multiEntry: true });
-        objectStore.createIndex("idIndex", "id", { multiEntry: true });
+        console.log('success');
     };
 }
 
 DBController.prototype.viewAccounts=function(){
-	// $("#setting").empty();          
+	// $("#setting").empty(); 
+	// alert('open');         
   var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
   self=this;
   objectStore.openCursor().onsuccess = function(event) {
@@ -57,7 +58,7 @@ DBController.prototype.viewAccounts=function(){
       var id=cursor.key;
 
       console.log("username "+val);
-      console.log("userID "+id);
+      // console.log("userID "+id);
 
       if(val==username && $("#setting") ){
       	$("#setting").append('<option value="'+val+'" selected>'+val+'</option>');
@@ -119,12 +120,13 @@ DBController.prototype.loadAccount=function(userName){
     }
 }
 
-DBController.prototype.loadAccountById=function(id){
+DBController.prototype.loadAccountById=function(id,func){
   var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
-  objectStore.index("idIndex").get(id).onsuccess = function(e) {   
+  var req=objectStore.get(id);
+
+  req.onsuccess = function(e) {   
   	  var cursor = e.target.result;
       username=cursor.username;
-      console.log(username);
       password=cursor.password;
       imaphost=cursor.imaphost;
       imapport=cursor.imapport;
@@ -134,7 +136,14 @@ DBController.prototype.loadAccountById=function(id){
       smtpsecurity=cursor.smtpsecurity;   
       userID=cursor.id;
 
+      if(func){
+      	func(username);
+      }
     }
+   req.onerror = function(event) {
+    	console.log(event.target.errorCode);
+    };
+
 }
 
 DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
@@ -526,3 +535,18 @@ DBController.prototype.update=function(id,val,folder){
 
 }
 
+DBController.prototype.getMailById=function(id,folder,func){
+    var objectStore = this.database.transaction([folder], "readwrite").objectStore(folder);
+	var request = objectStore.get(id);
+	request.onerror = function(event) {
+	  // Handle errors!
+	  // console.log(event);
+	};
+	request.onsuccess = function(event) {
+	  var data = request.result;
+	  
+	  if(func){
+	  	func(data);
+	  }	  	
+	};
+}

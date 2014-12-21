@@ -26,6 +26,16 @@ function initUnhosted(){
 	sync=new Sync_Module(clearBody);
 	sync.init(addMsg,dbSelectFolder,setMailBoxBar);
 
+	var a=document.getElementsByClassName('horde-icon');
+
+
+	a[1].removeAttribute("idval");
+	a[2].removeAttribute("idval");
+	a[5].removeAttribute("idval");
+
+	a[1].setAttribute("style","display: none");
+	a[2].setAttribute("style","display: none");
+	a[5].setAttribute("style","display: none");
 }
 
 function startSMTP(){ 
@@ -178,10 +188,23 @@ function addMsg(mails){
 	UIresult="";
 }
 
-
 $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 
+	var a=document.getElementsByClassName('horde-icon');
+	a[1].removeAttribute("style");
+	a[2].removeAttribute("style");
+	a[5].removeAttribute("style");
+
+
 	$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
+	var val=$(this).attr('id');
+
+	a[1].setAttribute("idval",val);
+	a[2].setAttribute("idval",val);
+	a[5].setAttribute("idval",val);
+
+	// alert(val);
+
     $(this).addClass('vpRowSelected');
 
 	var text=$(this).find(".msgFrom").text();
@@ -278,7 +301,36 @@ function setSetting(){
 ); 
 
 function openWriteWindow(){
-	var url='./write.html?id='+userID;
+	var action='compose';
+	var uid=userID;
+	var url='./write.html?action='+action+'&id='+uid;
+	javascript:void window.open(url,'1417505292623',
+      'width=750,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+}
+
+function openReplyWindow(){
+
+	var a=document.getElementsByClassName('horde-icon');	
+	var mid=a[1].getAttribute('idval');
+
+	var mbox=selectFolder;
+	var action='reply';
+	var uid=userID;
+
+	var url='./write.html?action='+action+'&id='+uid+'&mbox='+mbox+'&mid='+mid;
+	javascript:void window.open(url,'1417505292623',
+      'width=750,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+}
+
+function openForwardWindow(){
+	var a=document.getElementsByClassName('horde-icon');	
+	var mid=a[1].getAttribute('idval');
+
+	var mbox=selectFolder;
+	var action='forward';
+	var uid=userID;
+
+	var url='./write.html?action='+action+'&id='+uid+'&mbox='+mbox+'&mid='+mid;
 	javascript:void window.open(url,'1417505292623',
       'width=750,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
 }

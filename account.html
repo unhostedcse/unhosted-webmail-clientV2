@@ -25,7 +25,7 @@
 	<table>
 		<tr>
         	<td>Account</td>
-            <td><select id="setting" onchange="setSetting()">
+            <td><select id="accounts" onchange="setSetting()">
                 <option value="gmail">Gmail</option>
                 <option value="hotmail">Outlook</option>  
                 <option value="local">localhost</option>
@@ -110,7 +110,7 @@ function viewDB(){
 
 
  function setSetting(){
- 	var x = document.getElementById("setting").value;
+ 	var x = document.getElementById("accounts").value;
  	if (x=='gmail') {
  		document.getElementById('user').value='unhostedcse@gmail.com';
 		document.getElementById('pass').value='rusasuergi@150';

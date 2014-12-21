@@ -220,14 +220,47 @@ action.       </li>
 
 <script type="text/javascript">
 	
-$('#composeMessage').htmlarea();
+// $('#composeMessage').htmlarea();
 
   var db=new DBController();
   db.create_open_account_DB(load);
 
   function load(){
     var id= parseInt(getParameterByName('id'));
-    db.loadAccountById(id);
+    var mid= parseInt(getParameterByName('mid'));
+    var mbox= getParameterByName('mbox');
+    var action= getParameterByName('action');
+
+    // alert(id);
+    // alert(mid);
+    // alert(mbox);
+    // alert(action);
+
+    db.loadAccountById(id,setFunc);
+
+    function setFunc(user){
+        // console.log('got user '+user);
+        if(action=='compose')
+          console.log('compose');
+        else if(action=='reply'){
+          console.log('reply');
+
+          db.create_openDB(user,"",
+            function(){
+              db.getMailById(mid,mbox,setReplyWindow);
+            }
+          );
+
+        }else if(action=='forward'){
+          console.log('forward');
+          db.create_openDB(user,"",
+            function(){
+              db.getMailById(mid,mbox,setForwardWindow);
+            }
+          );
+        }
+    }    
+
   }
 
   function getParameterByName(name) {
@@ -235,6 +268,19 @@ $('#composeMessage').htmlarea();
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.href);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function setReplyWindow(msg,forward){     
+  document.getElementById('subject').value="RE: "+msg.Subject;
+  var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
+  data[0].value=msg.From;
+}
+
+function setForwardWindow(msg,forward){   
+  document.getElementById('composeMessage').value=msg.body;
+  document.getElementById('subject').value="FW: "+msg.Subject;
+  var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
+  data[0].value=msg.From;
 }
 
   var text=document.getElementById('composeMessage').value='Hi, this is test text!';
