@@ -165,6 +165,8 @@ function addMsg(mails){
 			var seen=false;
 		}
 		
+		var date=DateUtil.toShortString(msg.date);
+		var size=Math.ceil(msg.size/1024);
 
         $('.msglist').append('<div class="vpRowHoriz vpRow DragElt ' + (seen ? "" : 'flagUnseen') +'" id="'+msg.id+'" style="-moz-user-select: none;"></div>');
 		
@@ -176,8 +178,8 @@ function addMsg(mails){
 			'</div>');
 		$good.append('<div class="msgFrom sep" title="' + msg.from + '">' + msg.from + '</div>');
 		$good.append('<div class="msgSubject sep" title="Tested">'+msg.subject+'</div>');
-		$good.append('<div class="msgDate sep">'+msg.date+'</div>');
-		$good.append('<div class="msgSize sep">'+msg.size+' KB</div>');
+		$good.append('<div class="msgDate sep">'+date+'</div>');
+		$good.append('<div class="msgSize sep">'+size+' KB</div>');
 		//$good.append('<a id="body" class="body" href="'+msg.body+'" style="display: none;"></a>');
 		// alert(msg.body);
 		$good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
