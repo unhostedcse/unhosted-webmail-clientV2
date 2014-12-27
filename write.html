@@ -126,7 +126,9 @@
        <span id="upload_wait" style="display:none"></span>
        <span>
         <label id="compose_upload_add" for="upload">Add Attachment</label>
-        <input id="upload" multiple="" name="file_upload[]" type="file"><span id="anonymous_element_1" class="horde-popdown"></span>       </span>
+        <input id="upload" multiple="" name="file_upload[]" type="file">
+        <span id="anonymous_element_1" class="horde-popdown">
+        </span>       </span>
        <ul id="attach_list" style="display:none"></ul>
       </div>
      </td>
@@ -168,8 +170,6 @@ action.       </li>
  </div>
 </form>
 </div>
-
-
 
 <script type="text/javascript"  src="ui/jquery-2.1.1.js"></script> 
   <!--
@@ -216,11 +216,80 @@ action.       </li>
 <script type="text/javascript" src="BrowserSetUp.js"></script>  
 <script type="text/javascript" src="NewMessage.js"></script>  
 
+<script type="text/javascript" src="Encoder.js"></script>
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="File.js"></script>
+
 <link rel="Stylesheet" type="text/css" href="wys/jHtmlArea.css" />
 <script type="text/javascript" src="wys/jHtmlArea-0.8.js"></script>
 
 <script type="text/javascript">
-	
+// <input id="upload" multiple="" name="file_upload[]" type="file">
+	document.getElementById('upload').addEventListener('change', handleFileSelect, false);
+
+  
+  var atta=new Array();
+
+  function handleFileSelect(evt) {
+    var atFile;
+    var atUri;
+    var files = evt.target.files; // FileList object
+
+    var f;
+    for (var i = 0;f=files[i], i < files.length; i++) {
+        // var f=files[0];
+        // atFile=f;
+        var url=f.name;
+        var type=f.type;
+
+        var reader  = new FileReader();
+        reader.readAsDataURL(f);        
+
+        reader.onloadend = function () {
+            atUri = reader.result.split(',')[1];;
+            console.log(url+" attached ok");
+            atta[url]={
+              name:url,
+              uri:atUri,
+              type:type
+            };
+        }        
+
+    // var ttype = technalxs.simplemail.SimpleMailFile.getMimeType(url);
+
+    if (true || ttype.match(/^image/i)){
+      //event.preventDefault();
+      var filename = f.name;
+      // var background = technalxs.simplemail.SimpleMailMessageEncoder.getIconForAttachment(filename);          
+      html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat;' href='file://" + url + "'>" + filename + "</a>";
+      pushAttachFile(html); 
+    }else if (url.match(/^file:/)) { 
+      var filename = technalxs.simplemail.SimpleMailFile.getFileName(url);
+      var background = technalxs.simplemail.SimpleMailMessageEncoder.getIconForAttachment(filename);          
+      html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat;' href='" + url + "'>" + filename + "</a>";
+      technalxs.simplemail.SimpleMailNewMessage.pushAttachFile(html); 
+    }
+
+  }
+
+  }
+
+   function pushAttachFile(html){
+    // alert(html);
+    // var text=document.getElementById('composeMessageParent').innerHTML;
+
+    var body = document.getElementById('composeMessageParent');
+    var range = document.createRange();
+    var documentFragment = range.createContextualFragment(html)
+    // body.contentDocument.
+    body.appendChild(documentFragment);
+    // var message = technalxs.simplemail.SimpleMailNewMessage.getMessage();
+
+    // Need this to update RichText Editor
+    // technalxs.simplemail.SimpleMailNewMessage.execCommand("selectAll");
+    // technalxs.simplemail.SimpleMailNewMessage.execCommand("delete");
+    // technalxs.simplemail.SimpleMailNewMessage.execCommand("InsertHtml", message.html);
+  }
 // $('#composeMessage').htmlarea();
 
   var db=new DBController();
@@ -340,7 +409,8 @@ function setForwardWindow(msg){
 
         // $.event.trigger({type:"composeMail"});
 
-        start(to,cc,bcc,subject,text);
+        //start(to,cc,bcc,subject,text);
+        sendMail(to);
         
 
       }catch(e){
@@ -348,6 +418,62 @@ function setForwardWindow(msg){
       }
     }
 );  
+
+function sendMail(to){
+  
+  var msg=getMessage();
+  var txt=msg.toString();
+
+  mailto=msg.to.split(",");
+
+  console.log(txt);
+  body=txt;
+  sync.SendMail();
+
+}
+
+ var getMessage = function() {
+
+    var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
+    var to=data[0].value;
+    var cc=data[1].value;
+    var bcc=data[2].value;
+
+    var message = new NewMessageModel();
+    //message.accountId = technalxs.simplemail.SimpleMailDom.get("from").selectedItem.value;
+    //message.charset = technalxs.simplemail.SimpleMailDom.get("charset").selectedItem.label;
+
+    // message.charset ='UTF-8';
+    //message.returnReceiptTo = technalxs.simplemail.SimpleMailDom.get("returnReceipt").checked
+                                  //? technalxs.simplemail.SimpleMailDom.get("from").selectedItem.label : null;
+    message.from = username;
+    message.replyTo = username;
+    message.to = to;
+    message.cc = cc;
+    message.bcc = bcc;
+    message.subject = document.getElementById('subject').value;
+    message.file = atta;
+
+    var text=document.getElementById('composeMessageParent').innerHTML;
+
+    var html=''+
+    '<head>'+
+    '<link rel="stylesheet" type="text/css" href="chrome://simplemail/skin/message.css">'+
+    '<base target="_blank">'+
+    '</head>'+
+    '<body spellcheck="true">'+
+    '<br>'+
+    //'<a href="file://'+message.file.name+'" style="background: url(moz-icon://.js?size=16)center left no-repeat;" class="attachment">'+
+    //message.file.name +'</a>'+
+    //text+
+    '<a class="attachment" style="background: url(undefined)center left no-repeat;" href="done.txt">done.txt</a>'+
+    '</body>';
+
+    message.html = text;
+
+
+    return message;
+  }
 
 function start(to,cc,bcc,subject,text){ 
   // mailto='unhostedcse@outlook.com';

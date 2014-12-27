@@ -13,3 +13,4 @@ var selectFolder;
 var dbSelectFolder;
 var dbVersion=10;
 var refresh_interval=100000;
+var Unhosted_version=0.1;

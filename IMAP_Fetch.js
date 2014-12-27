@@ -133,15 +133,16 @@ IMAP_Fetch.prototype.fetchBody=function(id){
 
       head=new header();     
 
-      var part = new Part(val);      
-      
-      head.To=part.getHeader('To');
-      head.From=part.getHeader('From');
+      var part = new Part(val);            
+
+      try{
+      head.To=part.getAddressHeader('To');
+      head.From=part.getAddressHeader('From');      
       head.Subject=part.getHeader('Subject');
       head.Date=DateParse(part.getHeader('Date'));           
       head.body=part.toHtml();
       head.size=val.length; 
-
+      }catch(e){console.log(e);}
 
       var fl= result.fetchListFlags[id] || '';
       head.seen=fl;
