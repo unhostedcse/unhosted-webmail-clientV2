@@ -424,8 +424,25 @@ function sendMail(to){
   var msg=getMessage();
   var txt=msg.toString();
 
+  if (msg.bcc) 
+    txt = txt.replace(/Bcc:.*\r\n/i, ""); // Do not send BCC header
+
   mailto=msg.to.split(",");
 
+  if(msg.cc){
+    var mailcc=msg.cc.split(",");
+    for(var i=0;i<mailcc.length;i++){
+      mailto.push(mailcc[i]);
+    }
+  }
+
+  if(msg.bcc){
+    var mailbcc=msg.bcc.split(",");  
+    for(var i=0;i<mailbcc.length;i++){
+      mailto.push(mailbcc[i]);
+    }
+  }
+  
   console.log(txt);
   body=txt;
   sync.SendMail();
