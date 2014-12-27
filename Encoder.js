@@ -4,15 +4,15 @@
  * and open the template in the editor.
  */
 
-function Part(source) {
+function Part(source,attachments) {
     var self = this;
     var headers = getHeaders();
 
-    var ContentDisposition = [];
-    var ContentType = [];
-    var ContentId = [];
-    var cidNames = [];
-    var attachments=[];
+    Part.ContentDisposition = [];
+    Part.ContentType = [];
+    Part.ContentId = [];
+    Part.cidNames = [];
+    Part.attachments=[];
 
     function getHeaders() {
         source=source ? source : "";
@@ -146,7 +146,13 @@ function Part(source) {
             var end = body.lastIndexOf("=");
             if (end != -1)
                 body = body.substr(0, end + 1);
-            body = atob_fixed(stripCRLFs(body));
+            //body = atob_fixed(stripCRLFs(body));
+            var type=self.getHeader('Content-Type');
+            type=type.split(';')[0];
+            // console.log(type);
+            //data:application/zip;base64,
+            //return encoding+'*'+type+'*'+stripCRLFs(body);
+            return 'data:'+type+';base64,'+stripCRLFs(body);
         }
         else if (encoding.match(/quoted-printable/i)) {
             body = qp(body);
@@ -193,19 +199,19 @@ function Part(source) {
     function parseAttachment(body) {
       //make attentiom
         var name = getFileName() || MailUtils.getUniqueId();
-        attachments[name] = body;
+        Part.attachments[name] = body;
         var cid = getContentId();
         var disposition = self.getHeader("Content-Disposition");
         var type = self.getHeader("Content-Type");
         if (name) {
-            ContentDisposition[name] = disposition;
-            ContentType[name] = type;
+            Part.ContentDisposition[name] = disposition;
+            Part.ContentType[name] = type;
         }
         if (cid) {
             for (var i in cid) {
-                ContentId[i] = cid;
+                Part.ContentId[i] = cid;
             }
-            cidNames[cid] = name
+            Part.cidNames[cid] = name
         };
 
         return "";

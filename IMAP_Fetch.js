@@ -123,6 +123,7 @@ IMAP_Fetch.prototype.fetchBody=function(id){
         this.Received="";
         this.body="";
         this.seen="";
+        this.attachments=new Array();
       };
 
        var DateParse = function(date) {
@@ -135,14 +136,44 @@ IMAP_Fetch.prototype.fetchBody=function(id){
 
       var part = new Part(val);            
 
-      try{
+      // try{
       head.To=part.getAddressHeader('To');
       head.From=part.getAddressHeader('From');      
       head.Subject=part.getHeader('Subject');
       head.Date=DateParse(part.getHeader('Date'));           
       head.body=part.toHtml();
       head.size=val.length; 
+
+      ///////////////////////////////////
+      head.body = SimpleMailText.replaceURLs(head.body,
+      function(text, url) {
+        return SimpleMailFile.isLocalURL(url) ? "" : text;
+      });
+
+      try{
+        head.body = head.body.replace(/cid:([^'"]*)/gi,
+        function(text, cid) {
+          var name = Part.cidNames[cid];
+          if (!name) 
+            return text;
+          name = name.toString().replace(/[\'\[\]\(\)] */gi, "_");
+          // technalxs.simplemail.SimpleMailMessageEncoder.linked[name] = true;
+          return SimpleMailFile.getAttachmentURL('file_dir', 'file.type');
+        });
       }catch(e){console.log(e);}
+
+      for(var name in Part.attachments) {
+          var uri=Part.attachments[name];
+          name = name.toString().replace(/[\'\[\]\(\)] */gi, "_");
+          // console.log(name);
+          var obj={
+            name:name,
+            uri:uri
+          };
+          head.attachments.push(obj);
+      }
+      // }catch(e){console.log(e);}
+      /////////////////////////////////////
 
       var fl= result.fetchListFlags[id] || '';
       head.seen=fl;

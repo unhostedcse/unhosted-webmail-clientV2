@@ -187,12 +187,29 @@ function addMsg(mails){
 		$good.append('<div class="msgSize sep">'+size+' KB</div>');
 		//$good.append('<a id="body" class="body" href="'+msg.body+'" style="display: none;"></a>');
 		// alert(msg.body);
-		$good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
+
 		
+		
+		var file;
+		var links='';
+		for(var j=0;file=msg.attachments[j],j<msg.attachments.length;j++){
+			links+=createAttachmentLink(file);
+		}
+
+		msg.body=links+'</br>'+msg.body;
+		$good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
 
 	}
 	$( "div[title='"+selectFolder+"']").addClass('horde-subnavi-active');
 	UIresult="";
+}
+
+function createAttachmentLink(file){
+
+	var link='<a title="'+file.name+'" download="'+file.name+'" href="'+file.uri+'">'+ file.name +'</a>';
+	// document.getElementById('bodyDisplay').innerHTML+=link;
+	return link;
+
 }
 
 $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {

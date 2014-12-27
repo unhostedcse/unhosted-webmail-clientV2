@@ -328,7 +328,7 @@ DBController.prototype.getMessages=function(cllBack,folder){
 	}
 
     objectStore.openCursor(null, "prev").onsuccess = function(event) {
-    	var obj=function(id,from,sub,date,body,seen,size){
+    	var obj=function(id,from,sub,date,body,seen,size,attachments){
 			this.id=id;
 			this.from=from;
 			this.subject=sub;
@@ -336,6 +336,7 @@ DBController.prototype.getMessages=function(cllBack,folder){
 			this.body=body;
 			this.seen=seen;
 			this.size=size;
+			this.attachments=attachments;
 		}
 
     	var cursor = event.target.result;    	
@@ -346,7 +347,7 @@ DBController.prototype.getMessages=function(cllBack,folder){
 		
     	if (cursor) {	    	
     		if(cursor.value){		    		
-				var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,cursor.value.body,cursor.value.seen,cursor.value.size);
+				var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,cursor.value.body,cursor.value.seen,cursor.value.size,cursor.value.attachments);
 				UIresult.push(msg);
 				// console.log(msg);
 				// console.log("DB "+cursor.source.transaction.db.name);
