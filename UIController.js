@@ -9,10 +9,32 @@ document.addEventListener("testEvent",
 	}
 ,false);
 
-var sync=new Sync_Module(clearBody);
-selectFolder='INBOX';
-dbSelectFolder=selectFolder;
-sync.init(addMsg,dbSelectFolder,setMailBoxBar);
+var db=new DBController();
+db.create_open_account_DB(loadAcc);
+
+function loadAcc(){
+	var uid=getParameterByName('uid');
+	try{
+		uid=parseInt(uid);
+		console.log(uid);
+		db.loadAccountById(uid,start);
+	}catch(e){
+		location.href='./select.html';
+		console.log('Bad account ID');
+	}	
+}
+
+
+function start(status){	
+	if(status){
+		var sync=new Sync_Module(clearBody);
+		selectFolder='INBOX';
+		dbSelectFolder=selectFolder;
+		sync.init(addMsg,dbSelectFolder,setMailBoxBar);
+	}else{
+		location.href='./select.html';
+	}
+}
 
 // var adb=new DBController();
 // adb.create_open_account_DB(
@@ -20,6 +42,12 @@ sync.init(addMsg,dbSelectFolder,setMailBoxBar);
 // 		adb.loadAccount('unhostedcse@gmail.com'); 	
 // 	};
 // );
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),results = regex.exec(location.href);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
 function initUnhosted(){
 	dbSelectFolder=selectFolder;
@@ -185,19 +213,10 @@ function addMsg(mails){
 		$good.append('<div class="msgSubject sep" title="'+msg.subject+'">'+msg.subject+'</div>');
 		$good.append('<div class="msgDate sep">'+date+'</div>');
 		$good.append('<div class="msgSize sep">'+size+' KB</div>');
+		$good.append('<div class="mid sep" style="display: none;">'+msg.id+' KB</div>');// for keep mail id
 		//$good.append('<a id="body" class="body" href="'+msg.body+'" style="display: none;"></a>');
-		// alert(msg.body);
 
-		
-		
-		var file;
-		var links='';
-		for(var j=0;file=msg.attachments[j],j<msg.attachments.length;j++){
-			links+=createAttachmentLink(file);
-		}
-
-		msg.body=links+'</br>'+msg.body;
-		$good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
+		// $good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
 
 	}
 	$( "div[title='"+selectFolder+"']").addClass('horde-subnavi-active');
@@ -212,13 +231,13 @@ function createAttachmentLink(file){
 
 }
 
+//show the body after after select a msg
 $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 
 	var a=document.getElementsByClassName('horde-icon');
 	a[1].removeAttribute("style");
 	a[2].removeAttribute("style");
 	a[5].removeAttribute("style");
-
 
 	$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
 	var val=$(this).attr('id');
@@ -227,23 +246,34 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 	a[2].setAttribute("idval",val);
 	a[5].setAttribute("idval",val);
 
-	// alert(val);
-
     $(this).addClass('vpRowSelected');
 
 	var text=$(this).find(".msgFrom").text();
 	var sub=$(this).find(".msgSubject").text();
 	var date=$(this).find(".msgDate").text();
+	var mid=parseInt($(this).find(".mid").text());
 
 	$(".from").html(text);
 	$(".subject").html(sub);
 	$("#previewMsg .date").html(date);
 	$(".from_allowTextSelection").html('from');
 	
-	var body=$(this).find(".body").text();
+	var db=new DBController();db.create_openDB(username ,"",
+            function(){
+              	db.getMailById(mid,selectFolder,function(msg){
+              	var body=msg.body;
+              	var file;
+				var links='';
+				if(msg.attachments)
+					for(var j=0;file=msg.attachments[j],j<msg.attachments.length;j++){
+						links+=createAttachmentLink(file);
+					}
 
-	//document.getElementById('bodyDisplay').innerHTML=QPDec(body);
-	document.getElementById('bodyDisplay').innerHTML=body;
+				body=links+'</br>'+body;
+				document.getElementById('bodyDisplay').innerHTML=body;
+              });
+            }
+    );	
 
 	}
 );

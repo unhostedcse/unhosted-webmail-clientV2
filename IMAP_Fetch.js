@@ -172,6 +172,8 @@ IMAP_Fetch.prototype.fetchBody=function(id){
           };
           head.attachments.push(obj);
       }
+
+      Part.attachments=null; // reset
       // }catch(e){console.log(e);}
       /////////////////////////////////////
 

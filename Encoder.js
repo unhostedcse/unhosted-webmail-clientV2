@@ -5,6 +5,7 @@
  */
 
 function Part(source,attachments) {
+  //console.log(attachments);
     var self = this;
     var headers = getHeaders();
 
@@ -12,7 +13,7 @@ function Part(source,attachments) {
     Part.ContentType = [];
     Part.ContentId = [];
     Part.cidNames = [];
-    Part.attachments=[];
+    // Part.attachments=[];
 
     function getHeaders() {
         source=source ? source : "";
@@ -197,9 +198,19 @@ function Part(source,attachments) {
     }
 
     function parseAttachment(body) {
+
+
       //make attentiom
         var name = getFileName() || MailUtils.getUniqueId();
+      //   console.log(body);
+      // console.log(name);
+
+        if(!Part.attachments){
+          Part.attachments=[];
+        }
+
         Part.attachments[name] = body;
+
         var cid = getContentId();
         var disposition = self.getHeader("Content-Disposition");
         var type = self.getHeader("Content-Type");

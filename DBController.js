@@ -60,6 +60,9 @@ DBController.prototype.viewAccounts=function(){
       console.log("username "+val);
       // console.log("userID "+id);
 
+      if(username=="")
+      	return;
+
       if(val==username && $("#setting") ){
       	$("#setting").append('<option value="'+val+'" selected>'+val+'</option>');
       }else if($("#setting")){
@@ -67,6 +70,27 @@ DBController.prototype.viewAccounts=function(){
       }
       cursor.continue();
     } 
+  }
+}
+
+DBController.prototype.getAccounts=function(fun){
+  var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
+  self=this;
+  var acc=new Array();
+  objectStore.openCursor().onsuccess = function(event) {
+    var cursor = event.target.result;       
+    if (cursor && cursor.value) {
+      var obj={
+      	id:cursor.key,
+      	username:cursor.value.username,
+      	password:cursor.value.password
+      };
+      acc.push(obj);
+      cursor.continue();
+    }else{
+    	if(fun)
+    		fun(acc);
+    }
   }
 }
 
@@ -126,22 +150,29 @@ DBController.prototype.loadAccountById=function(id,func){
 
   req.onsuccess = function(e) {   
   	  var cursor = e.target.result;
-      username=cursor.username;
-      password=cursor.password;
-      imaphost=cursor.imaphost;
-      imapport=cursor.imapport;
-      imapsecurity=cursor.imapsecurity;
-      smtphost=cursor.smtphost;
-      smtpport=cursor.smtpport;
-      smtpsecurity=cursor.smtpsecurity;   
-      userID=cursor.id;
+  	  // console.log(e.target);
+
+  	  if(cursor){
+	      username=cursor.username;
+	      password=cursor.password;
+	      imaphost=cursor.imaphost;
+	      imapport=cursor.imapport;
+	      imapsecurity=cursor.imapsecurity;
+	      smtphost=cursor.smtphost;
+	      smtpport=cursor.smtpport;
+	      smtpsecurity=cursor.smtpsecurity;   
+	      userID=cursor.id;
+	    }else{
+	     	console.log('non Existing userAccount');
+	    }
 
       if(func){
-      	func(username);
+      	func(cursor);
       }
     }
    req.onerror = function(event) {
     	console.log(event.target.errorCode);
+    	func(cursor);
     };
 
 }

@@ -309,7 +309,8 @@ action.       </li>
 
     db.loadAccountById(id,setFunc);
 
-    function setFunc(user){
+    function setFunc(cursor){
+        var user=cursor.username;
         // console.log('got user '+user);
         if(action=='compose')
           console.log('compose');
