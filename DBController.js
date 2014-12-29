@@ -57,7 +57,7 @@ DBController.prototype.viewAccounts=function(){
       var val=cursor.value.username;
       var id=cursor.key;
 
-      console.log("username "+val);
+      // console.log("username "+val);
       // console.log("userID "+id);
 
       if(username=="")

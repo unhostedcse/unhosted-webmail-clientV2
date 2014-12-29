@@ -16,7 +16,7 @@ function loadAcc(){
 	var uid=getParameterByName('uid');
 	try{
 		uid=parseInt(uid);
-		console.log(uid);
+		// console.log(uid);
 		db.loadAccountById(uid,start);
 	}catch(e){
 		location.href='./select.html';
@@ -24,16 +24,36 @@ function loadAcc(){
 	}	
 }
 
-
+var sync;
 function start(status){	
 	if(status){
-		var sync=new Sync_Module(clearBody);
-		selectFolder='INBOX';
-		dbSelectFolder=selectFolder;
-		sync.init(addMsg,dbSelectFolder,setMailBoxBar);
+
+		db.create_openDB(username,'',
+			function(){
+				db.getMailBoxes(function(boxs){
+					if(boxs && boxs.length>0){
+						selectFolder=boxs[0];						
+						// selectFolder='INBOX';						
+					}
+					dbSelectFolder=selectFolder;				
+					sync=new Sync_Module(clearBody);
+					sync.init(addMsg,dbSelectFolder,setMailBoxBar);
+				});
+			});
+
+		setTime();
 	}else{
 		location.href='./select.html';
 	}
+}
+
+function setTime(){
+	var date=new Date();
+	date= date.toUTCString();
+	date = date.replace(/(\w+, \d+ \w+) (\d{2}) /, "$1 20$2 ");
+	date=Date.parse(date)
+	date=DateUtil.toShortString(date);
+	$('#horde-date').text(date);
 }
 
 // var adb=new DBController();
@@ -76,9 +96,17 @@ $(document).on("click",'#checkmaillink',
 	function(e) {
 		console.log('refresh mail boxes');
 
-		sync.getMailBoxesScenario();  // uncomment
+		  // uncomment
 
 		// sync.refresh();
+		if(autoSync){
+			sync.getMailBoxesScenario();			
+		}else{
+			if(selectFolder && selectFolder!="" && selectFolder!=null){
+				dbSelectFolder=selectFolder;
+				sync.getUids();
+			}
+		}
 	}
 );
 
@@ -225,7 +253,7 @@ function addMsg(mails){
 
 function createAttachmentLink(file){
 
-	var link='<a title="'+file.name+'" download="'+file.name+'" href="'+file.uri+'">'+ file.name +'</a>';
+	var link='<a class="attachment" title="'+file.name+'" download="'+file.name+'" href="'+file.uri+'">'+ file.name +'</a>';
 	// document.getElementById('bodyDisplay').innerHTML+=link;
 	return link;
 

@@ -2,7 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
 <html lang="en-US">
  <head>
-      <link href="ui/screen.css" rel="stylesheet" type="text/css" /><link href="ui/webkit.css" rel="stylesheet" type="text/css" />  <link type="image/x-icon" href="graphics/favicon.ico" rel="shortcut icon" />    <title>Horde :: Log in</title>
+      <link href="ui/screen.css" rel="stylesheet" type="text/css" />
+      <link href="ui/webkit.css" rel="stylesheet" type="text/css" />  
+      <link type="image/x-icon" href="graphics/favicon.ico" rel="shortcut icon" />    
+      <title>Horde :: Log in</title>
  </head>
 
  <body class="modal-form">
@@ -48,6 +51,7 @@
 
 <div>
  <input id="login-button" name="login_button" class="horde-default submit-button" value="Log in" type='button'/>
+ <input id="manage-button" name="manage_button" class="horde-default submit-button" value="Manage Accounts" type='button'/>
  <!-- <button type="button" onclick="redirect();">View Account</button> -->
 </div>
 
@@ -88,6 +92,11 @@ function show(msgs){
 }
 
 $(document).on("click",'#login-button',redirect);
+$(document).on("click",'#manage-button',manageAccounts);
+
+function manageAccounts(){
+  location.href="./account.html";
+}
 
 function redirect() {
     var id=document.getElementById('mail_accounts').value;
