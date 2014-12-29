@@ -100,7 +100,7 @@ function manageAccounts(){
 
 function redirect() {
     var id=document.getElementById('mail_accounts').value;
-    var url='./index.html?uid='+parseInt(id);
+    var url='./index.html?uid='+parseInt(id)+'&pid='+0;
     location.href=url;
     console.log(url);
     // var uid=getParameterByName('uid');

@@ -14,9 +14,12 @@ db.create_open_account_DB(loadAcc);
 
 function loadAcc(){
 	var uid=getParameterByName('uid');
+	pid=getParameterByName('pid');
+	console.log('pid: '+pid);	
+
 	try{
 		uid=parseInt(uid);
-		// console.log(uid);
+		pid=parseInt(pid);
 		db.loadAccountById(uid,start);
 	}catch(e){
 		location.href='./select.html';
@@ -418,4 +421,26 @@ function openForwardWindow(){
 	var url='./write.html?action='+action+'&id='+uid+'&mbox='+mbox+'&mid='+mid;
 	javascript:void window.open(url,'1417505292623',
       'width=750,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+}
+
+function nextPage(){
+	var uid=getParameterByName('uid');
+	var pid=getParameterByName('pid');
+	uid=parseInt(uid);
+	pid=parseInt(pid);
+
+	var url='./index.html?uid='+(uid)+'&pid='+(pid+1);
+	location.href=url;
+}
+
+function previousPage(){
+	var uid=getParameterByName('uid');
+	var pid=getParameterByName('pid');
+	uid=parseInt(uid);
+	pid=parseInt(pid);
+
+	if(pid<1)
+		return;
+	var url='./index.html?uid='+(uid)+'&pid='+(pid-1);
+	location.href=url;
 }

@@ -358,36 +358,57 @@ DBController.prototype.getMessages=function(cllBack,folder){
 		return;
 	}
 
-    objectStore.openCursor(null, "prev").onsuccess = function(event) {
-    	var obj=function(id,from,sub,date,body,seen,size,attachments){
-			this.id=id;
-			this.from=from;
-			this.subject=sub;
-			this.date=date;
-			this.body=body;
-			this.seen=seen;
-			this.size=size;
-			this.attachments=attachments;
-		}
+    // var os=objectStore.openCursor();
+    objectStore.count().onsuccess = function(event) {
+    	var total = event.target.result;
+		var needRandom = true;
+		console.log("ok, total is "+total);
 
-    	var cursor = event.target.result;    	
-    	if(cursor==null){
-    		// console.log(UIresult.length);
-    		cllBack(UIresult);
-    	}		
-		
-    	if (cursor) {	    	
-    		if(cursor.value){		    		
-				var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,cursor.value.body,cursor.value.seen,cursor.value.size,cursor.value.attachments);
-				UIresult.push(msg);
-				// console.log(msg);
-				// console.log("DB "+cursor.source.transaction.db.name);
-		    }	
+		// var pid=0; 
+		var msgs=msgPP; 
+		var skip=pid*msgs;
+		if(skip==0)
+			needRandom=false;
 
-		    cursor.continue();
+	    var os=objectStore.openCursor(null, "prev");
+	    os.onsuccess = function(event) {	
+	    	var obj=function(id,from,sub,date,body,seen,size,attachments){
+				this.id=id;
+				this.from=from;
+				this.subject=sub;
+				this.date=date;
+				this.body=body;
+				this.seen=seen;
+				this.size=size;
+				this.attachments=attachments;
+			}
+
+	    	var cursor = event.target.result; 	
+
+	    	if(cursor==null || msgs<1 || skip<0 || skip>total){
+	    		cllBack(UIresult);
+	    		return;
+	    	}		
+	    	if (cursor) {	    	
+	    			
+			    if(needRandom){
+			    	cursor.advance(skip);
+			    	needRandom=false;
+			    }else{
+			    	cursor.continue();
+
+				    if(cursor.value){		    		
+						var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,
+							cursor.value.body,cursor.value.seen,cursor.value.size,cursor.value.attachments);
+						UIresult.push(msg);
+						msgs--;
+				    }
+
+				}
+		    }
+			
 	    }
-		
-    }
+	}
 }
 
 DBController.prototype.addContain=function(record,id,folder){

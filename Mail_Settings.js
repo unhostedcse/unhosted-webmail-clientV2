@@ -15,3 +15,5 @@ var dbVersion=10;
 var refresh_interval=100000;
 var Unhosted_version=0.1;
 var autoSync=false;
+var msgPP=3;
+var pid=0;
