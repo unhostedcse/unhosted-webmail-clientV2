@@ -448,7 +448,7 @@ DBController.prototype.addMailBoxes=function(name,path){
 			};
 			var request=objectStore.add(record);
 		    request.onsuccess = function(event) {
-		    	console.log(path+' added to database' );
+		    	console.log(path+' added to database' );		    	
 		    	createMailBox(path);
 		   	};
 		   	request.onerror = function (event) {
@@ -485,9 +485,9 @@ DBController.prototype.addMailBoxes=function(name,path){
 	    };
 
 	    request.onblocked=function(event){
-	    	console.log('open onblocked '+event);    	
-	    	self.database.close();
-	    }
+	    	console.log('open onblocked '+event);    		    	
+	    	self.database.close();	    	
+	    };
 
 	    request.onupgradeneeded = function(event) {
 	    	console.log('created mailBox '+folder);    
@@ -499,6 +499,11 @@ DBController.prototype.addMailBoxes=function(name,path){
     this.getMailBoxes(fun);
     // createMailBox(path);
 
+}
+
+DBController.prototype.closeDB=function(func){
+	if(this.database)
+		this.database.close();
 }
 
 DBController.prototype.getMailBoxes=function(func){

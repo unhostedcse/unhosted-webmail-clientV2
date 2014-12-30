@@ -70,10 +70,16 @@ Sync_Module.prototype.getMailBoxesReady = function(mailBoxes){
 	}
 
   	$(document).on("mailBoxesCreated", 
-	function(e){
-		console.log('mailBoxesCreated '+e.folder);
+		function(e){
+			console.log('mailBoxesCreated '+e.folder);
+			
 			if(i==val.length){
-				$.event.trigger({type:"mailBoxesDownloaded"});
+				if(autoSync){
+					$.event.trigger({type:"mailBoxesDownloaded"});				
+				}else{
+					$.event.trigger({type:"mailBoxesDownloaded-false"});				
+					return;
+				}				
 			}else{
 				Sync_Module.db.addMailBoxes(val[i].type,val[i].folder);
 				i++;

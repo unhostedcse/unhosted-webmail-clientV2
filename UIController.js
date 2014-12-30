@@ -41,6 +41,7 @@ function start(status){
 					dbSelectFolder=selectFolder;				
 					sync=new Sync_Module(clearBody);
 					sync.init(addMsg,dbSelectFolder,setMailBoxBar);
+					db.closeDB();
 				});
 			});
 
@@ -80,12 +81,12 @@ function initUnhosted(){
 	var a=document.getElementsByClassName('horde-icon');
 
 
-	a[1].removeAttribute("idval");
-	a[2].removeAttribute("idval");
+	a[3].removeAttribute("idval");
+	a[4].removeAttribute("idval");
 	a[5].removeAttribute("idval");
 
-	a[1].setAttribute("style","display: none");
-	a[2].setAttribute("style","display: none");
+	a[3].setAttribute("style","display: none");
+	a[4].setAttribute("style","display: none");
 	a[5].setAttribute("style","display: none");
 }
 
@@ -99,17 +100,36 @@ $(document).on("click",'#checkmaillink',
 	function(e) {
 		console.log('refresh mail boxes');
 
-		  // uncomment
-
-		// sync.refresh();
 		if(autoSync){
 			sync.getMailBoxesScenario();			
 		}else{
 			if(selectFolder && selectFolder!="" && selectFolder!=null){
 				dbSelectFolder=selectFolder;
 				sync.getUids();
+			}else{
+				sync.getMailBoxesScenario();
 			}
 		}
+	}
+);
+
+//after download mboxes
+$(document).on("mailBoxesDownloaded-false", 
+	function(e){
+		console.log('mailBoxesDownloaded');
+
+		db.create_openDB(username,'',
+			function(){
+				db.getMailBoxes(function(boxs){
+					if(boxs && boxs.length>0){
+						selectFolder=boxs[0];						
+					}
+					dbSelectFolder=selectFolder;									
+					db.closeDB();
+					initUnhosted();
+					sync.getUids();
+			});
+		});		
 	}
 );
 
@@ -266,15 +286,15 @@ function createAttachmentLink(file){
 $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 
 	var a=document.getElementsByClassName('horde-icon');
-	a[1].removeAttribute("style");
-	a[2].removeAttribute("style");
+	a[3].removeAttribute("style");
+	a[4].removeAttribute("style");
 	a[5].removeAttribute("style");
 
 	$('.vpRowHoriz.vpRow.DragElt.vpRowSelected').removeClass('vpRowSelected');
 	var val=$(this).attr('id');
 
-	a[1].setAttribute("idval",val);
-	a[2].setAttribute("idval",val);
+	a[3].setAttribute("idval",val);
+	a[4].setAttribute("idval",val);
 	a[5].setAttribute("idval",val);
 
     $(this).addClass('vpRowSelected');
