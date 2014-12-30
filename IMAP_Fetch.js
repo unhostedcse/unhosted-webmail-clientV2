@@ -261,18 +261,24 @@ IMAP_Fetch.prototype.getHeaderScenario =function(f){
   IMAP_Fetch.cmds.push(this.login);
   IMAP_Fetch.cmds.push(this.select);
 
-  for(var i=0;i<result.fetchList.length;i++){
+  var cnt=0;
+  //for(var i=0;i<result.fetchList.length;i++){
+  for(var i=result.fetchList.length-1;i>0;i--){ // iterate over backword
       var ids=result.fetchList[i];
       var id=ids;
-      // console.log('id= '+id+ ' flag= '+ids[1]);
+      var currentCnt=result.keys.length;
+
       if(result.keys.indexOf(parseInt(id))<0){
         IMAP_Fetch.cmds.push([this.fetchBody,id]);
-        console.log('id '+id+" not in DB");
-        // alert('max id '+result.keys[result.keys.length-1]+' got id: '+id);
-        // console.log(typeof(id)+" "+typeof(result.keys[i]));
-      }
-      else
+        console.log('id '+id+" not in DB");        
+      }else{
         console.log('id '+id+" alread in DB");
+      }
+
+      cnt++;
+      if(maxMsg==cnt){
+        break;
+      }
   }
 
   if(IMAP_Fetch.cmds.length==3){
