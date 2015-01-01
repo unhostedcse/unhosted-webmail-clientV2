@@ -162,7 +162,7 @@ Sync_Module.prototype.getHeadersReady = function(){
 	result.fetchMIME=new Array();
 	console.log("finished adding DB");
 
-	
+	$('#checkmaillink').removeClass('imp-loading');
 	
 }
 
@@ -253,6 +253,13 @@ Sync_Module.CheckNewMail = function(fetchList,keys){
   	}
 
   	console.log('new mail '+newMailCnt);
+  	var obj={
+  		"type": 'info',
+		"title": 'New Mail',
+		"text": newMailCnt+' New Mails'
+  	};
+
+  	$.event.trigger({type:"notifier",obj:obj});
 
   	if(maxMsg<currentCnt+newMailCnt){
   		var mailDelete=(currentCnt+newMailCnt)-maxMsg;

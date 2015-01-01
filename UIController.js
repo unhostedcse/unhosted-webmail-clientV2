@@ -98,6 +98,8 @@ function startSMTP(){
 //checkmaillink
 $(document).on("click",'#checkmaillink',
 	function(e) {
+
+		$('#checkmaillink').addClass('imp-loading');
 		console.log('refresh mail boxes');
 
 		if(autoSync){
@@ -440,7 +442,7 @@ function openWriteWindow(){
 function openReplyWindow(){
 
 	var a=document.getElementsByClassName('horde-icon');	
-	var mid=a[1].getAttribute('idval');
+	var mid=a[3].getAttribute('idval');
 
 	var mbox=selectFolder;
 	var action='reply';
@@ -453,7 +455,7 @@ function openReplyWindow(){
 
 function openForwardWindow(){
 	var a=document.getElementsByClassName('horde-icon');	
-	var mid=a[1].getAttribute('idval');
+	var mid=a[4].getAttribute('idval');
 
 	var mbox=selectFolder;
 	var action='forward';
@@ -500,3 +502,20 @@ function DeleteMessages(){
 
 	sync.delete(ids,selectFolder,true,function(){location.reload();});
 }
+
+/////notification
+(function($){
+	// $(document).on("notify1",function(event){console.log(event)});
+
+	$(document).on("notifier",function(event){
+		var ob=event.obj;
+		$.notifier({"type": event.type,
+	                "title": ob.title,
+	                "text": ob.text,
+	                "positionY": "bottom",
+	                "positionX": "left",
+	                "animationIn" : 'bounce',
+                	"animationOut" : 'drop'
+	    });
+	});    
+})(jQuery);

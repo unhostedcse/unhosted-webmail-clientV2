@@ -659,7 +659,7 @@ DBController.prototype.getMailById=function(id,folder,func){
 	var request = objectStore.get(id);
 	request.onerror = function(event) {
 	  // Handle errors!
-	  // console.log(event);
+	  console.log(event);
 	};
 	request.onsuccess = function(event) {
 	  var data = request.result;
