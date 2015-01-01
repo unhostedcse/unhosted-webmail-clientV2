@@ -228,3 +228,41 @@ Sync_Module.prototype.viewDB = function(){
 Sync_Module.prototype.test = function(){
  	Sync_Module.db.getKeys();
  }
+
+Sync_Module.prototype.delete = function(ids,folder,completeDelete,cllBack){
+ 	Sync_Module.db.deleteMessages(ids,folder,completeDelete,cllBack);
+}
+
+Sync_Module.CheckNewMail = function(fetchList,keys){
+	var re=new Array();
+ 	var currentCnt=keys.length;
+ 	var newMailCnt=0;
+ 	var id;
+ 	for(var i=fetchList.length-1;i>=0;i--){ // iterate over backword     
+ 	  id=parseInt(fetchList[i]);
+      if(keys.indexOf(id)<0){
+      	re.push(id);
+      	newMailCnt++;
+      }else{
+      	console.log('no more new mail');
+      	break;      	
+      }
+      if(newMailCnt==maxMsg){
+      	break;
+      }
+  	}
+
+  	console.log('new mail '+newMailCnt);
+
+  	if(maxMsg<currentCnt+newMailCnt){
+  		var mailDelete=(currentCnt+newMailCnt)-maxMsg;
+  		for (var i = 0; i < mailDelete; i++) {
+  			var id=keys[0];
+  			console.log(id);
+  			Sync_Module.db.deleteMessages([id],selectFolder,false);
+  			console.log('deleteing mail '+id+' of '+selectFolder);
+  		};
+  		
+  	}
+  	return re;
+}

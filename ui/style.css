@@ -1,4 +1,4 @@
-.attachment {
+/*.attachment {
 	width: auto;
 	float: left;
 	padding-left: 10px;
@@ -13,12 +13,59 @@
 	display: block;
 	background-color: #999999;
 	/*margin-bottom: 1em;*/
+}*/
+
+.attachment{
+  margin-left: 1px;
+  padding-left: 20px;
+  background: url(toolbarOxygen/paperclip.png) center left no-repeat;
 }
 
-#bodyDisplay a {
+/*#bodyDisplay a {
 	text-decoration: none;
-}
+}*/
 
 #composeMessageParent a {
 	text-decoration: none;
+}
+
+.att {
+	background-color: #eceff0;
+	display: inline-block;
+	border: 1px solid #d0d0d0;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+.att:hover {
+	background-color: #33CCFF;
+}
+.iconU {
+	vertical-align: middle;		
+	background-color: transparent;
+	background-position: center top;
+	background-repeat: no-repeat;
+	display: inline-block;
+	height: 20px;
+	vertical-align: middle;
+	width: 20px;
+}
+
+.logo{
+	
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+.downloadU {
+	background-image: url('download.png');
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+	/* [disabled]background-position: right; */
+}
+.closeU {
+	background-image: url('closebox.png');
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+	background-position: right;
 }

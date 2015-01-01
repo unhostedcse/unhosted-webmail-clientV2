@@ -262,7 +262,8 @@ action.       </li>
       //event.preventDefault();
       var filename = f.name;
       // var background = technalxs.simplemail.SimpleMailMessageEncoder.getIconForAttachment(filename);          
-      html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat;' href='file://" + url + "'>" + filename + "</a>";
+      var background = 'ui/attachment.png';
+      html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat; background-size: 18px 18px; padding-left: 20px;' href='file://" + url + "'>" + filename + "</a>";
       pushAttachFile(html); 
     }else if (url.match(/^file:/)) { 
       var filename = technalxs.simplemail.SimpleMailFile.getFileName(url);

@@ -263,30 +263,37 @@ IMAP_Fetch.prototype.getHeaderScenario =function(f){
 
   var cnt=0;
   //for(var i=0;i<result.fetchList.length;i++){
-  for(var i=result.fetchList.length-1;i>0;i--){ // iterate over backword
-      var ids=result.fetchList[i];
-      var id=ids;
-      var currentCnt=result.keys.length;
 
-      if(result.keys.indexOf(parseInt(id))<0){
-        IMAP_Fetch.cmds.push([this.fetchBody,id]);
-        console.log('id '+id+" not in DB");        
-      }else{
-        console.log('id '+id+" alread in DB");
-      }
+  // for(var i=result.fetchList.length-1;i>0;i--){ // iterate over backword
+  //     var ids=result.fetchList[i];
+  //     var id=ids;
+  //     var currentCnt=result.keys.length;
 
-      cnt++;
-      if(maxMsg==cnt){
-        break;
-      }
-  }
+  //     if(result.keys.indexOf(parseInt(id))<0){
+  //       IMAP_Fetch.cmds.push([this.fetchBody,id]);
+  //       console.log('id '+id+" not in DB");        
+  //     }else{
+  //       console.log('id '+id+" alread in DB");
+  //     }
+
+  //     cnt++;
+  //     if(maxMsg==cnt){
+  //       break;
+  //     }
+  // }
+
+  var res=Sync_Module.CheckNewMail(result.fetchList,result.keys);
+  for (var i = 0; i < res.length; i++) {
+    IMAP_Fetch.cmds.push([this.fetchBody,res[i]]);
+    console.log('id '+res[i]+" not in DB");  
+  };
 
   if(IMAP_Fetch.cmds.length==3){
     console.log(dbSelectFolder+" MailBox Upto date"); 
     f();/// uptodate
     return;
   }
-  console.log(IMAP_Fetch.cmds.length);
+  // console.log(IMAP_Fetch.cmds.length);
 
   IMAP_Fetch.cmds.push(this.logout);
 

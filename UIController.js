@@ -184,33 +184,33 @@ $(document).on("mailBoxesReadNext",
 	}
 );
 
-$(document).on("composeMail", 
-	function(e){
-		alert(e.type);
-		console.log(e.type);		
-	}
-);
+// $(document).on("composeMail", 
+// 	function(e){
+// 		alert(e.type);
+// 		console.log(e.type);		
+// 	}
+// );
 
 
-function view(){
-	try{
-		// var db=new DBController();
-		// db.create_openDB(username);
-		Sync_Module.db.getMessages(addMsg);
+// function view(){
+// 	try{
+// 		// var db=new DBController();
+// 		// db.create_openDB(username);
+// 		Sync_Module.db.getMessages(addMsg);
 
-	}catch(e){
-		console.log(e);
-	}
-}
-var i=100;
+// 	}catch(e){
+// 		console.log(e);
+// 	}
+// }
+// var i=100;
 
-function addMailBox(){
-	try{
-		Sync_Module.db.addMailBoxes('test','test'+(i++));
-	}catch(e){
-		console.log(e);
-	}
-}
+// function addMailBox(){
+// 	try{
+// 		Sync_Module.db.addMailBoxes('test','test'+(i++));
+// 	}catch(e){
+// 		console.log(e);
+// 	}
+// }
 
 function clearBody(){
 	$(".vpRowHoriz.vpRow.DragElt").replaceWith('<div></div>');
@@ -237,7 +237,7 @@ function addMsg(mails){
 		var msg=mails[i];
 
 		//chrome not support contain
-		if(msg.seen.indexOf('\\Seen') >= 0 ) {
+		if(msg.seen && msg.seen.indexOf('\\Seen') >= 0 ) {
 		//if(msg.seen.contains('\\Seen')){
 			var seen=true;
 		}else{
@@ -245,16 +245,22 @@ function addMsg(mails){
 		}
 		
 		var date=DateUtil.toShortString(msg.date);
-		var size=Math.ceil(msg.size/1024);
+
+		if(msg.size=='-')
+			var size=msg.size;
+		else
+			var size=Math.ceil(msg.size/1024);
 
         $('.msglist').append('<div class="vpRowHoriz vpRow DragElt ' + (seen ? "" : 'flagUnseen') +'" id="'+msg.id+'" style="-moz-user-select: none;"></div>');
 		
 		var $good=$(".vpRowHoriz.vpRow.DragElt").last();
 		
-		$good.append('<div class="msgStatus">'+
-			'<div class="iconImg msCheck"></div>'+
-			(seen ? "" : '<div class="iconImg msgflags flagUnseen" title="Unseen"></div>')+
-			'</div>');
+		$good.append(									'<div class="msgStatus">'+
+														'<div class="iconImg msCheck "></div>'+
+										(seen ? ""	: 	'<div class="iconImg msgflags flagUnseen" title="Unseen"></div>')+
+		(msg.attachments && msg.attachments.length>0 ?	'<div class="iconImg msgflags flagAttachmsg" title="Attachments"></div>': "")+
+														'</div>');
+		// $good.append('<div class="iconImg msgflags flagAnswered" title="Flagged for Followup"></div>');
 
 		var from=SimpleMailAddress.parse(msg.from);
 		var name=from.name || from.email;
@@ -264,23 +270,35 @@ function addMsg(mails){
 		$good.append('<div class="msgSubject sep" title="'+msg.subject+'">'+msg.subject+'</div>');
 		$good.append('<div class="msgDate sep">'+date+'</div>');
 		$good.append('<div class="msgSize sep">'+size+' KB</div>');
-		$good.append('<div class="mid sep" style="display: none;">'+msg.id+' KB</div>');// for keep mail id
+		$good.append('<div class="mid sep" style="display: none;">'+msg.id+'</div>');// for keep mail id
 		//$good.append('<a id="body" class="body" href="'+msg.body+'" style="display: none;"></a>');
 
-		// $good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');
-
+		// $good.append('<textarea style="display: none;" class="body">'+msg.body+'</textarea>');		
 	}
 	$( "div[title='"+selectFolder+"']").addClass('horde-subnavi-active');
 	UIresult="";
 }
 
-function createAttachmentLink(file){
-
-	var link='<a class="attachment" title="'+file.name+'" download="'+file.name+'" href="'+file.uri+'">'+ file.name +'</a>';
-	// document.getElementById('bodyDisplay').innerHTML+=link;
-	return link;
-
+function createAttachmentLink(file){	
+	var size=Math.ceil(file.uri.length/1024);
+	var msg=''+
+	'<div class="att">'+
+	'<img src="ui/attachment.png" alt="" width="18" height="18" class="iconU logo"/>'+
+	'<span class="name">'+file.name+'</span>'+
+	'<span class="size"> ('+size+' KB)</span>'+
+	'<a mid="5" class="iconU downloadU" title="Download" download="'+file.name+'" href="'+file.uri+'"> </a>'+
+	// '<a class="iconU closeU" title="Close"></a>'+
+	'</div>';
+	return msg;
 }
+
+// function createAttachmentLink(file){
+
+// 	var link='<a class="attachment" title="'+file.name+'" download="'+file.name+'" href="'+file.uri+'">'+ file.name +'</a>';
+// 	// document.getElementById('bodyDisplay').innerHTML+=link;
+// 	return link;
+
+// }
 
 //show the body after after select a msg
 $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
@@ -309,18 +327,21 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 	$("#previewMsg .date").html(date);
 	$(".from_allowTextSelection").html('from');
 	
-	var db=new DBController();db.create_openDB(username ,"",
+	var db=new DBController();
+	db.create_openDB(username ,"",
             function(){
               	db.getMailById(mid,selectFolder,function(msg){
               	var body=msg.body;
               	var file;
 				var links='';
-				if(msg.attachments)
+				if(msg.attachments && msg.attachments.length>0){
 					for(var j=0;file=msg.attachments[j],j<msg.attachments.length;j++){
 						links+=createAttachmentLink(file);
 					}
+					links+='</br></br>';
+				}
 
-				body=links+'</br>'+body;
+				body=links+body;
 				document.getElementById('bodyDisplay').innerHTML=body;
               });
             }
@@ -382,9 +403,9 @@ function setMailBoxBar(mail){
 	
 }
 
-function startMe1(){
-	sync.getUids();
-}
+// function startMe1(){
+// 	sync.getUids();
+// }
 
 function startMailBoxesScenario(){
 	sync.getMailBoxesScenario();
@@ -463,4 +484,19 @@ function previousPage(){
 		return;
 	var url='./index.html?uid='+(uid)+'&pid='+(pid-1);
 	location.href=url;
+}
+
+function DeleteMessages(){
+	console.log('delete');
+	var ids=new Array();
+	var items=$('.vpRowHoriz.vpRow.DragElt.vpRowSelected');
+	var id;
+	for (var i = 0;i < items.length; i++) {
+		id=items[i].id;
+		ids.push(parseInt(id));
+		console.log(id);	
+	};
+	console.log(ids);
+
+	sync.delete(ids,selectFolder,true,function(){location.reload();});
 }

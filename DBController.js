@@ -397,11 +397,13 @@ DBController.prototype.getMessages=function(cllBack,folder){
 			    }else{
 			    	cursor.continue();
 
-				    if(cursor.value){		    		
-						var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,
-							cursor.value.body,cursor.value.seen,cursor.value.size,cursor.value.attachments);
-						UIresult.push(msg);
-						msgs--;
+				    if(cursor.value){	
+				    	if(!cursor.value.deleted ){	    		//&& cursor.value.body!='deleted'
+							var msg=new obj(cursor.key,cursor.value.From,cursor.value.Subject,cursor.value.Date,
+								cursor.value.body,cursor.value.seen,cursor.value.size,cursor.value.attachments);
+							UIresult.push(msg);
+							msgs--;
+						}
 				    }
 
 				}
@@ -409,6 +411,63 @@ DBController.prototype.getMessages=function(cllBack,folder){
 			
 	    }
 	}
+}
+
+DBController.prototype.deleteMessages=function(ids,folder,completeDelete,cllBack){
+	var self=this;
+	// var objectStore = this.database.transaction(folder).objectStore(folder);
+	// var tagIndex = objectStore.index("id");
+	// var toDelete = tagIndex.openKeyCursor(IDBKeyRange.only(tagno));
+	// toDelete.onsuccess = function() {
+	// 	var cursor = toDelete.result;
+	// 	if (cursor) {
+	// 		console.log(cursor);
+	// 	    // pstore.delete(cursor.primaryKey);
+	// 	    cursor.continue;
+	// 	}
+	// }
+
+	var id=ids[0];
+	var objectStore = this.database.transaction([folder], "readwrite").objectStore(folder);
+	var request = objectStore.get(id);
+
+	request.onerror = function(event) {
+	  // Handle errors!
+	};
+
+	request.onsuccess = function(event) {
+	  // Get the old value that we want to update
+	  var data = request.result;
+	  var newData={};
+
+	  // update the value(s) in the object that you want to change
+	  	if(completeDelete){
+		  newData.id=data.id;
+		  newData.deleted=true;
+		  data=newData;
+		}else{
+			newData.id=data.id;
+			newData.From=data.From;
+			newData.Subject=data.Subject;
+			newData.Date=data.Date;
+			newData.seen=data.seen;
+			newData.size='-';
+		  	data=newData;
+			data.body='deleted';
+		}
+
+	  // Put this updated object back into the database.
+	  var requestUpdate = objectStore.put(data,id);
+	   requestUpdate.onerror = function(event) {
+	     console.log(event);
+	   };
+	   requestUpdate.onsuccess = function(event) {
+	   	console.log("id " +id +" deleted ");
+	   		if(cllBack){
+	   			cllBack();
+	   		}
+	   };
+	};
 }
 
 DBController.prototype.addContain=function(record,id,folder){
@@ -512,6 +571,8 @@ DBController.prototype.getMailBoxes=function(func){
 	self=this;
 
 	if(!this.database){
+		if(func)
+	    	func(new Array());
 		return;
 	}
 
@@ -553,7 +614,7 @@ DBController.prototype.getKeys=function(func,folder){
     objectStore.openCursor().onsuccess = function(event) {
     	var cursor = event.target.result;    	
     	if (cursor) {	    	
-    		if(cursor.value){
+    		if(cursor.value && cursor.value.body!='deleted' && !cursor.value.deleted){
 		    	// console.log(cursor.key);
 		    	result.keys.push(cursor.key);
 		    }	
