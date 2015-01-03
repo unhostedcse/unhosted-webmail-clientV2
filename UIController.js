@@ -519,3 +519,7 @@ function DeleteMessages(){
 	    });
 	});    
 })(jQuery);
+
+$(document).on("test",function(event){
+	console.log('test');
+});

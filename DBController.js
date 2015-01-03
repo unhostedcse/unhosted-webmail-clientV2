@@ -94,6 +94,40 @@ DBController.prototype.getAccounts=function(fun){
   }
 }
 
+DBController.prototype.updateAccounts=function(id,newData){  
+
+  var objectStore = this.account_database.transaction([this.accountTableName], "readwrite").objectStore(this.accountTableName);
+	var request = objectStore.get(id);
+
+	request.onerror = function(event) {
+	  // Handle errors!
+	};
+
+	request.onsuccess = function(event) {
+	  // Get the old value that we want to update
+	  var data = request.result;
+	  // update the value(s) in the object that you want to change
+		data.username=newData.username;
+		data.password=newData.password;
+		data.smtphost=newData.smtphost;
+		data.smtpport=newData.smtpport;
+		data.imaphost=newData.imaphost;
+		data.imapport=newData.imapport;  
+		data.imapsecurity=newData.imapsecurity; 
+		data.smtpsecurity=newData.smtpsecurity;
+
+	  // Put this updated object back into the database.
+	  var requestUpdate = objectStore.put(data);
+	   requestUpdate.onerror = function(event) {
+	     console.log(event);
+	   };
+	   requestUpdate.onsuccess = function(event) {
+	   	console.log("id " +id +" update "+event.type);
+	   };
+	};
+
+}
+
 DBController.prototype.addAccount=function(){
   var transaction = this.account_database.transaction([this.accountTableName], "readwrite");
   var objectStore = transaction.objectStore(this.accountTableName);

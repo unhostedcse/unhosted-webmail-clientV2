@@ -16,7 +16,7 @@
 
 <body>
   <button type="button" onclick="addDB();">Add Account</button>
-  <button type="button" onclick="viewDB();">View Account</button>
+  <!-- <button type="button" onclick="viewDB();">View Account</button> -->  
   <br/>
 
 	<div id="displaydiv">
@@ -25,15 +25,16 @@
 	<table>
 		<tr>
         	<td>Account</td>
-            <td><select id="accounts" onchange="setSetting()">
-                <option value="gmail">Gmail</option>
-                <option value="hotmail">Outlook</option>  
-                <option value="local">localhost</option>
-                <option value="other">other</option>
+            <td>
+                <select id="accounts" onchange="setSetting()">
+                  <option value="gmail">Gmail</option>
+                  <option value="hotmail">Outlook</option>  
+                  <option value="local">localhost</option>
+                  <option value="other">other</option>
                 </select>
-            </td>
-     	</tr>       
-    </table>    
+           </td>
+   	</tr>       
+  </table>    
 </div>
  
 <div id="imapdiv">  
@@ -86,6 +87,61 @@
     </table>                 
 </div>
 
+</br>
+<select id="mail_accounts" onchange="showAccounts()"></select>
+<button type="button" onclick="updateDB();">Update Account</button>
+
+<div id="editAccount">  
+  <!-- <label>user</label> -->
+    <table>
+      <tr>
+        <td>user:</td>
+        <td><input type="text" id="newuser" value=""></td>
+      </tr> 
+      <tr>
+        <td>pass:</td>
+        <td><input type="text" id="newpass" value=""></td>
+      </tr>  
+      <tr>
+        <td>smtp:</td>
+        <td><input type="text" id="newsmtp" value=""></td>
+      </tr>
+      <tr>
+        <td>smtpport:</td>
+        <td><input type="text" id="newsmtpport" value=""></td>        
+        <td><select id="newsmtpsec" onchange="">
+            <option value="ssl">SSL</option>
+            <option value="tls">TLS</option>  
+            <option value="no">NO</option>  
+            </select>
+       </td>
+      </tr>          
+      <tr> 
+       <td>
+
+        
+       </td>       
+      </tr>
+      <tr>
+        <td>imap:</td>
+        <td><input type="text" id="newimap" value=""></td>
+      </tr>
+      <tr>
+        <td>imapport:</td>
+        <td><input type="text" id="newimapport" value=""></td>        
+        <td><select id="newimapsec" onchange="">
+            <option value="ssl">SSL</option>
+            <option value="tls">TLS</option>  
+            <option value="no">NO</option>  
+          </select>
+        </td>        
+        <!-- <td><input type="text" id="msgid" value=""></td> -->
+      </tr>
+           
+    </table>                 
+</div>
+<button type="button" onclick="location.href='./'">Back to Home</button>
+
 </body>
 
 
@@ -93,7 +149,19 @@
 
 //create_openDB();
 var db=new DBController();
-db.create_open_account_DB();
+db.create_open_account_DB(load);
+
+function load(){    
+  db.getAccounts(show);
+}
+
+function show(msgs){
+  var msg;
+  for (var i = 0; msg=msgs[i],i < msgs.length; i++) {
+    $("#mail_accounts").append('<option value="'+msg.id+'">'+msg.username+'</option>');
+  };  
+  showAccounts();
+}
 
 function addDB(){
   try{
@@ -108,6 +176,46 @@ function viewDB(){
   db.viewAccounts();  
 }
 
+function updateDB(){
+  var x = document.getElementById("mail_accounts").value;
+
+  var newData={};
+  newData.username=document.getElementById('newuser').value;
+  newData.password=document.getElementById('newpass').value;
+  newData.smtphost=document.getElementById('newsmtp').value;
+  newData.smtpport=document.getElementById('newsmtpport').value;
+  newData.imaphost=document.getElementById('newimap').value;
+  newData.imapport=document.getElementById('newimapport').value;  
+  newData.imapsecurity=document.getElementById('newimapsec').value; 
+  newData.smtpsecurity=document.getElementById('newsmtpsec').value;
+
+  db.updateAccounts(parseInt(x),newData);
+
+  
+}
+
+function showAccounts(){
+  var x = document.getElementById("mail_accounts").value;
+  try{
+    var id=parseInt(x);
+  }catch(e){
+    console.log(e);
+    return;
+  }
+  db.loadAccountById(id,showSetting);
+}
+
+function showSetting(acc){
+  // console.log(acc);
+  document.getElementById('newuser').value=acc.username;
+  document.getElementById('newpass').value=acc.password;
+  document.getElementById('newsmtp').value=acc.smtphost;
+  document.getElementById('newsmtpport').value=acc.smtpport;
+  document.getElementById('newimap').value=acc.imaphost;
+  document.getElementById('newimapport').value=acc.imapport;  
+  document.getElementById('newimapsec').value=acc.imapsecurity; 
+  document.getElementById('newsmtpsec').value=acc.smtpsecurity;
+}
 
  function setSetting(){
  	var x = document.getElementById("accounts").value;

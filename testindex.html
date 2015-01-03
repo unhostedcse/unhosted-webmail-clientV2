@@ -19,6 +19,8 @@
 <script type="text/javascript" src="File.js"></script>
 <script type="text/javascript" src="utils.js"></script>
 
+<script type="text/javascript" src="ui/jquery-2.1.1.js"></script>
+
 </head>
 
 
@@ -245,6 +247,116 @@ var res=new Array();
 var vv;
 
 function test(){
+var url='https://autoconfig.thunderbird.net/v1.1/gmail.com';
+
+// var a=$.getJSON("https://autoconfig.thunderbird.net/v1.1/gmail.com?jsoncallback=xml"//,
+  // function(data) {
+  //   // console.log(data);
+  // }
+// );
+
+  // function test(data) {
+  //   console.log(data);
+  // }
+
+// return;
+var xhr = makeCorsRequest();
+// xhr.send();
+
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // XHR for Chrome/Firefox/Opera/Safari.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // XDomainRequest for IE.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // CORS not supported.
+    xhr = null;
+  }
+  return xhr;
+}
+
+// Helper method to parse the title tag from the response.
+function getTitle(text) {
+  return text.match('<title>(.*)?</title>')[1];
+}
+
+// Make the actual CORS request.
+function makeCorsRequest() {
+  // All HTML5 Rocks properties support CORS.
+  // var url='https://autoconfig.thunderbird.net/v1.1/gmail.com';
+  var url="https://autoconfig.thunderbird.net/v1.1/gmail.com?jsoncallback=?"
+  var xhr = createCORSRequest('GET', url);
+  if (!xhr) {
+    alert('CORS not supported');
+    return;
+  }
+
+  // Response handlers.
+  xhr.onload = function() {
+    var text = xhr.responseText;
+    var title = getTitle(text);
+    alert('Response from CORS request to ' + url + ': ' + title);
+  };
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
+  xhr.send();
+}
+
+return;
+
+var mail='* LIST (\\NoInferiors \\UnMarked \\Trash) "/" "Trash"'+'\r\n'+
+'* LIST (\NoInferiors \UnMarked) "/" INBOX.Sent'+'\r\n'+
+'* LIST (\NoInferiors \UnMarked) "/" INBOX.Drafts'+'\r\n'+
+'* LIST (\NoInferiors \Marked \Sent) "/" Sent'+'\r\n'+
+'* LIST (\NoInferiors \Marked \Drafts) "/" Drafts'+'\r\n'+
+'* LIST (\NoInferiors \UnMarked) "/" INBOX.Trash'+'\r\n'+
+'* LIST (\HasNoChildren) "/" INBOX'+'\r\n'+
+'2 OK List completed.'+'\r\n'+'';
+
+mail='* LIST (\\HasNoChildren \\Trash) "." Trash'+'\r\n'+
+'* LIST (\HasNoChildren \Sent) "." Sent'+'\r\n'+
+'* LIST (\HasNoChildren) "." INBOX'+'\r\n'+
+'2 OK List completed.'+'\r\n'+'';
+
+  var getres;
+  res=mail;
+  var regexp = /\((.+?)\)/g;
+  // var regflag1 = /(\\(HasNoChildren|Noselect)( )*(\\(\w+))*)/g;
+  var or = /(\.|\")/g;
+  var regflag2 = /\"\.\" (.*?)\r\n/g;  
+  var regflag3 = /\"\.\" (.*?)/g;  
+  var out=new Array();
+  var type,folder,i=0,tmp;
+
+  while((getres = regflag3.exec(res))){      
+    // type=regflag1.exec(res);
+    folder=regflag2.exec(res);
+    tmp=regexp.exec(res);
+    // console.log(type);
+    console.log(folder);
+    console.log(folder[1]);
+    // console.log(tmp);
+    // if(tmp[1].indexOf('NoInferiors') >= 0){   
+    //     var ruk={
+    //      // type:  type[5],
+    //      folder: folder[1]
+    //     };
+    //     out[i]=ruk;
+    //     i++;
+    // }    
+  }
+
+console.log(out.length);
+console.log(out);
+
+return;
 
 var att='Date: Sat, 27 Dec 2014 20:24:58 +0530 (IST)'+'\r\n'+
 'From: unhostedcse@gmail.com'+'\r\n'+

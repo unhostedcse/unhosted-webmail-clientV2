@@ -62,8 +62,13 @@ IMAP_Interface.prototype.ListFolder = function() {
        var regexp = /\((.+?)\)/g;
       var regflag1 = /(\\(HasNoChildren|Noselect)( )*(\\(\w+))*)/g;
       //var regflag1 = /(\\(\w+)( )*(\\(\w+))*)/g;
-      var regflag2 = /\"\/\" \"(.*?)\"/g;  
-      var regflag3 = /\"\/\" \"(.*?)\"/g;  
+
+      // var regflag2 = /\"\/\" \"(.*?)\"/g;  
+      // var regflag3 = /\"\/\" \"(.*?)\"/g;  
+
+      var regflag2 = /\"(\/|\.)\" (.*?)\r\n/g;  
+      var regflag3 = /\"(\/|\.)\" (.*?)\r\n/g;  
+
       var out=new Array();
       var type,folder,i=0,tmp;
   while((getres = regflag3.exec(res))){      
@@ -71,12 +76,14 @@ IMAP_Interface.prototype.ListFolder = function() {
     folder=regflag2.exec(res);
     tmp=regexp.exec(res);
 
+    folder=folder[2].replace(/"/g,"");
+
     // true || crome not support contain
     //if(tmp[1].contains('HasNoChildren')){ 
     if(tmp[1].indexOf('HasNoChildren') >= 0){   
         var ruk={
          type:  type[5],
-         folder: folder[1]
+         folder: folder
         };
         out[i]=ruk;
         i++;
@@ -84,6 +91,20 @@ IMAP_Interface.prototype.ListFolder = function() {
     
   }
         
+  var isInbox=/inbox/i;
+
+  //Move Inbox mbox at first
+    if(out.length>0){
+      for (var i = 0; i < out.length; i++) {
+        if(out[i].folder.match(isInbox)){
+          if(i!=0){
+            var tm=out[0];
+            out[0]=out[i];
+            out[i]=tm;
+          }
+        }
+      };      
+    }
     return out;
   }
   this.tag++;

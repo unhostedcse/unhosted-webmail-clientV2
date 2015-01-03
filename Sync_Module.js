@@ -199,8 +199,23 @@ Sync_Module.prototype.getBodyFinished = function(){
 }
 
 Sync_Module.prototype.SendMailReady = function(){
-	alert('Mail Sent!');
-	console.log('finished SendMailReady');
+	// alert('Mail Sent!');
+	console.log('finished SendMailReady');	
+
+	setTimeout(function(){
+		window.close();
+	},500);
+	
+  	$.notifier({"type": 'info',
+	                "title": 'Mail Sent',
+	                "text": 'Mail Sent Succesfully',
+	                "positionY": "bottom",
+	                "positionX": "left",
+	                "animationIn" : 'bounce',
+                	"animationOut" : 'drop'
+	});	
+
+	
 }
 
 Sync_Module.prototype.SendMail = function(){
