@@ -1,3 +1,17 @@
+#notifier h1, h2, h3, h4, h5, h6, p, blockquote, pre{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+#notifier h1 { 
+	font-size:32px; 
+	margin:20px auto
+}
+
 #notifier{
 	position: absolute;
 	display: block;

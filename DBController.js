@@ -398,6 +398,10 @@ DBController.prototype.getMessages=function(cllBack,folder){
 		var needRandom = true;
 		console.log("ok, total is "+total);
 
+		//show mbox size in main page
+		document.getElementById('mailboxName').innerHTML=folder+' ('+total+' messages)';
+		
+
 		// var pid=0; 
 		var msgs=msgPP; 
 		var skip=pid*msgs;

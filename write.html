@@ -162,9 +162,9 @@ action.       </li>
    </tbody></table>
   </div>
 
-  <div id="composeMessageParent" contenteditable style="height:  50%;">
+  <div contentEditable="true" id="composeMessageParent" style="height:  50%;">
    <!-- <textarea style="height:  50%;" name="message" id="composeMessage" class="fixed"> -->
-</textarea>
+<!-- </textarea> -->
   </div>
 
  </div>
@@ -172,7 +172,7 @@ action.       </li>
 </div>
 
 <script type="text/javascript"  src="ui/jquery-2.1.1.js"></script> 
-  <!--
+  
   <script type="text/javascript" src="js/prototype.js"></script>
   <script type="text/javascript" src="js/horde.js"></script>
   <script type="text/javascript" src="js/compose-dimp.js"></script>
@@ -201,7 +201,7 @@ action.       </li>
 
   <script type="text/javascript" src="js/sound.js"></script>
   <script type="text/javascript" src="js/ckeditor_basic.js"></script>  
-   -->
+  <!-- -->
 
 
 <script type="text/javascript" src="logger.js"></script>
@@ -220,8 +220,9 @@ action.       </li>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="File.js"></script>
 
-<link rel="Stylesheet" type="text/css" href="wys/jHtmlArea.css" />
-<script type="text/javascript" src="wys/jHtmlArea-0.8.js"></script>
+<!-- <link rel="Stylesheet" type="text/css" href="wys/jHtmlArea.css" />
+<script type="text/javascript" src="wys/jHtmlArea-0.8.js"></script> -->
+
 <link href="./ui/notification/notifier.css" rel="stylesheet" type="text/css">
 <!-- <script src="./ui/notification/jquery.min.js"></script> -->
 <script src="./ui/notification/jquery-ui.min.js"></script>
@@ -262,22 +263,21 @@ action.       </li>
 
     // var ttype = technalxs.simplemail.SimpleMailFile.getMimeType(url);
 
-    if (true || ttype.match(/^image/i)){
-      //event.preventDefault();
-      var filename = f.name;
-      // var background = technalxs.simplemail.SimpleMailMessageEncoder.getIconForAttachment(filename);          
-      var background = 'ui/attachment.png';
-      html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat; background-size: 18px 18px; padding-left: 20px;' href='file://" + url + "'>" + filename + "</a>";
-      pushAttachFile(html); 
-    }else if (url.match(/^file:/)) { 
-      var filename = technalxs.simplemail.SimpleMailFile.getFileName(url);
-      var background = technalxs.simplemail.SimpleMailMessageEncoder.getIconForAttachment(filename);          
-      html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat;' href='" + url + "'>" + filename + "</a>";
-      technalxs.simplemail.SimpleMailNewMessage.pushAttachFile(html); 
+      if (true || ttype.match(/^image/i)){
+        //event.preventDefault();
+        var filename = f.name;
+        // var background = technalxs.simplemail.SimpleMailMessageEncoder.getIconForAttachment(filename);          
+        var background = 'ui/attachment.png';
+        html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat; background-size: 18px 18px; padding-left: 20px;' href='file://" + url + "'>" + filename + "</a>";
+        pushAttachFile(html); 
+      }else if (url.match(/^file:/)) { 
+        var filename = technalxs.simplemail.SimpleMailFile.getFileName(url);
+        var background = technalxs.simplemail.SimpleMailMessageEncoder.getIconForAttachment(filename);          
+        html = "<a class='attachment' style='background: url(" + background + ")center left no-repeat;' href='" + url + "'>" + filename + "</a>";
+        technalxs.simplemail.SimpleMailNewMessage.pushAttachFile(html); 
+      }
+
     }
-
-  }
-
   }
 
    function pushAttachFile(html){

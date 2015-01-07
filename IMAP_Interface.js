@@ -71,30 +71,39 @@ IMAP_Interface.prototype.ListFolder = function() {
 
       var out=new Array();
       var type,folder,i=0,tmp;
+
   while((getres = regflag3.exec(res))){      
     type=regflag1.exec(res);
     folder=regflag2.exec(res);
+
     tmp=regexp.exec(res);
 
     folder=folder[2].replace(/"/g,"");
+    console.log(folder);
 
     // true || crome not support contain
     //if(tmp[1].contains('HasNoChildren')){ 
+      try{
     if(tmp[1].indexOf('HasNoChildren') >= 0){   
         var ruk={
-         type:  type[5],
+         type:  (type ? type[5] || null : null),
          folder: folder
         };
         out[i]=ruk;
         i++;
+        console.log(ruk);
     }
-    
+      }catch(e){
+        console.log(e);     
+      }
+    // console.log(folder+' '+ruk  );    
   }
-        
-  var isInbox=/inbox/i;
+     
+  console.log(out);   
+  // var isInbox=/inbox/i;
 
   //Move Inbox mbox at first
-    if(out.length>0){
+    if(false && out.length>0){
       for (var i = 0; i < out.length; i++) {
         if(out[i].folder.match(isInbox)){
           if(i!=0){
@@ -105,8 +114,11 @@ IMAP_Interface.prototype.ListFolder = function() {
         }
       };      
     }
+
+    console.log(out);
     return out;
   }
+
   this.tag++;
   var cmd=new IMAPCommand(this.tag,"LIST \"\" \"*\"",f);
   this.tcp.connect('ListFolder',JSON.stringify(cmd));

@@ -6,6 +6,11 @@
 
 <script type="text/javascript" src="DBController.js"></script>
 <script type="text/javascript" src="Mail_Settings.js"></script>
+<script type="text/javascript" src="Auto_Config_Get.js"></script>
+<script type="text/javascript" src="Auto_Config_Interface.js"></script>
+<script type="text/javascript" src="logger.js"></script>
+<script type="text/javascript" src="TCP_Interface.js"></script>
+
 <script type="text/javascript"  src="ui/jquery-2.1.1.js"></script>
 
 </head>
@@ -16,6 +21,7 @@
 
 <body>
   <button type="button" onclick="addDB();">Add Account</button>
+  <button type="button" onclick="Check();">Check Config</button>
   <!-- <button type="button" onclick="viewDB();">View Account</button> -->  
   <br/>
 
@@ -28,9 +34,11 @@
             <td>
                 <select id="accounts" onchange="setSetting()">
                   <option value="gmail">Gmail</option>
+                  <option value="gmail">cse.mrt.ac.lk</option>
                   <option value="hotmail">Outlook</option>  
                   <option value="local">localhost</option>
-                  <option value="other">other</option>
+                  <option value="uom.lk">uom.lk</option>
+                  <option value="other" selected>other</option>
                 </select>
            </td>
    	</tr>       
@@ -42,19 +50,19 @@
     <table>
       <tr>
         <td>user:</td>
-        <td><input type="text" id="user" value="unhostedcse@gmail.com"></td>
+        <td><input type="text" id="user" value=""></td>
       </tr> 
       <tr>
         <td>pass:</td>
-        <td><input type="text" id="pass" value="unhostedcse12345"></td>
+        <td><input type="text" id="pass" value=""></td>
       </tr>  
       <tr>
       	<td>smtp:</td>
-        <td><input type="text" id="smtp" value="smtp.gmail.com"></td>
+        <td><input type="text" id="smtp" value=""></td>
       </tr>
       <tr>
       	<td>smtpport:</td>
-      	<td><input type="text" id="smtpport" value="465"></td>        
+      	<td><input type="text" id="smtpport" value=""></td>        
       	<td><select id="smtpsec" onchange="">
             <option value="ssl">SSL</option>
             <option value="tls">TLS</option>  
@@ -70,11 +78,11 @@
       </tr>
       <tr>
       	<td>imap:</td>
-        <td><input type="text" id="imap" value="imap.gmail.com"></td>
+        <td><input type="text" id="imap" value=""></td>
       </tr>
       <tr>
       	<td>imapport:</td>
-      	<td><input type="text" id="imapport" value="993"></td>        
+      	<td><input type="text" id="imapport" value=""></td>        
       	<td><select id="imapsec" onchange="">
           	<option value="ssl">SSL</option>
           	<option value="tls">TLS</option>  
@@ -220,8 +228,8 @@ function showSetting(acc){
  function setSetting(){
  	var x = document.getElementById("accounts").value;
  	if (x=='gmail') {
- 		document.getElementById('user').value='unhostedcse@gmail.com';
-		document.getElementById('pass').value='rusasuergi@150';
+ 		document.getElementById('user').value='';
+		document.getElementById('pass').value='';
 		document.getElementById('smtp').value='smtp.gmail.com';
 		document.getElementById('smtpport').value='465';
 		document.getElementById('imap').value='imap.gmail.com';
@@ -229,8 +237,8 @@ function showSetting(acc){
 		document.getElementById('imapsec').value='ssl';	
 		document.getElementById('smtpsec').value='ssl';	
  	}else if(x=='hotmail'){ 	
- 		document.getElementById('user').value='unhostedcse@outlook.com';//dW5ob3N0ZWRjc2VAb3V0bG9vay5jb20=
-		document.getElementById('pass').value='projects12345';//cHJvamVjdHMxMjM0NQ==
+ 		document.getElementById('user').value='';
+		document.getElementById('pass').value='';
 		document.getElementById('smtp').value='Smtp-mail.outlook.com';
 		document.getElementById('smtpport').value='587';
 		document.getElementById('imap').value='imap-mail.outlook.com';
@@ -238,8 +246,8 @@ function showSetting(acc){
     document.getElementById('imapsec').value='ssl'; 
     document.getElementById('smtpsec').value='tls';  	
  	}else if(x=='local'){ 	
- 		document.getElementById('user').value='rukshan';
-		document.getElementById('pass').value='17806';
+ 		document.getElementById('user').value='';
+		document.getElementById('pass').value='';
 		document.getElementById('smtp').value='localhost';
 		document.getElementById('smtpport').value='25';
 		document.getElementById('imap').value='localhost';
@@ -253,7 +261,16 @@ function showSetting(acc){
 		document.getElementById('smtpport').value='';
 		document.getElementById('imap').value='';
 		document.getElementById('imapport').value='';		 	
- 	}	
+ 	}else if(x=='uom.lk'){  
+    document.getElementById('user').value='';
+    document.getElementById('pass').value='';
+    document.getElementById('smtp').value='submit.uom.lk';
+    document.getElementById('smtpport').value='587';
+    document.getElementById('imap').value='uom.lk';
+    document.getElementById('imapport').value='143';     
+    document.getElementById('imapsec').value='no';  
+    document.getElementById('smtpsec').value='no';  
+  } 
  } 
 
 var database;
@@ -295,7 +312,34 @@ function create_openDB(indexedDBName){
 
 }
 
+var imaps=0;
+var domain="example.com";
+function Check(){
+  var config=new Auto_Config_Get(++imaps);
 
+  var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  domain=document.getElementById('user').value;
+  if (!filter.test(domain)) {
+    alert('Please provide a valid email address');
+  }else {
+    domain = domain.replace(/.*@/, "");
+    console.log('Searching config for domain: '+domain);
+    config.getConfigs(function(result){
+      if(!result){
+        console.log('no config found, enter manually'); 
+        return;
+      }
+      //console.log(result);
+      document.getElementById('smtp').value=result.smtphost;
+      document.getElementById('smtpport').value=result.smtpport;
+      document.getElementById('smtpsec').value=(result.smtpsec=="STARTTLS" ? 'tls' : (result.smtpsec=="SSL" ? 'ssl' : 'no'));
+      document.getElementById('imap').value=result.imaphost;
+      document.getElementById('imapport').value=result.imapport;
+      document.getElementById('imapsec').value=(result.imapsec=="SSL" ? 'ssl' : 'no');
+      console.log('Auto_Config_Get finish');
+    });
+  }
+}
 
 </script>
 </html>

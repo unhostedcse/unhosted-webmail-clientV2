@@ -30,7 +30,7 @@ function loadAcc(){
 var sync;
 function start(status){	
 	if(status){
-
+		showAccountName();
 		db.create_openDB(username,'',
 			function(){
 				db.getMailBoxes(function(boxs){
@@ -91,8 +91,12 @@ function initUnhosted(){
 }
 
 function startSMTP(){ 
-
   sync.SendMail();
+}
+
+
+function showAccountName(){
+	document.getElementById('accountName').innerHTML=username;
 }
 
 //checkmaillink
