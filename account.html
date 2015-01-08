@@ -4,6 +4,11 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
+<link href="ui/screen.css" rel="stylesheet" type="text/css" />
+<link href="ui/webkit.css" rel="stylesheet" type="text/css" />  
+<link type="image/x-icon" href="graphics/favicon.ico" rel="shortcut icon" /> 
+<link rel="stylesheet" type="text/css" href="ui/style.css">
+      
 <script type="text/javascript" src="DBController.js"></script>
 <script type="text/javascript" src="Mail_Settings.js"></script>
 <script type="text/javascript" src="Auto_Config_Get.js"></script>
@@ -15,21 +20,32 @@
 
 </head>
 
+<body class="container-form">
 
+<button class="" id="back" type="button" onclick="location.href='./'">Back to Home</button>    
+<button id="" type="button" onclick="showConfigAdd();" >Add Account</button>           
 
+<div id="displaydiv" class="container-form-nest">
 
+<div class="accountHolder" id="accountHolder">
+	<div class="accountBox" id="0321">
+		<div class="accountName">ruky@gmail.com</div>
+		<div class="iconU accountEdit"></div>
+		<div class="iconU accountRemove"></div>                
+	</div>
+    <div class="accountBox" id="1321" >
+		<div class="accountName"><span>ruky@outlook.com</span></div>
+		<div class="iconU accountEdit"></div>
+		<div class="iconU accountRemove"></div>                
+	</div>
+</div>
 
-<body>
-  <button type="button" onclick="addDB();">Add Account</button>
-  <button type="button" onclick="Check();">Check Config</button>
-  <!-- <button type="button" onclick="viewDB();">View Account</button> -->  
-  <br/>
-
-	<div id="displaydiv">
-
-
-	<table>
-		<tr>
+</div>
+ 
+<div id="configdiv" class="container-form-nest" style="visibility: hidden;">    
+    <table>
+    <col width="115">
+    <tr id="accountsConfig">
         	<td>Account</td>
             <td>
                 <select id="accounts" onchange="setSetting()">
@@ -41,28 +57,25 @@
                   <option value="other" selected>other</option>
                 </select>
            </td>
-   	</tr>       
-  </table>    
-</div>
- 
-<div id="imapdiv">  
-	<!-- <label>user</label> -->
-    <table>
+   	</tr>  
       <tr>
-        <td>user:</td>
+        <td>Username:</td>
         <td><input type="text" id="user" value=""></td>
       </tr> 
       <tr>
-        <td>pass:</td>
-        <td><input type="text" id="pass" value=""></td>
+        <td>Password:</td>
+        <td><input type="password" id="pass" value=""></td>
       </tr>  
       <tr>
-      	<td>smtp:</td>
+      	<td>SMTP Hostname:</td>
         <td><input type="text" id="smtp" value=""></td>
       </tr>
       <tr>
-      	<td>smtpport:</td>
-      	<td><input type="text" id="smtpport" value=""></td>        
+      	<td>SMTP Port:</td>
+        <td><input type="text" id="smtpport" value=""></td>
+      </tr>
+      <tr>
+      	<td>SMTP Security:</td>      	        
       	<td><select id="smtpsec" onchange="">
             <option value="ssl">SSL</option>
             <option value="tls">TLS</option>  
@@ -77,12 +90,15 @@
        </td>       
       </tr>
       <tr>
-      	<td>imap:</td>
+      	<td>IMAP Hostname:</td>
         <td><input type="text" id="imap" value=""></td>
       </tr>
       <tr>
-      	<td>imapport:</td>
+      	<td>IMAP Port:</td>
       	<td><input type="text" id="imapport" value=""></td>        
+      </tr>
+      <tr>
+      	<td>IMAP Security:</td>
       	<td><select id="imapsec" onchange="">
           	<option value="ssl">SSL</option>
           	<option value="tls">TLS</option>  
@@ -90,66 +106,13 @@
         	</select>
     	  </td>        
         <!-- <td><input type="text" id="msgid" value=""></td> -->
-      </tr>
-           
-    </table>                 
+      </tr>           
+    </table>  
+    
+  	<button id="check" type="button" onclick="Check();" style="visibility: hidden;">Set Config</button>
+    <button id="updateDB" type="button" onclick="updateDB();" style="visibility: hidden;">Update Account</button>   
+	<button id="addDb" type="button" onclick="addDB();" style="visibility: hidden;">Add</button> 
 </div>
-
-</br>
-<select id="mail_accounts" onchange="showAccounts()"></select>
-<button type="button" onclick="updateDB();">Update Account</button>
-
-<div id="editAccount">  
-  <!-- <label>user</label> -->
-    <table>
-      <tr>
-        <td>user:</td>
-        <td><input type="text" id="newuser" value=""></td>
-      </tr> 
-      <tr>
-        <td>pass:</td>
-        <td><input type="text" id="newpass" value=""></td>
-      </tr>  
-      <tr>
-        <td>smtp:</td>
-        <td><input type="text" id="newsmtp" value=""></td>
-      </tr>
-      <tr>
-        <td>smtpport:</td>
-        <td><input type="text" id="newsmtpport" value=""></td>        
-        <td><select id="newsmtpsec" onchange="">
-            <option value="ssl">SSL</option>
-            <option value="tls">TLS</option>  
-            <option value="no">NO</option>  
-            </select>
-       </td>
-      </tr>          
-      <tr> 
-       <td>
-
-        
-       </td>       
-      </tr>
-      <tr>
-        <td>imap:</td>
-        <td><input type="text" id="newimap" value=""></td>
-      </tr>
-      <tr>
-        <td>imapport:</td>
-        <td><input type="text" id="newimapport" value=""></td>        
-        <td><select id="newimapsec" onchange="">
-            <option value="ssl">SSL</option>
-            <option value="tls">TLS</option>  
-            <option value="no">NO</option>  
-          </select>
-        </td>        
-        <!-- <td><input type="text" id="msgid" value=""></td> -->
-      </tr>
-           
-    </table>                 
-</div>
-<button type="button" onclick="location.href='./'">Back to Home</button>
-
 </body>
 
 
@@ -166,9 +129,8 @@ function load(){
 function show(msgs){
   var msg;
   for (var i = 0; msg=msgs[i],i < msgs.length; i++) {
-    $("#mail_accounts").append('<option value="'+msg.id+'">'+msg.username+'</option>');
-  };  
-  showAccounts();
+    addAccountToView(msg);	
+  };
 }
 
 function addDB(){
@@ -185,21 +147,20 @@ function viewDB(){
 }
 
 function updateDB(){
-  var x = document.getElementById("mail_accounts").value;
+  var accs=document.getElementsByClassName('accountBox accountBoxSelect');
+  var x = accs[0].getAttribute('id');
 
   var newData={};
-  newData.username=document.getElementById('newuser').value;
-  newData.password=document.getElementById('newpass').value;
-  newData.smtphost=document.getElementById('newsmtp').value;
-  newData.smtpport=document.getElementById('newsmtpport').value;
-  newData.imaphost=document.getElementById('newimap').value;
-  newData.imapport=document.getElementById('newimapport').value;  
-  newData.imapsecurity=document.getElementById('newimapsec').value; 
-  newData.smtpsecurity=document.getElementById('newsmtpsec').value;
+  newData.username=document.getElementById('user').value;
+  newData.password=document.getElementById('pass').value;
+  newData.smtphost=document.getElementById('smtp').value;
+  newData.smtpport=document.getElementById('smtpport').value;
+  newData.imaphost=document.getElementById('imap').value;
+  newData.imapport=document.getElementById('imapport').value;  
+  newData.imapsecurity=document.getElementById('imapsec').value; 
+  newData.smtpsecurity=document.getElementById('smtpsec').value;
 
-  db.updateAccounts(parseInt(x),newData);
-
-  
+  db.updateAccounts(parseInt(x),newData);  
 }
 
 function showAccounts(){
@@ -210,7 +171,7 @@ function showAccounts(){
     console.log(e);
     return;
   }
-  db.loadAccountById(id,showSetting);
+  db.loadAccountById(id,addAccountToView);
 }
 
 function showSetting(acc){
@@ -339,6 +300,142 @@ function Check(){
       console.log('Auto_Config_Get finish');
     });
   }
+}
+
+//$(document).on("click",'.accountBox.accountEdit',editAccout);
+//$(document).on("click",'.accountBox.accountRemove',removeAccout);
+$(document).on("click",'.accountBox',selectAccout);
+
+
+function editAccout(e){
+	console.log('editAccout');
+	var accs=document.getElementsByClassName('accountBox');
+	var x=e.clientX;
+	var y=e.clientY;
+	for (var i=0;i<accs.length;i++){
+		var rect=accs[i].getBoundingClientRect();
+		if(x>rect.left && x<rect.right)
+			if(y<rect.bottom && y>rect.top){
+				var name=accs[i].getElementsByClassName('accountName')[0];
+				console.log(name.textContent);
+				var id=parseInt(accs[i].getAttribute('id'));
+				console.log(id);
+				accs[i].classList.add('accountBoxSelect');		
+				db.loadAccountById(id,showConfigUpdate);				
+			}				
+	}	
+}
+
+function removeAccout(e){
+	console.log('removeAccout');
+	var accs=document.getElementsByClassName('accountBox');
+	var x=e.clientX;
+	var y=e.clientY;
+	for (var i=0;i<accs.length;i++){
+		var rect=accs[i].getBoundingClientRect();
+		if(x>rect.left && x<rect.right)
+			if(y<rect.bottom && y>rect.top){
+				var name=accs[i].getElementsByClassName('accountName')[0];
+				console.log(name.textContent);
+				var id=parseInt(accs[i].getAttribute('id'));
+				console.log(id);
+				accs[i].classList.add('accountBoxSelect');
+				removeAccount(id);		
+				//db.loadAccountById(id,showConfigReadonly);				
+			}
+				
+	}
+}
+
+function addAccountToView(acc){
+var acc='<div class="accountBox" id="'+acc.id+'">'+
+			'<div class="accountName">'+acc.username+'</div>'+
+			'<div class="iconU accountEdit"></div>'+
+			'<div class="iconU accountRemove"></div>'+                
+		'</div>';
+		
+		var $good=$("#accountHolder").last();
+		$good.append(acc);		
+}
+
+
+function selectAccout(e){
+	console.log('selectAccout '+e.target);	
+	if(e.target.classList.contains('accountEdit')){
+		editAccout(e)
+		return;
+	}else if(e.target.classList.contains('accountRemove')){
+		removeAccout(e)
+		return;
+	}
+	
+	var accs=document.getElementsByClassName('accountBox');
+	var x=e.clientX;
+	var y=e.clientY;
+	for (var i=0;i<accs.length;i++){		
+		var rect=accs[i].getBoundingClientRect();
+		accs[i].classList.remove('accountBoxSelect');
+		if(x>rect.left && x<rect.right)
+			if(y<rect.bottom && y>rect.top){
+				var name=accs[i].getElementsByClassName('accountName')[0];
+				console.log(name.textContent);
+				var id=parseInt(accs[i].getAttribute('id'));
+				console.log(id);
+				accs[i].classList.add('accountBoxSelect');		
+				db.loadAccountById(id,showConfigReadonly);
+			}				
+	}	
+}
+
+function showConfigReadonly(acc){
+	document.getElementById("accountsConfig").style.visibility="hidden";
+	document.getElementById("addDb").style.visibility="hidden";
+	document.getElementById("check").style.visibility="hidden";
+	document.getElementById("updateDB").style.visibility="hidden";
+	document.getElementById("configdiv").style.visibility="visible";	
+	//document.getElementById("back").style.visibility="hidden";	
+	
+	showConfig(acc);
+}
+
+function showConfigUpdate(acc){
+	document.getElementById("accountsConfig").style.visibility="hidden";
+	document.getElementById("addDb").style.visibility="hidden";
+	document.getElementById("check").style.visibility="visible";
+	document.getElementById("updateDB").style.visibility="visible";
+	document.getElementById("configdiv").style.visibility="visible";	
+	//document.getElementById("back").style.visibility="hidden";	
+	showConfig(acc);
+}
+
+function showConfigAdd(){
+	document.getElementById("accountsConfig").style.visibility="visible";
+	document.getElementById("addDb").style.visibility="visible";
+	document.getElementById("check").style.visibility="visible";
+	document.getElementById("updateDB").style.visibility="hidden";
+	document.getElementById("configdiv").style.visibility="visible";
+	
+	document.getElementById('user').value='';
+	document.getElementById('pass').value='';
+	document.getElementById('smtp').value='';
+	document.getElementById('smtpport').value='';
+	document.getElementById('imap').value='';
+	document.getElementById('imapport').value='';		
+}
+
+function removeAccount(id){
+	console.log('removeAccount '+id);	
+}
+
+function showConfig(acc){
+  document.getElementById('user').value=acc.username;
+  document.getElementById('pass').value=acc.password;
+  document.getElementById('smtp').value=acc.smtphost;
+  document.getElementById('smtpport').value=acc.smtpport;
+  document.getElementById('imap').value=acc.imaphost;
+  document.getElementById('imapport').value=acc.imapport;  
+  document.getElementById('imapsec').value=acc.imapsecurity; 
+  document.getElementById('smtpsec').value=acc.smtpsecurity;
 }
 
 </script>
