@@ -15,6 +15,9 @@ db.create_open_account_DB(loadAcc);
 function loadAcc(){
 	var uid=getParameterByName('uid');
 	pid=getParameterByName('pid');
+	var mbox=getParameterByName('mbox');
+	selectFolder=mbox;
+
 	console.log('pid: '+pid);	
 
 	try{
@@ -35,7 +38,7 @@ function start(status){
 			function(){
 				db.getMailBoxes(function(boxs){
 					if(boxs && boxs.length>0){
-						selectFolder=boxs[0];						
+						selectFolder=selectFolder ? selectFolder : boxs[0];						
 						// selectFolder='INBOX';						
 					}
 					dbSelectFolder=selectFolder;				
@@ -382,9 +385,17 @@ $(document).on("click",'.horde-subnavi-point',
 		// $( "div[title='"+mailBox+"']").addClass('horde-subnavi-active');
 		// console.log(mailBox);
 
-		selectFolder=mailBox;
-		dbSelectFolder=selectFolder;
-		initUnhosted();
+		var uid=getParameterByName('uid');
+		var pid=0;
+		uid=parseInt(uid);
+
+		var url='./index.html?uid='+(uid)+'&pid='+(pid)+'&mbox='+mailBox;
+		location.href=url;
+
+		// selectFolder=mailBox;
+		// dbSelectFolder=selectFolder;
+		// initUnhosted();
+
 		// sync.getUids();
 	}
 );
@@ -476,7 +487,7 @@ function nextPage(){
 	uid=parseInt(uid);
 	pid=parseInt(pid);
 
-	var url='./index.html?uid='+(uid)+'&pid='+(pid+1);
+	var url='./index.html?uid='+(uid)+'&pid='+(pid+1)+'&mbox='+selectFolder;
 	location.href=url;
 }
 
@@ -488,7 +499,7 @@ function previousPage(){
 
 	if(pid<1)
 		return;
-	var url='./index.html?uid='+(uid)+'&pid='+(pid-1);
+	var url='./index.html?uid='+(uid)+'&pid='+(pid-1)+'&mbox='+selectFolder;
 	location.href=url;
 }
 

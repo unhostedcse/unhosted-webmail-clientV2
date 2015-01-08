@@ -115,7 +115,7 @@ IMAP_Interface.prototype.ListFolder = function() {
       };      
     }
 
-    console.log(out);
+    //console.log(out);
     return out;
   }
 
