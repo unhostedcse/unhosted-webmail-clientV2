@@ -360,7 +360,9 @@ function setReplyWindow(msg){
 
   document.getElementById('subject').value=mail.subject;
   var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
-  data[0].value=mail.to;
+  var to=mail.to.replace("<","");
+  to=to.replace(">","");
+  data[0].value=to;
 
 }
 
@@ -416,7 +418,7 @@ function setForwardWindow(msg){
         }
         
         $('#send_button').addClass('imp-loading');
-        
+
         var cc=data[1].value;
         var bcc=data[2].value;
 
