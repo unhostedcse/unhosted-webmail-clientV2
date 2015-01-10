@@ -157,3 +157,11 @@ div.container-form .submit-button {
 	margin-right: auto;
 	margin-top: 2em;
 }
+
+.dimpactionPreviousPage{
+    background-image: url("../graphics/nav/left.png");
+}
+
+.dimpactionNextPage {
+    background-image: url("../graphics/nav/right.png");
+}

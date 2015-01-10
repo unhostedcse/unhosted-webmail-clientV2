@@ -82,7 +82,8 @@
         </div>
       </td>
     </tr>
-    <tr id="sendcc" style="display:none">
+    <!-- style="display:none" -->
+    <tr id="sendcc" >
      <td class="label">
       <span class="composeAddrbook">Cc:</span>
      </td>
@@ -92,7 +93,9 @@
         <input style="width: 500px;" class="hordeACTrigger impACTrigger" autocomplete="off"></li></ul>
         <textarea style="display: none;" cols="75" id="cc" name="cc" rows="1"></textarea></div>     </td>
     </tr>
-    <tr id="sendbcc" style="display:none">
+
+    <!-- style="display:none" -->
+    <tr id="sendbcc">
      <td class="label">
       <span class="composeAddrbook">Bcc:</span>
      </td>
@@ -173,6 +176,7 @@ action.       </li>
 
 <script type="text/javascript"  src="ui/jquery-2.1.1.js"></script> 
   
+    <!--
   <script type="text/javascript" src="js/prototype.js"></script>
   <script type="text/javascript" src="js/horde.js"></script>
   <script type="text/javascript" src="js/compose-dimp.js"></script>
@@ -201,7 +205,7 @@ action.       </li>
 
   <script type="text/javascript" src="js/sound.js"></script>
   <script type="text/javascript" src="js/ckeditor_basic.js"></script>  
-  <!-- -->
+ -->
 
 
 <script type="text/javascript" src="logger.js"></script>
@@ -375,8 +379,8 @@ function setForwardWindow(msg){
   data[0].value=mail.from;
 }
 
-  var text=document.getElementById('composeMessageParent').innerHTML='Hi, this is test text!';
-  var subject=document.getElementById('subject').value='Unhosted subject';
+  // var text=document.getElementById('composeMessageParent').innerHTML='Hi, this is test text!';
+  // var subject=document.getElementById('subject').value='Unhosted subject';
   var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
   //data[0].value='unhostedcse@gmail.com';
   data[0].value=username;
@@ -404,6 +408,15 @@ function setForwardWindow(msg){
         var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
 
         var to=data[0].value;
+
+        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;        
+        if (!filter.test(to)) {
+          alert('Please provide a valid email address');
+          return;
+        }
+        
+        $('#send_button').addClass('imp-loading');
+        
         var cc=data[1].value;
         var bcc=data[2].value;
 
