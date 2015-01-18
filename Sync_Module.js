@@ -206,7 +206,7 @@ Sync_Module.prototype.SendMailReady = function(){
 		window.close();
 	},500);
 	
-  	$.notifier({"type": 'info',
+  	$.notifier({"type": 'success',
 	                "title": 'Mail Sent',
 	                "text": 'Mail Sent Succesfully',
 	                "positionY": "bottom",

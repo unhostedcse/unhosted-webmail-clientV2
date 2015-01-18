@@ -272,8 +272,15 @@ function addMsg(mails){
 		// $good.append('<div class="iconImg msgflags flagAnswered" title="Flagged for Followup"></div>');
 
 		var from=SimpleMailAddress.parse(msg.from);
-		var name=from.name || from.email;
-		var email=from.email;
+
+		// var name=from.name || from.email; // ori
+		// var email=from.email; // ori
+
+		var name=from && from.name ? from.name : ( from && from.email ? from.email : null);
+		var email=from && from.email ? from.email : null;
+		//var name=from ? from.name || from.email : null;
+
+		
 
 		$good.append('<div class="msgFrom sep" title="' + email + '">' + name + '</div>');
 		$good.append('<div class="msgSubject sep" title="'+msg.subject+'">'+msg.subject+'</div>');
@@ -524,7 +531,7 @@ function DeleteMessages(){
 
 	$(document).on("notifier",function(event){
 		var ob=event.obj;
-		$.notifier({"type": event.type,
+		$.notifier({"type": ob.type,
 	                "title": ob.title,
 	                "text": ob.text,
 	                "positionY": "bottom",
