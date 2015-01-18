@@ -49,8 +49,8 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
  	}
 }
 
-$(document).on("onChromeData",function(event){
-	// console.log(event);
-	// self.server.result(event.obj.msg);
-});
+// $(document).on("onChromeData",function(event){
+// 	// console.log(event);
+// 	// self.server.result(event.obj.msg);
+// });
 
