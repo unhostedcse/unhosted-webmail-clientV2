@@ -265,7 +265,7 @@ DBController.prototype.create_openDB=function(indexedDBName,folder,DBReady){
         // for offline sendmail
         var objectStore = db.createObjectStore(self.offlineMboxName, {keyPath: "id",autoIncrement:true});
 
-        var objectStore = db.createObjectStore(self.accountTableName, {keyPath: "id",autoIncrement:true});
+        // var objectStore = db.createObjectStore(self.accountTableName, {keyPath: "id",autoIncrement:true});
     };   	
 
 }
