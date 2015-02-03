@@ -528,6 +528,7 @@ DBController.prototype.addContain=function(record,id,folder){
 		    request.onsuccess = function(event) {
 		    	//console.log(id+' '+event);
 		    	console.log('id '+id + ' added to database' );
+		    	//initUnhosted();
 		   	};
 		   	request.onerror = function (event) {
 		   		console.log(id+' '+event);

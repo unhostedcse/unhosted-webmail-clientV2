@@ -1,8 +1,3 @@
-// username='unhostedcse@gmail.com';
-// imaphost='imap.gmail.com';
-// imapport='993';	
-// imapsecurity='ssl';
-	
 document.addEventListener("testEvent",
 	function(e) {  
 		console.log(e);
@@ -63,12 +58,6 @@ function setTime(){
 	$('#horde-date').text(date);
 }
 
-// var adb=new DBController();
-// adb.create_open_account_DB(
-// 	function(){
-// 		adb.loadAccount('unhostedcse@gmail.com'); 	
-// 	};
-// );
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -441,9 +430,7 @@ function setSetting(){
  	var x = document.getElementById("setting").value; 	
   	console.log('select Account '+x);
 	Sync_Module.db.loadAccount(x); 	
-	if(x=="unhostedcse@outlook.com"){
-		selectFolder="Inbox";
-	}
+	
  }
 
  $(document).on("loadAccount",

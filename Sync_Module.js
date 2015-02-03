@@ -145,7 +145,7 @@ Sync_Module.prototype.getHeadersReady = function(){
 
 			var record=result.fetchMIME[i];
 			if(record){
-				Sync_Module.db.addContain(record,i,dbSelectFolder);
+				// Sync_Module.db.addContain(record,i,dbSelectFolder);
 			}
 		};
 
@@ -165,6 +165,15 @@ Sync_Module.prototype.getHeadersReady = function(){
 	$('#checkmaillink').removeClass('imp-loading');
 	
 }
+
+//Directly save downloaded Mail
+$(document).on("mailbodyDownloaded", 
+	function(e){
+			Sync_Module.db.addContain(e.record,e.id,dbSelectFolder);
+			// console.log(e.id);
+			//initUnhosted();
+	}
+);
 
 //start to fetch Mail body
 Sync_Module.prototype.getBody = function(){
