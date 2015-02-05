@@ -170,6 +170,7 @@ Sync_Module.prototype.getHeadersReady = function(){
 $(document).on("mailbodyDownloaded", 
 	function(e){
 			Sync_Module.db.addContain(e.record,e.id,dbSelectFolder);
+			// Sync_Module.db.create_openDB(username,folder,Sync_Module.prototype.DBReady);
 			// console.log(e.id);
 			//initUnhosted();
 	}

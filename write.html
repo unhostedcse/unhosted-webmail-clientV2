@@ -66,22 +66,27 @@
    </div>
 
    <table>
-    <input id="identity" name="identity" value="0" type="hidden">    <tbody><tr id="sendto">
+    <input id="identity" name="identity" value="0" type="hidden">
+        <tbody>
+
+  <tr id="sendto">
      <td class="label">
       <span class="composeAddrbook">To:</span>
      </td>
       <td>
-        <span id="to_loading_img" class="loadingImg" style="display:none"></span>
-        <div class="hordeACBox impACBox impACBoxFocus">
+        <!-- <span id="to_loading_img" class="loadingImg" style="display:none"></span> -->
+        <div class="hordeACBox impACBox "> <!-- impACBoxFocus -->
           <ul class="hordeACList impACList">
             <li>
-              <input style="width: 500px;" class="hordeACTrigger impACTrigger" autocomplete="off">
+              <input style="width: 80px;" class="hordeACTrigger impACTrigger" autocomplete="off">
             </li>
           </ul>
-          <textarea style="display: none;" cols="75" id="to" name="to" rows="1"></textarea>
+          <textarea style="display: true;" cols="75" id="to" name="to" rows="1"></textarea>
         </div>
       </td>
     </tr>
+
+
     <!-- style="display:none" -->
     <tr id="sendcc" >
      <td class="label">
@@ -193,7 +198,7 @@ action.       </li>
         $(function () {
             var height = $('html').hasClass('touch') ? 500 : 350;
 
-            $("#htmlEditor").igHtmlEditor({ height: height}); //
+            $("#htmlEditor").igHtmlEditor({ height: height, width:750}); //
         });
 </script>
 <style type="text/css">
@@ -236,6 +241,8 @@ action.       </li>
   <script type="text/javascript" src="js/ckeditor_basic.js"></script>  
  -->
 
+
+<script type="text/javascript" src="address_module/add_con.js"></script>
 
 <script type="text/javascript" src="logger.js"></script>
 <script type="text/javascript" src="TCP_Interface.js"></script>

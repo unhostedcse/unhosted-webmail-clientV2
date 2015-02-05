@@ -528,6 +528,8 @@ DBController.prototype.addContain=function(record,id,folder){
 		    request.onsuccess = function(event) {
 		    	//console.log(id+' '+event);
 		    	console.log('id '+id + ' added to database' );
+		    	//self.create_openDB(username,dbSelectFolder,Sync_Module.prototype.DBReady);		    	
+		    	// self.getMessages(Sync_Module.addMsg,selectFolder);
 		    	//initUnhosted();
 		   	};
 		   	request.onerror = function (event) {

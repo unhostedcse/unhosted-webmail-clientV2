@@ -229,7 +229,7 @@ function clearBody(){
 }
 
 function addMsg(mails){
-
+	// $('.msglist').empty();
 	console.log('mail cnt: '+mails.length);
 	for(var i=0;i<mails.length;i++){
 		var msg=mails[i];
