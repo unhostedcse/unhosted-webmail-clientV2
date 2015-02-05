@@ -81,7 +81,7 @@
               <input style="width: 80px;" class="hordeACTrigger impACTrigger" autocomplete="off">
             </li>
           </ul>
-          <textarea style="display: true;" cols="75" id="to" name="to" rows="1"></textarea>
+          <textarea style="display: none;" cols="75" id="to" name="to" rows="1"></textarea>
         </div>
       </td>
     </tr>
@@ -497,8 +497,8 @@ function setForwardWindow(msg){
 
         var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;        
         if (!filter.test(to)) {
-          alert('Please provide a valid email address');
-          return;
+          //alert('Please provide a valid email address');
+          //return;
         }
         
         $('#send_button').addClass('imp-loading');
@@ -533,7 +533,17 @@ function sendMail(to){
   if (msg.bcc) 
     txt = txt.replace(/Bcc:.*\r\n/i, ""); // Do not send BCC header
 
-  mailto=msg.to.split(",");
+  var se=new SMTP_Sendmail();
+  var ll=se.parseList(msg.to);
+
+  mailto=new Array();
+  for(var i=0;i<ll.length;i++){
+      var add=ll[i];
+      mailto.push(add.email);
+      // console.log(add.email);
+  }
+
+  //mailto=msg.to.split(",");
 
   if(msg.cc){
     var mailcc=msg.cc.split(",");
@@ -558,7 +568,7 @@ function sendMail(to){
  var getMessage = function() {
 
     var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
-    var to=data[0].value;
+    var to=$("#to").val();//data[0].value;
     var cc=data[1].value;
     var bcc=data[2].value;
 

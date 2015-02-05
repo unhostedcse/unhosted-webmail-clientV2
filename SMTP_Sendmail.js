@@ -75,6 +75,7 @@ SMTP_Sendmail.prototype.rcpt = function(mailto){
     // SMTP_Sendmail.smtp.rcpt('<unhostedcse@gmail.com>');
     // console.log('rcpt: '+mailto);
     SMTP_Sendmail.smtp.rcpt('<'+mailto+'>');  
+    // SMTP_Sendmail.smtp.rcpt(mailto);  
 }
 SMTP_Sendmail.prototype.data = function(){
     SMTP_Sendmail.smtp.data();

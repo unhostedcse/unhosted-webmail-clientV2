@@ -31,8 +31,18 @@ $(document).ready(function() {
 		y.value='';
 
 		var a=array[0]+' <'+array[1]+'>';
-		console.log(a);
-		$("#to").val($("#to").val()+","+a);
+		a=a.replace("&gt;","");
+		
+		//var ss=$("#to").val() ? $("#to").val()+","+a : a;
+		var old=$("#to").val();		
+		if(old=="")
+			var ss=a;
+		else
+			var ss=old+","+a;
+
+		console.log(ss);
+		$("#to").val(ss);
+
 	});
 	$('body').on("click",'#sendto ul li img',function() {
 		$(this).parent().remove();
