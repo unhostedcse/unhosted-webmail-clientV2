@@ -307,6 +307,8 @@ function createAttachmentLink(file){
 
 //show the body after after select a msg
 $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
+	document.getElementById('bodyDisplay').innerHTML="";
+	// sync.getbody();
 
 	var a=document.getElementsByClassName('horde-icon');
 	a[3].removeAttribute("style");
@@ -327,6 +329,8 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 	var date=$(this).find(".msgDate").text();
 	var mid=parseInt($(this).find(".mid").text());
 
+	
+
 	$(".from").html(text);
 	$(".subject").html(sub);
 	$("#previewMsg .date").html(date);
@@ -337,6 +341,12 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
             function(){
               	db.getMailById(mid,selectFolder,function(msg){
               	var body=msg.body;
+
+              	if(!body){
+              		sync.getBody(mid);
+              		return;
+              	}
+
               	var file;
 				var links='';
 				if(msg.attachments && msg.attachments.length>0){

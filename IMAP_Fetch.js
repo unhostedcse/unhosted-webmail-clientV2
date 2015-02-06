@@ -107,7 +107,9 @@ IMAP_Fetch.prototype.fetchListFlags=function(){
 
 IMAP_Fetch.prototype.fetchBody=function(id){
 
-  cmd=IMAP_Fetch.imap.fetchBody(id,false);
+  //cmd=IMAP_Fetch.imap.fetchBody(id,false);
+  cmd=IMAP_Fetch.imap.fetchBody(id,true);
+
   IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
   IMAP_Fetch.imap.setVal=function(val,nextFunc,para){
       
@@ -186,8 +188,10 @@ IMAP_Fetch.prototype.fetchBody=function(id){
       }
       result.fetchMIME[id]=head;
       //console.log(head);
+
+      head.body=false;
       //skip buferering, save directly at here
-      $.event.trigger({type:"mailbodyDownloaded",id:id,record:head});
+      $.event.trigger({type:"mailheaderDownloaded",id:id,record:head});
       
       printCmd("id= "+this.imaps+" result fetchBody= "+id+" "+result.fetchBody[id]);
       nextFunc(para);      
@@ -195,15 +199,94 @@ IMAP_Fetch.prototype.fetchBody=function(id){
 }
 
 IMAP_Fetch.prototype.fetchBodyOnly=function(id){
-  cmd=IMAP_Fetch.imap.fetchOnlyBody(id);
-  IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
-  IMAP_Fetch.imap.setVal=function(val,nextFunc,para){     
-     
-      if(!result.fetchOnlyBody)
-        result.fetchOnlyBody=new Array();
+   cmd=IMAP_Fetch.imap.fetchBody(id,false);
 
-      result.fetchOnlyBody[id]=val;      
-      // console.log("id= "+this.imaps+" result onlyBody= "+id+" "+val);
+  IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
+  IMAP_Fetch.imap.setVal=function(val,nextFunc,para){
+      
+      // if(!result.fetchBody){
+      //   result.fetchBody=new Array();
+      // }
+
+      var header=function(){
+        this.To="";
+        this.From="";
+        this.Subject="";
+        this.Date="";
+        this.Received="";
+        this.body="";
+        this.seen="";
+        this.attachments=new Array();
+      };
+
+       var DateParse = function(date) {
+          // Convert short year to full
+          date = date.replace(/(\w+, \d+ \w+) (\d{2}) /, "$1 20$2 ");
+          return Date.parse(date);
+        }
+
+      head=new header();     
+
+      var part = new Part(val); 
+      // console.log(val);
+
+      // try{
+      head.To=part.getAddressHeader('To');
+      head.From=part.getAddressHeader('From');      
+      head.Subject=part.getHeader('Subject');
+      head.Date=DateParse(part.getHeader('Date'));           
+      head.body=part.toHtml();
+      head.size=val.length; 
+
+      ///////////////////////////////////
+      head.body = SimpleMailText.replaceURLs(head.body,
+      function(text, url) {
+        return SimpleMailFile.isLocalURL(url) ? "" : text;
+      });
+
+      try{
+        head.body = head.body.replace(/cid:([^'"]*)/gi,
+        function(text, cid) {
+          var name = Part.cidNames[cid];
+          if (!name) 
+            return text;
+          name = name.toString().replace(/[\'\[\]\(\)] */gi, "_");
+          // technalxs.simplemail.SimpleMailMessageEncoder.linked[name] = true;
+          return SimpleMailFile.getAttachmentURL('file_dir', 'file.type');
+        });
+      }catch(e){console.log(e);}
+
+      for(var name in Part.attachments) {
+          var uri=Part.attachments[name];
+          name = name.toString().replace(/[\'\[\]\(\)] */gi, "_");
+          // console.log(name);
+          var obj={
+            name:name,
+            uri:uri
+          };
+          head.attachments.push(obj);
+      }
+
+      Part.attachments=null; // reset
+      // }catch(e){console.log(e);}
+      /////////////////////////////////////
+
+      // var fl= result.fetchListFlags[id] || '';
+      // head.seen=fl;
+      // console.log("id "+id+" "+head.To);
+      // if(!result.fetchMIME){
+      //   result.fetchMIME=new Array();
+      // }
+      // result.fetchMIME[id]=head;
+      //console.log(head);
+      //skip buferering, save directly at here
+      // $.event.trigger({type:"mailbodyDownloaded",id:id,record:head});
+      
+      // printCmd("id= "+this.imaps+" result fetchBody= "+id+" "+result.fetchBody[id]);
+      // console.log(head);
+      
+
+      $.event.trigger({type:"mailbodyDownloaded",id:id,record:head});
       nextFunc(para);      
   }
 }
@@ -310,21 +393,14 @@ IMAP_Fetch.prototype.getHeaderScenario =function(f){
 
 }
 
-IMAP_Fetch.prototype.getBodyScenario =function(f){  
+IMAP_Fetch.prototype.getBodyScenario =function(f,id){ 
+//alert('ok ok'); 
   IMAP_Fetch.cmds.push(this.start);
   IMAP_Fetch.cmds.push(this.login);
   IMAP_Fetch.cmds.push(this.select);
 
-  for(var i=0;i<result.fetchList.length;i++){
-      var ids=result.fetchList[i];
-      var id=ids;
-
-      if(result.keys.indexOf(parseInt(id))<0){
-        IMAP_Fetch.cmds.push([this.fetchBodyOnly,id]);
-      }
-      // else
-        // console.log('id '+id+" not in DB");
-  }
+  IMAP_Fetch.cmds.push([this.fetchBodyOnly,id]);
+  
 
   if(IMAP_Fetch.cmds.length==3){
     console.log(dbSelectFolder+" MailBox Upto date"); 

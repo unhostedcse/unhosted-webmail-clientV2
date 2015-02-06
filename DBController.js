@@ -672,7 +672,7 @@ DBController.prototype.getKeys=function(func,folder){
     }	
 }
 
-DBController.prototype.update=function(id,val,folder){
+DBController.prototype.update=function(id,val,att,folder,cllback){
 
     var objectStore = this.database.transaction([folder], "readwrite").objectStore(folder);
 	var request = objectStore.get(id);
@@ -687,6 +687,7 @@ DBController.prototype.update=function(id,val,folder){
 
 	  // update the value(s) in the object that you want to change
 	  data.body = val;
+	  data.attachments=att;
 
 	  // Put this updated object back into the database.
 	  var requestUpdate = objectStore.put(data,id);
@@ -695,6 +696,9 @@ DBController.prototype.update=function(id,val,folder){
 	   };
 	   requestUpdate.onsuccess = function(event) {
 	   	console.log("id " +id +" update "+event.type);
+		   	if(cllback){
+		   		cllback();
+		   	}
 	   };
 	};
 

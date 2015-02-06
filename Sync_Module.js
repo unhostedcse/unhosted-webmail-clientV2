@@ -167,7 +167,7 @@ Sync_Module.prototype.getHeadersReady = function(){
 }
 
 //Directly save downloaded Mail
-$(document).on("mailbodyDownloaded", 
+$(document).on("mailheaderDownloaded", 
 	function(e){
 			Sync_Module.db.addContain(e.record,e.id,dbSelectFolder);
 			// Sync_Module.db.create_openDB(username,folder,Sync_Module.prototype.DBReady);
@@ -176,28 +176,52 @@ $(document).on("mailbodyDownloaded",
 	}
 );
 
+//save and show downloaded body
+$(document).on("mailbodyDownloaded", 
+	function(e){
+		var msg=e.record;
+		var body=msg.body;
+		// document.getElementById('bodyDisplay').innerHTML=e.record.body;
+		var file;
+		var links='';
+		if(msg.attachments && msg.attachments.length>0){
+			for(var j=0;file=msg.attachments[j],j<msg.attachments.length;j++){
+				links+=createAttachmentLink(file);
+			}
+			links+='</br></br>';
+		}
+
+		body=links+body;
+		document.getElementById('bodyDisplay').innerHTML=body;
+
+		Sync_Module.db.update(e.id,e.record.body,e.record.attachments,dbSelectFolder);
+			
+	}
+);
+
 //start to fetch Mail body
-Sync_Module.prototype.getBody = function(){
+Sync_Module.prototype.getBody = function(id){
+	// alert('came');
 	var imap=new IMAP_Fetch(++imaps);
-	imap.getBodyScenario(Sync_Module.prototype.getBodyFinished);
-	console.log('crated imap body service');
+	imap.getBodyScenario(Sync_Module.prototype.getBodyFinished,id);
+	console.log('crated imap body only service');
 }
 
 Sync_Module.prototype.getBodyFinished = function(){
-	if(result.fetchOnlyBody){
-		for (var i = 0; result.fetchOnlyBody && i < result.fetchOnlyBody.length; i++) {
-			var record=result.fetchOnlyBody[i];
-			if(record){
-				Sync_Module.db.update(i,record,dbSelectFolder);
-			}
-		}
-	}else{
-		console.log("DB is upto date");
-	}
+	// if(result.fetchOnlyBody){
+	// 	for (var i = 0; result.fetchOnlyBody && i < result.fetchOnlyBody.length; i++) {
+	// 		var record=result.fetchOnlyBody[i];
+	// 		if(record){
+	// 			Sync_Module.db.update(i,record,dbSelectFolder);
+	// 		}
+	// 	}
+	// }else{
+	// 	console.log("DB is upto date");
+	// }
 
-	result.fetchOnlyBody=new Array();
+	// result.fetchOnlyBody=new Array();
 	console.log('finished imap body service');
-	initUnhosted();
+	// initUnhosted();
 	// if(mboxCount< result.ListFolder.length){
 	// 	selectFolder=result.ListFolder[++mboxCount];
 	// 	dbSelectFolder=selectFolder;
@@ -205,7 +229,7 @@ Sync_Module.prototype.getBodyFinished = function(){
 	// 	Sync_Module.prototype.getUids();
 	// }
 
-	$.event.trigger({type:"mailBoxesReadNext"});
+	// $.event.trigger({type:"mailBoxesReadNext"});
 }
 
 Sync_Module.prototype.SendMailReady = function(){
