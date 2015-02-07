@@ -59,14 +59,35 @@ $(document).ready(function() {
 		var current_id=$('#sendbcc textarea').attr('id');
 		del(current_id,title,$r);
 	});
+	$('.hordeACTrigger.impACTrigger').keyup(function(event){ // when comma pressed for normal email addressses  , manually enterered
+		if(event.which==188){			///// This doesn't have name. 
+			var content=$(this).val(); 
+			content=content.replace(',','');
+			var currentparent_id=$(this).parent().parent().parent().parent().parent().attr('id');
+			$('<li class="hordeACListItem" title="'+content+'"> ' + content + ' <img class="hordeACItemRemove impACItemRemove" src="./graphics/delete-small.png"></li>').insertBefore("#"+currentparent_id+" ul li:last-child");		
+			var x = document.getElementById(currentparent_id);
+			var y = x.getElementsByTagName("input")[0];
+			y.value='';
+			
+			var current_id=$('#'+currentparent_id+' textarea').attr('id');
+			if($("#"+current_id).val()==''){
+				$("#"+current_id).val(content);
+			}else{
+				$("#"+current_id).val($("#"+current_id).val()+","+content);
+			}
+		} 
+	});
 	
 });
 function del(current_id,title,$r){
 	var d=title;
 	var t=$("#"+current_id).val();
 	var s = d.concat(',');
+	var end=','.concat(d);
 	if(t.indexOf(s) > -1){
 		var p=t.replace(s,'');
+	}else if(t.indexOf(end) > -1){
+		var p=t.replace(end,'');
 	}else{
 		var p=t.replace(d,'');
 	}

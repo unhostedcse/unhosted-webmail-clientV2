@@ -131,8 +131,8 @@ function displayContents(contents) {
     });
  // alert(data.length);
 }
-
 */
+
 
 todoDB.open(function(){
   console.log('DB opened')
