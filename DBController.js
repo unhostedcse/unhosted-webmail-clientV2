@@ -685,8 +685,15 @@ DBController.prototype.update=function(id,val,att,folder,cllback){
 	  // Get the old value that we want to update
 	  var data = request.result;
 
+	  if(data.body=="deleted"){
+	  	console.log('deleted msg will not save body');
+	  	return;
+	  }else{
 	  // update the value(s) in the object that you want to change
 	  data.body = val;
+	  }
+	  
+
 	  data.attachments=att;
 
 	  // Put this updated object back into the database.

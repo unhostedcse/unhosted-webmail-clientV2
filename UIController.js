@@ -345,6 +345,9 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
               	if(!body){
               		sync.getBody(mid);
               		return;
+              	}else if(body=="deleted"){
+              		sync.getBody(mid);
+              		return;
               	}
 
               	var file;
