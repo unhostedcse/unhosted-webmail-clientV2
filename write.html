@@ -93,10 +93,15 @@
       <span class="composeAddrbook">Cc:</span>
      </td>
      <td>
-      <span id="cc_loading_img" class="loadingImg" style="display:none"></span>
-      <div class="hordeACBox impACBox impACBoxFocus"><ul class="hordeACList impACList"><li>
-        <input style="width: 500px;" class="hordeACTrigger impACTrigger" autocomplete="off"></li></ul>
-        <textarea style="display: none;" cols="75" id="cc" name="cc" rows="1"></textarea></div>     </td>
+      <div class="hordeACBox impACBox" id="fgf">
+		<ul class="hordeACList impACList">
+			<li>
+				<input style="width: 80px;" class="hordeACTrigger impACTrigger" autocomplete="off">
+			</li>
+		</ul>
+        <textarea style="display: none;" cols="75" id="cc" name="cc" rows="1"></textarea>
+	   </div>    
+	  </td>
     </tr>
 
     <!-- style="display:none" -->
@@ -105,9 +110,8 @@
       <span class="composeAddrbook">Bcc:</span>
      </td>
      <td>
-      <span id="bcc_loading_img" class="loadingImg" style="display:none"></span>
-      <div class="hordeACBox impACBox impACBoxFocus"><ul class="hordeACList impACList"><li>
-        <input style="width: 500px;" class="hordeACTrigger impACTrigger" autocomplete="off"></li></ul>
+      <div class="hordeACBox impACBox"><ul class="hordeACList impACList"><li>
+        <input style="width: 80px;" class="hordeACTrigger impACTrigger" autocomplete="off"></li></ul>
         <textarea style="display: none;" cols="75" id="bcc" name="bcc" rows="1"></textarea></div>     </td>
     </tr>
     <tr>
@@ -687,18 +691,19 @@ $(document).on("newSendMail",
   }
 );
 
-//$(document).on("newSendMail",
-$(".hordeACTrigger.impACTrigger").keypress(function(){
-  search();
+$(".hordeACTrigger.impACTrigger").keyup(function(){
+	search($(this));
 });
 
-// $( "hordeACTrigger impACTrigger").keyup(search);
-
-function search(){
-  // alert('aaa');
-  var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
-   var add=new Address_Module();
-   add.suggestMails(data[0].value);
+function search($str){
+	var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
+	var add=new Address_Module();
+	$( ".KeyNavList" ).remove()	
+	if($str.val().length>2){	
+		var currentparent_id=$str.parent().parent().parent().parent().parent().attr('id');
+		var current_id=$('#'+currentparent_id+' textarea').attr('id');
+		add.suggestMails($str.val(),currentparent_id);
+	}
 }
 </script> 
 
