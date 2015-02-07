@@ -22,30 +22,54 @@ $(document).ready(function() {
 		$('#sendbcc div input').focus();
 		
 	});
-	$('body').on("click",'.KeyNavList ul li',function() {
-		var content=this.innerHTML;
-		var array=content.split('&lt;'); // cannot satistay the way split		
-		$('<li class="hordeACListItem" title=" '  + content +' "> ' + array[0] + ' <img class="hordeACItemRemove impACItemRemove" src="./graphics/delete-small.png"></li>').insertBefore("#sendto ul li:last-child");		
-		var x = document.getElementById("sendto");
+	$('body').on("click",'.KeyNavList ul li',function() {	
+		var currentparent_id=$(this).parent().parent().attr('data-belongs');
+		var content=this.innerText;		
+		var t=new SMTP_Sendmail();
+		var SimpleMailAddressObject=t.parse(content);				
+		$('<li class="hordeACListItem" title="'+content+'"> ' + SimpleMailAddressObject.name + ' <img class="hordeACItemRemove impACItemRemove" src="./graphics/delete-small.png"></li>').insertBefore("#"+currentparent_id+" ul li:last-child");		
+		var x = document.getElementById(currentparent_id);
 		var y = x.getElementsByTagName("input")[0];
 		y.value='';
-
-		var a=array[0]+' <'+array[1]+'>';
-		a=a.replace("&gt;","");
+			
+		var current_id=$('#'+currentparent_id+' textarea').attr('id');
+		if($("#"+current_id).val()==''){
+			$("#"+current_id).val(content);
+		}else{
+			$("#"+current_id).val($("#"+current_id).val()+","+content);
+		}
 		
-		//var ss=$("#to").val() ? $("#to").val()+","+a : a;
-		var old=$("#to").val();		
-		if(old=="")
-			var ss=a;
-		else
-			var ss=old+","+a;
-
-		console.log(ss);
-		$("#to").val(ss);
-
+		
 	});
 	$('body').on("click",'#sendto ul li img',function() {
-		$(this).parent().remove();
+		var $r=$(this);
+		var title=$(this).parent().attr('title');
+		var current_id=$('#sendto textarea').attr('id');
+		del(current_id,title,$r);
+	});
+	$('body').on("click",'#sendcc ul li img',function() {
+		var $r=$(this);
+		var title=$(this).parent().attr('title');
+		var current_id=$('#sendcc textarea').attr('id');
+		del(current_id,title,$r);
+	});
+	$('body').on("click",'#sendbcc ul li img',function() {
+		var $r=$(this);
+		var title=$(this).parent().attr('title');
+		var current_id=$('#sendbcc textarea').attr('id');
+		del(current_id,title,$r);
 	});
 	
 });
+function del(current_id,title,$r){
+	var d=title;
+	var t=$("#"+current_id).val();
+	var s = d.concat(',');
+	if(t.indexOf(s) > -1){
+		var p=t.replace(s,'');
+	}else{
+		var p=t.replace(d,'');
+	}
+	$("#"+current_id).val(p);
+	$r.parent().remove();
+}

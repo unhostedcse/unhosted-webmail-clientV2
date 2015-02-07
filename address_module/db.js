@@ -42,8 +42,8 @@ var todoDB = (function() {
   request.onerror = tDB.onerror;
 };
 //////////////////
-tDB.fetchMy = function(text) {
-$( ".KeyNavList" ).remove()
+tDB.fetchMy = function(text,back) {
+//$( ".KeyNavList" ).remove()
 document.getElementById("bath").innerHTML= '';
   var db = datastore;
   var transaction = db.transaction(['todo'], 'readwrite');
@@ -56,34 +56,15 @@ document.getElementById("bath").innerHTML= '';
   var output = [];
 
   transaction.oncomplete = function(e) {
-    // Execute the callback function.
-	//document.getElementById("bath").innerHTML = todos[0].email;
-	var all="";
-		for(var i = 0; i < todos.length; i++) {		
+	for(var i = 0; i < todos.length; i++) {		
 			var t=todos[i].email;
 			if(t.indexOf(text) > -1){
-			//document.getElementById("bath").innerHTML=todos[i].email;
 				output.push(todos[i]);
-				// console.log(todos[i].email);
 			}
 		
 	}
-	//////////////
-	$('body').append('<div class="KeyNavList" style="left: 74px; top: 67px;"><ul></ul></div>');
-		
-		
-	
-	
-	for(var i = 0; i < output.length; i++) {	
-		//all+=output[i];
-		//document.getElementById("bath").innerHTML= all;
-		var st=output[i].name.concat(' <').concat(' ' +output[i].email+ ' ').concat('>');
-		var $good=$(".KeyNavList ul").last();		
-		$good.append('<li> ' + st + '  </li>');
-	}
+	back(output);
  }
-  
-
   cursorRequest.onsuccess = function(e) {
     var result = e.target.result;
 
@@ -100,6 +81,7 @@ document.getElementById("bath").innerHTML= '';
 
   cursorRequest.onerror = tDB.onerror;
  // var output = ['dgf','grg'];
+
 	
   
 };

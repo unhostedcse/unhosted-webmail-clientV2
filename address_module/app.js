@@ -141,6 +141,17 @@ todoDB.open(function(){
 
 function Address_Module(){};
 
-Address_Module.prototype.suggestMails=function(email){
-  todoDB.fetchMy(email); 
+Address_Module.prototype.suggestMails=function(email,currentparent_id){
+	var d=$("#"+currentparent_id+" div.hordeACBox.impACBox");
+	var pos=d.position();
+
+	todoDB.fetchMy(email,function(output){
+	$('body').append('<div class="KeyNavList" data-belongs="'+currentparent_id+'" style="left:'+pos.left+' ; top: '+(pos.top+24)+';"><ul></ul></div>');	
+	for(var i = 0; i < output.length; i++) {	
+		var st=output[i].name.concat(' <').concat(' ' +output[i].email+ ' ').concat('>');
+		var $good=$(".KeyNavList ul").last();		
+		$good.append('<li> ' + st + '  </li>');
+		
+	}
+  }); 
 }
