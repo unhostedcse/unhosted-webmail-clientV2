@@ -1,5 +1,4 @@
-$(document).ready(function() {
-	
+$(document).ready(function() {	
 	$("#subject").click(function(){
 		$('div.hordeACBox.impACBox.impACBoxFocus').removeClass("impACBoxFocus");
 		

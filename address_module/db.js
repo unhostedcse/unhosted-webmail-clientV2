@@ -4,6 +4,7 @@ var todoDB = (function() {
 	console.log('sash');
   
   tDB.open = function(callback) {
+  console.log('open successsssssssss');
   // Database version.
   var version = 15;
 
@@ -31,7 +32,7 @@ var todoDB = (function() {
   request.onsuccess = function(e) {
     // Get a reference to the DB.
     datastore = e.target.result;
-    
+    console.log('open success');
     // Execute the callback.
     callback();
     
@@ -39,11 +40,12 @@ var todoDB = (function() {
   };
 
   // Handle errors when opening the datastore.
+   console.log('open success');
   request.onerror = tDB.onerror;
 };
 //////////////////
 tDB.fetchMy = function(text,back) {
-//$( ".KeyNavList" ).remove()
+console.log('fetch');
 document.getElementById("bath").innerHTML= '';
   var db = datastore;
   var transaction = db.transaction(['todo'], 'readwrite');

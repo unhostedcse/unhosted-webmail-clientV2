@@ -1,8 +1,8 @@
-/*window.onload = function() {
+window.onload = function() {
   todoDB.open(refreshTodos);
 
-//var newTodoForm = document.getElementById('new-todo-form');
-//var newTodoInput = document.getElementById('new-todo');
+var newTodoForm = document.getElementById('new-todo-form');
+var newTodoInput = document.getElementById('new-todo');
 
 
 newTodoForm.onsubmit = function() {
@@ -40,7 +40,7 @@ function refreshTodos() {
       var checkbox = document.createElement('input');
       checkbox.type = "checkbox";
       checkbox.className = "todo-checkbox";
-      checkbox.setAttribute("data-id", todo.timestamp);
+      checkbox.setAttribute("data-id", todo.email);
 
       li.appendChild(checkbox);
 
@@ -53,7 +53,7 @@ function refreshTodos() {
 
       // Setup an event listener for the checkbox.
       checkbox.addEventListener('click', function(e) {
-        var id = parseInt(e.target.getAttribute('data-id'));
+        var id = e.target.getAttribute('data-id');
 
         todoDB.deleteTodo(id, refreshTodos);
       });
@@ -131,7 +131,7 @@ function displayContents(contents) {
     });
  // alert(data.length);
 }
-*/
+
 
 
 todoDB.open(function(){
