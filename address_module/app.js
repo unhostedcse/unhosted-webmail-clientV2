@@ -146,6 +146,7 @@ Address_Module.prototype.suggestMails=function(email,currentparent_id){
 	var pos=d.position();
 
 	todoDB.fetchMy(email,function(output){
+	document.getElementById("bath").innerHTML= '';
 	$('body').append('<div class="KeyNavList" data-belongs="'+currentparent_id+'" style="left:'+pos.left+' ; top: '+(pos.top+24)+';"><ul></ul></div>');	
 	for(var i = 0; i < output.length; i++) {	
 		var st=output[i].name.concat(' <').concat(' ' +output[i].email+ ' ').concat('>');

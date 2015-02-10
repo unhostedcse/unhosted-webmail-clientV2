@@ -45,7 +45,7 @@ var todoDB = (function() {
 //////////////////
 tDB.fetchMy = function(text,back) {
 console.log('fetch');
-document.getElementById("bath").innerHTML= '';
+
   var db = datastore;
   var transaction = db.transaction(['todo'], 'readwrite');
   var objStore = transaction.objectStore('todo');
@@ -81,10 +81,7 @@ document.getElementById("bath").innerHTML= '';
   };
 
   cursorRequest.onerror = tDB.onerror;
- // var output = ['dgf','grg'];
 
-	
-  
 };
 ////////
 
