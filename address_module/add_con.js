@@ -25,7 +25,12 @@ $(document).ready(function() {
 		var currentparent_id=$(this).parent().parent().attr('data-belongs');
 		var content=this.innerText;		
 		var t=new SMTP_Sendmail();
-		var SimpleMailAddressObject=t.parse(content);				
+		var SimpleMailAddressObject=t.parse(content);
+		if(SimpleMailAddressObject.name==''){
+			//alert('empty name');
+			SimpleMailAddressObject.name=SimpleMailAddressObject.email;
+		}
+		
 		$('<li class="hordeACListItem" title="'+content+'"> ' + SimpleMailAddressObject.name + ' <img class="hordeACItemRemove impACItemRemove" src="./graphics/delete-small.png"></li>').insertBefore("#"+currentparent_id+" ul li:last-child");		
 		var x = document.getElementById(currentparent_id);
 		var y = x.getElementsByTagName("input")[0];
