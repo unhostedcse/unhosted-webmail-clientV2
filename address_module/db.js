@@ -4,7 +4,7 @@ var todoDB = (function() {
 	console.log('sash');
   
   tDB.open = function(callback) {
-  console.log('open successsssssssss');
+  
   // Database version.
   var version = 15;
 
@@ -32,7 +32,6 @@ var todoDB = (function() {
   request.onsuccess = function(e) {
     // Get a reference to the DB.
     datastore = e.target.result;
-    console.log('open success');
     // Execute the callback.
     callback();
     
@@ -155,6 +154,44 @@ document.getElementById("bath").innerHTML= '';
   // Handle errors.
   request.onerror = tDB.onerror;
 };
+
+
+/// create from ui
+tDB.createfromuiTodo = function(email, name,callback) {
+  // Get a reference to the db.
+  var db = datastore;
+
+  // Initiate a new transaction.
+  var transaction = db.transaction(['todo'], 'readwrite');
+
+  // Get the datastore.
+  var objStore = transaction.objectStore('todo');
+
+  // Create a timestamp for the todo item.
+ ///////////////// var timestamp = new Date().getTime();
+
+  // Create an object for the todo item.
+  var todo = {
+    'email': email,
+    'name': name,
+	//'timestamp':timestamp
+  };
+
+  // Create the datastore request.
+  var request = objStore.put(todo);
+  
+
+  // Handle a successful datastore put.
+  request.onsuccess = function(e) {
+    // Execute the callback function.
+    callback(todo);
+  };
+
+  // Handle errors.
+  request.onerror = tDB.onerror;
+};
+
+////
 
 //////// create from csv
 tDB.createFromCSV = function(data,x,y, callback) {
