@@ -1,7 +1,6 @@
 var todoDB = (function() {
   var tDB = {};
   var datastore = null;
-	console.log('sash');
   
   tDB.open = function(callback) {
   
@@ -39,7 +38,6 @@ var todoDB = (function() {
   };
 
   // Handle errors when opening the datastore.
-   console.log('open success');
   request.onerror = tDB.onerror;
 };
 //////////////////

@@ -6,16 +6,16 @@ todoDB.open(function(){
 
 
 $( document ).ready(function() {	
-    alert( "ready!" );	
 	$( "#searach-contact-form" ).submit(function( event ) {
-		// event.preventDefault();
-		alert('started');
 		var valsearchcontacts = document.getElementById('val-search-contacts');
 		var searchEntry = valsearchcontacts.value; 
-	
+		if(searchEntry==''){
+			$( "#horde-content table" ).remove();
+			event.preventDefault();
+			return false;
+		}
 		// Check to make sure the text is not blank (or just spaces).
 		if (searchEntry.replace(/ /g,'') != '') {
-			alert(searchEntry);
 			todoDB.fetchMy(searchEntry,function(result){
 				$( "#horde-content table" ).remove();
 				$( "#horde-content" ).append('<table cellspacing="0" width="100%" class="linedRow"><thead><tr><th class="turba-browse-icon item" width="1%" style="cursor:pointer" nowrap="nowrap"><label for="checkAll" class="hidden">Check All/None</label><input type="checkbox" id="checkAll" name="checkAll" title="Check All/None (Accesskey A)" accesskey="A"></th><th class="turba-browse-icon item" width="1%"><span class="iconImg editImg" title="Edit"></span></th><th class="turba-browse-icon item" width="1%"><span class="iconImg vcardImg" title="Download vCard"></span></th><th class="turba-browse-icon item" width="1%"><span class="iconImg groupImg" title="List"></span></th><th class="item leftAlign" width="90%" nowrap="nowrap">Name</th></tr></thead><tbody id="QuickFinderContacts"></tbody>');		
@@ -48,13 +48,13 @@ $( document ).ready(function() {
         }
 		// Check to make sure the text is not blank (or just spaces).
 		if (fname.replace(/ /g,'') != '') {
-			alert(fname);
+			//alert(fname);
 		}
 		if (usermail.replace(/ /g,'') != '') {
-			alert(usermail);
+			//alert(usermail);
 		}
 		todoDB.createfromuiTodo(usermail,fname,function(){
-			console.log('enrty created');
+			alert('enrty created '+fname+" "+usermail);
 		});
 		// Reset the input field.
 		object_firstname_.value = '';
