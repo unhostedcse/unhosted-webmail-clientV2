@@ -2,14 +2,14 @@
 <!-- saved from url=(0051)http://unhosted.projects.uom.lk/horde/turba/add.php -->
 <html lang="en-GB">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="./ui/style.css" rel="stylesheet" type="text/css">
+	  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	  <link href="./ui/style.css" rel="stylesheet" type="text/css">
   <link href="./js/mime.css" rel="stylesheet" type="text/css">
   <link href="./js/screen_002.css" rel="stylesheet" type="text/css">
   <link href="./js/screen_003.css" rel="stylesheet" type="text/css">
   <link href="./js/screen.css" rel="stylesheet" type="text/css">
   <link href="./js/mozilla.css" rel="stylesheet" type="text/css">
-       <link type="image/x-icon" href="http://unhosted.projects.uom.lk/horde/turba/themes/default/graphics/favicon.ico" rel="shortcut icon">    <title>Address Book :: New Contact</title>
+      <link type="image/x-icon" href="http://unhosted.projects.uom.lk/horde/turba/themes/default/graphics/favicon.ico" rel="shortcut icon">    <title>Address Book :: New Contact</title>
 	  <script type="text/javascript"  src="address_module/ui/jquery-2.1.1.js"></script>
 	  <script src="address_module/db.js" type="text/javascript"></script>
 <script src="address_module/addbrowsecontacts.js" type="text/javascript"></script>
@@ -108,22 +108,34 @@
 <div id="horde-body">
 <div id="horde-contentwrapper">
 <div id="horde-content" style="margin-left:210px">
-<div class="text" style="padding:1em">
-<form action="#" method="post" name="turba_form_searchcontact-form" id="searach-contact-form">
-	<strong><label for="val">Matching</label></strong>
-	<input type="text" size="30" id="val-search-contacts" name="val" value="">
-	<input class="horde-default" id='broswe-submit-search' type="submit" name="search" value="Search">
-</form>
+<form action="#" method="post" name="turba_form_addcontact" id="turba_form_addcontact" enctype="multipart/form-data">
+<div class="horde-form" id="turba_form_addcontact_active">
+<br class="clear">
+<div id="turba_form_addcontact_section_0" style="display:block;">
+<table>
+	<tbody>
+	<tr valign="top">
+		<td class="horde-form-label" width="15%">Name</td>
+		<td><input type="text" name="object[firstname]" id="object_firstname_" size="40" value="" maxlength="255" ></td>
+	</tr>
+	<tr valign="top">
+		<td class="horde-form-label" width="15%">Email</td>
+		<td><input type="text" name="object[lastname]" id="object_lastname_" size="40" value="" maxlength="255" ></td>
+	</tr>
+</tbody>
+</table>
 </div>
-
-
-
+<div class="horde-form-buttons">
+    <input class="horde-default" name="submitbutton" type="submit" value="Add">
+</div>
+</div>
+</form>
 </div>
 </div>
 
 <div id="horde-sidebar" style="width:210px">
 <div class="horde-new">
-    <span class="horde-new-link"><a href="./Address Book    New Contact_files/Address Book    New Contact.html" title="New Contact (Accesskey N)" accesskey="N"><span class="accessKey">N</span>ew Contact</a></span>
+    <span class="horde-new-link"><a href="./New Contact.html" title="New Contact (Accesskey N)" accesskey="N"><span class="accessKey">N</span>ew Contact</a></span>
   </div>
 <div>
 <div class="horde-subnavi">
