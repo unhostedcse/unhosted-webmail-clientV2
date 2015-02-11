@@ -289,9 +289,7 @@ DBController.prototype.saveSendMail=function(mailto,text){
 	};
 
 	var request=objectStore.add(record);
-    request.onsuccess = function(event) {
-    	console.log(event);
-    	console.log(self.database);
+    request.onsuccess = function(event) {    	
     	console.log('Msg added to database');
 
     setTimeout(function(){
