@@ -385,43 +385,48 @@ action.       </li>
   var db=new DBController();
   db.create_open_account_DB(load);
 
+  window.sync;  
+
   function load(){
     var id= parseInt(getParameterByName('id'));
     var mid= parseInt(getParameterByName('mid'));
     var mbox= getParameterByName('mbox');
     var action= getParameterByName('action');
 
-    // alert(id);
-    // alert(mid);
-    // alert(mbox);
-    // alert(action);
-
-    db.loadAccountById(id,setFunc);
+    db.loadAccountById(id,setFunc);        
 
     function setFunc(cursor){
-        var user=cursor.username;
-        // console.log('got user '+user);
-        if(action=='compose')
-          console.log('compose');
-        else if(action=='reply'){
-          console.log('reply');
+          // window.sync=new Sync_Module(startSmtp);
+          var user=cursor.username;
+          // console.log('got user '+user);
+          if(action=='compose'){
+            console.log('compose');
+            db.create_openDB(user,"");
+          }
+          else if(action=='reply'){
+            console.log('reply');
 
-          db.create_openDB(user,"",
-            function(){
-              db.getMailById(mid,mbox,setReplyWindow);
-            }
-          );
+            db.create_openDB(user,"",
+              function(){
+                db.getMailById(mid,mbox,setReplyWindow);
+              }
+            );
 
-        }else if(action=='forward'){
-          console.log('forward');
-          db.create_openDB(user,"",
-            function(){
-              db.getMailById(mid,mbox,setForwardWindow);
-            }
-          );
-        }
-    }    
+          }else if(action=='forward'){
+            console.log('forward');
+            db.create_openDB(user,"",
+              function(){
+                db.getMailById(mid,mbox,setForwardWindow);
+              }
+            );
+          }
+    }
 
+  }
+
+  function startSmtp(){
+    console.log('Starting SMTP...');
+    // window.sync.initSMTP();
   }
 
   function getParameterByName(name) {
@@ -481,8 +486,8 @@ function setForwardWindow(msg){
   // smtpport=465;
   // smtpsecurity='ssl';
   
-  var sync=new Sync_Module(f);
-  sync.initSMTP();
+
+  
 
   $(document).on("click",'#send_button',
     function(e) {
@@ -566,14 +571,19 @@ function sendMail(to){
   
   console.log(txt);
   body=txt;
-  sync.SendMail();
+  // sync.SendMail();
+  saveSendMail(mailto,body);
 
 }
 
  var getMessage = function() {
 
     var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
-    var to=$("#to").val();//data[0].value;
+    // var to=$("#to").val();//data[0].value;
+
+    // var to=data[0].value;
+    var to=     "Rukshan Chathuranga < rcrukshan17@gmail.com > ";
+
     var cc=data[1].value;
     var bcc=data[2].value;
 
@@ -609,75 +619,13 @@ function sendMail(to){
     return message;
   }
 
-function start(to,cc,bcc,subject,text){ 
-  // mailto='unhostedcse@outlook.com';
-  mailto=to.split(",");
 
-  if(cc)
-    var mailcc=cc.split(",");
-
-  if(bcc)
-    var mailbcc=bcc.split(",");
-
-  // var u1='unhostedcse@gmail.com';
-  // var u2='unhostedcse@gmail.com';
-  var to="To: ";
-  for(var i=0;i<mailto.length;i++){
-    to+=mailto[i]+' <'+mailto[i]+'>,';
-  }
-
-  if(mailcc){
-    var cc="CC: ";
-    for(var i=0;i<mailcc.length;i++){
-      cc+='"'+mailcc[i]+'" <'+mailcc[i]+'>,';
-      mailto.push(mailcc[i]);
-    }
-  }  
-
-  if(mailbcc)
-    for(var i=0;i<mailbcc.length;i++){
-      mailto.push(mailbcc[i]);
-    }  
-
-  var date=(new Date()).toUTCString();
-
-  // body= 'From: '+username+' <'+username+'>'+'\r\n'+  
-  //       to+'\r\n'+
-  //       'Subject: '+subject+'\r\n'+
-  //       'Date: '+date+'\r\n'+        
-  //       cc+'\r\n'+        
-  //       '\r\n'+
-  //       text;
-
-var head=""+
-"MIME-Version: 1.0"+"\r\n"+
-"x-no-auto-attachment: 1"+"\r\n"+
-//"Received: by 10.60.41.195; Wed, 10 Sep 2014 00:24:10 -0700 (PDT)"+"\r\n"+
-"Date: "+date+"\r\n"+
-// "Message-ID: <CAEbMfJLbWOV2OohyRZ2ibvXEBhJjryt1XsDa=xC-C6wRnTu9pw@mail.gmail.com>"+"\r\n"+
-"Subject: "+subject+"\r\n"+
-'From: '+username+' <'+username+'>'+'\r\n'+  
-to+'\r\n'+
-//"To: unhosted cse <unhostedcse@gmail.com>"+"\r\n"+
-//"Content-Type: multipart/alternative; boundary=089e01293fa625798e0502b0f0ce"+"\r\n";
-"Content-Type: text/html; charset=UTF-8"+"\r\n";
-
-body=head+'\r\n'+text;
-
-  sync.SendMail();
-  saveSendMail(to,cc,bcc,subject,text);
-
-}
-
-function f(){
-  console.log('Starting SMTP...');
-}
 
 // call when send button click
-function saveSendMail(to,cc,bcc,subject,text){
+function saveSendMail(mailto,text){
 
-  text='Subject: '+subject+'\r\n'+text;
-  sync.db.saveSendMail(text,to,cc,bcc);
+  //text='Subject: '+subject+'\r\n'+text;
+  db.saveSendMail(mailto,text);
 }
 
 //send mail when new mail is waiting

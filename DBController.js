@@ -275,23 +275,24 @@ DBController.prototype.add=function(record,id,folder){
 }
 
 // save msg for offline send
-DBController.prototype.saveSendMail=function(text,to,cc,bcc){	
+DBController.prototype.saveSendMail=function(mailto,text){	
     // this.addContain(record,id,folder);	
 
     var transaction = this.database.transaction([this.offlineMboxName], "readwrite");    
     var objectStore = transaction.objectStore(this.offlineMboxName);		
-
+    var self=this;
 	var record={
+		// id:1,
 		text: text,
-		to: to,
-		cc: cc,
-		bcc: bcc,
+		mailto: mailto,
 		status: 'tosend'
 	};
 
 	var request=objectStore.add(record);
     request.onsuccess = function(event) {
-    	console.log('Msg added to database' );
+    	console.log(event);
+    	console.log(self.database);
+    	console.log('Msg added to database');
     	// $.event.trigger({type:"newSendMail"});
    	};
    	request.onerror = function (event) {
@@ -299,7 +300,7 @@ DBController.prototype.saveSendMail=function(text,to,cc,bcc){
    	}	
 }
 
-DBController.prototype.getSaveSendMail=function(){	
+DBController.prototype.getSaveSendMail=function(callback){	
 	self=this;
 	console.log('getSaveSendMail');
 	var objectStore = this.database.transaction(this.offlineMboxName).objectStore(this.offlineMboxName);
@@ -310,15 +311,19 @@ DBController.prototype.getSaveSendMail=function(){
 	    			var status=cursor.value.status;
 	    			// console.log('send mail: '+status);
 	    			if(status=='tosend'){
-		    			var body=cursor.value.text;
-						var to=cursor.value.to;
-						var cc=cursor.value.cc;
-						var bcc=cursor.value.bcc;
+	    				var msg={};
+		    			msg.body=cursor.value.text;
+						msg.mailto=cursor.value.mailto;
+						msg.key=cursor.key;
 
 						//send
-						console.log('send mail: '+body+' id: '+cursor.key);
-						self.updateSaveSendMail(cursor.key);
+						console.log('send mail: '+msg.body+' id: '+cursor.key);
+						// self.updateSaveSendMail(cursor.key);
+						if(callback){
+			    			callback(msg)
+			    		}
 			    	}
+			    	
 			    }	
 			    cursor.continue();
 		    }	

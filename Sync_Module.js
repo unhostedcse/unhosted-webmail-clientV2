@@ -4,14 +4,14 @@ function Sync_Module(clearBody){
 	clearBody();
 }
 
-Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar){
+Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar,loadaccCllback){
 	Sync_Module.setMailBoxBar=setMailBoxBar;
 	Sync_Module.addMsg=addMsg;
 	Sync_Module.folder=folder;
 
 	Sync_Module.db=new DBController();
 	Sync_Module.db.create_openDB(username,folder,Sync_Module.prototype.DBReady);
-	Sync_Module.db.create_open_account_DB();
+	Sync_Module.db.create_open_account_DB(loadaccCllback);
 
 	console.log('username '+username);
 
@@ -342,8 +342,44 @@ function pingSuccess(){
 }
 
 function setStatus(){
-	if(Sync_Module.isOnline)
+	if(Sync_Module.isOnline){
 		$("#horde-search-input").val("Online");
+		try{
+			whenOnline();
+		}catch(e){
+			console.log(e);
+		}
+	}
 	else
 		$("#horde-search-input").val("Offline");
+}
+
+function whenOnline(){
+	Sync_Module.db.getSaveSendMail(
+		function(msg){
+			//console.log(msg);
+			console.log('SMTP command starting');
+			body=msg.body;
+			mailto=msg.mailto;
+			var smtp=new SMTP_Sendmail(++imaps);
+			smtp.sendmail(SendMailReady);
+		}
+	);
+}
+
+function SendMailReady(){
+	console.log('finished SendMailReady');		
+	
+  	$.notifier({"type": 'success',
+	                "title": 'Mail Sent',
+	                "text": 'Mail Sent Succesfully',
+	                "positionY": "bottom",
+	                "positionX": "left",
+	                "animationIn" : 'bounce',
+                	"animationOut" : 'drop'
+	});		
+}
+
+function whenOffline(){
+	
 }

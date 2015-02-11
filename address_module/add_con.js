@@ -26,7 +26,7 @@ $(document).ready(function() {
 		var content=this.innerText;		
 		var t=new SMTP_Sendmail();
 		var SimpleMailAddressObject=t.parse(content);
-		if(SimpleMailAddressObject.name==''){
+		if(!SimpleMailAddressObject && SimpleMailAddressObject.name==''){
 			//alert('empty name');
 			SimpleMailAddressObject.name=SimpleMailAddressObject.email;
 		}
