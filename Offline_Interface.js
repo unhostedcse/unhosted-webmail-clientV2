@@ -1,5 +1,5 @@
 function Offline_Interface(res,i){
-  this.imaps=i;
+  this.imaps=0;
   this.type='offline';
   if(isFirefox){
     this.tcp=new TCP_Interface(this);

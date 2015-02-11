@@ -21,6 +21,7 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar,loadaccCllback
 		// Sync_Module.prototype.getMailBoxesScenario();  // uncomment
 	}, refresh_interval);
 
+	Sync_Module.offline=new Offline_Interface(pingSuccess);
 	setInterval(function () {
 		console.log("ping.....");
 		Sync_Module.ping();
@@ -328,11 +329,13 @@ Sync_Module.CheckNewMail = function(fetchList,keys){
   	return re;
 }
 
+
+
 Sync_Module.ping = function(fetchList,keys){
 	setStatus();
-	Sync_Module.isOnline=false;
-	var offline=new Offline_Interface(pingSuccess,++imaps);
-	offline.ping();
+	Sync_Module.isOnline=false;	
+
+	Sync_Module.offline.ping();
 }
 
 function pingSuccess(){

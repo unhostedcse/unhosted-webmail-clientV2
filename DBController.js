@@ -293,6 +293,20 @@ DBController.prototype.saveSendMail=function(mailto,text){
     	console.log(event);
     	console.log(self.database);
     	console.log('Msg added to database');
+
+    setTimeout(function(){
+		window.close();
+	},100);
+	
+	$.notifier({"type": 'success',
+	    "title": 'Mail Saved',
+	    "text": 'Mail Queued Succesfully',
+	    "positionY": "bottom",
+	    "positionX": "left",
+	    "animationIn" : 'bounce',
+		"animationOut" : 'drop'
+	});	
+
     	// $.event.trigger({type:"newSendMail"});
    	};
    	request.onerror = function (event) {
@@ -303,6 +317,8 @@ DBController.prototype.saveSendMail=function(mailto,text){
 DBController.prototype.getSaveSendMail=function(callback){	
 	self=this;
 	console.log('getSaveSendMail');
+	// console.log(this.database);
+
 	var objectStore = this.database.transaction(this.offlineMboxName).objectStore(this.offlineMboxName);
 	    objectStore.openCursor().onsuccess = function(event) {
 	    	var cursor = event.target.result;    	
@@ -318,13 +334,14 @@ DBController.prototype.getSaveSendMail=function(callback){
 
 						//send
 						console.log('send mail: '+msg.body+' id: '+cursor.key);
-						// self.updateSaveSendMail(cursor.key);
+						self.updateSaveSendMail(cursor.key);
 						if(callback){
 			    			callback(msg)
 			    		}
-			    	}
+			    	}else	
+			    	cursor.continue();
 			    	
-			    }	
+			    }else	
 			    cursor.continue();
 		    }	
 	    }
@@ -346,7 +363,7 @@ DBController.prototype.updateSaveSendMail=function(id){
 	  data.status = 'sent';
 
 	  // Put this updated object back into the database.
-	  var requestUpdate = objectStore.put(data,id);
+	  var requestUpdate = objectStore.put(data);
 	   requestUpdate.onerror = function(event) {
 	     console.log(event);
 	   };

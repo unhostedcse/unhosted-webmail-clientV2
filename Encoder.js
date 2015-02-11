@@ -418,13 +418,23 @@ pub.encode =function(message) {
 
       message.html = SimpleMailText.replaceURLs(message.html,
         function(text, url, image) {
-          if (!image && !SimpleMailFile.isLocalURL(url)) return text;
+          if (!image && !SimpleMailFile.isLocalURL(url)) 
+            return text;
           url = url.replace(/&amp;/gi, "&"); // Decode html entities
           message.attachmentsCount++;
 
           //var name = SimpleMailFile.getFileName(url);
+          
+          // if(!message || !message.file || !message.file[ind]){
+          //   return text;
+          // }
+
           var ind=url.replace('file://',"");
           var name=message.file[ind].name;
+          
+            
+          
+
           // var name=message.file.name;
 
           attachments[name] = {
