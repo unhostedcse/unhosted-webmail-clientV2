@@ -20,7 +20,8 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 	// element.dispatchEvent(evt);
 
 
-	var editorExtensionId = 'leeieiodahmceefccpkdcdnhfeapimcd';//'ikhibemopdnmbjfnhoepochhedbodhih';
+	// var editorExtensionId = 'leeieiodahmceefccpkdcdnhfeapimcd';//
+	var editorExtensionId = 'ikhibemopdnmbjfnhoepochhedbodhih';
 	try{
 		chrome.runtime.sendMessage(editorExtensionId, {actionEvt: act, command: cmd, settings:settings, conID:this.server.imaps},
   		function(response) {
