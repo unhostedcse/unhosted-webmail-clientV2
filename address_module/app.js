@@ -1,8 +1,8 @@
-/*window.onload = function() {
+window.onload = function() {
   todoDB.open(refreshTodos);
 
-//var newTodoForm = document.getElementById('new-todo-form');
-//var newTodoInput = document.getElementById('new-todo');
+var newTodoForm = document.getElementById('new-todo-form');
+var newTodoInput = document.getElementById('new-todo');
 
 
 newTodoForm.onsubmit = function() {
@@ -40,7 +40,7 @@ function refreshTodos() {
       var checkbox = document.createElement('input');
       checkbox.type = "checkbox";
       checkbox.className = "todo-checkbox";
-      checkbox.setAttribute("data-id", todo.timestamp);
+      checkbox.setAttribute("data-id", todo.email);
 
       li.appendChild(checkbox);
 
@@ -53,7 +53,7 @@ function refreshTodos() {
 
       // Setup an event listener for the checkbox.
       checkbox.addEventListener('click', function(e) {
-        var id = parseInt(e.target.getAttribute('data-id'));
+        var id = e.target.getAttribute('data-id');
 
         todoDB.deleteTodo(id, refreshTodos);
       });
@@ -131,7 +131,7 @@ function displayContents(contents) {
     });
  // alert(data.length);
 }
-*/
+
 
 
 todoDB.open(function(){
@@ -146,6 +146,7 @@ Address_Module.prototype.suggestMails=function(email,currentparent_id){
 	var pos=d.position();
 
 	todoDB.fetchMy(email,function(output){
+	document.getElementById("bath").innerHTML= '';
 	$('body').append('<div class="KeyNavList" data-belongs="'+currentparent_id+'" style="left:'+pos.left+' ; top: '+(pos.top+24)+';"><ul></ul></div>');	
 	for(var i = 0; i < output.length; i++) {	
 		var st=output[i].name.concat(' <').concat(' ' +output[i].email+ ' ').concat('>');

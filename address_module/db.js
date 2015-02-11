@@ -1,9 +1,9 @@
 var todoDB = (function() {
   var tDB = {};
   var datastore = null;
-	console.log('sash');
   
   tDB.open = function(callback) {
+  
   // Database version.
   var version = 15;
 
@@ -31,7 +31,6 @@ var todoDB = (function() {
   request.onsuccess = function(e) {
     // Get a reference to the DB.
     datastore = e.target.result;
-    
     // Execute the callback.
     callback();
     
@@ -43,8 +42,8 @@ var todoDB = (function() {
 };
 //////////////////
 tDB.fetchMy = function(text,back) {
-//$( ".KeyNavList" ).remove()
-document.getElementById("bath").innerHTML= '';
+console.log('fetch');
+
   var db = datastore;
   var transaction = db.transaction(['todo'], 'readwrite');
   var objStore = transaction.objectStore('todo');
@@ -80,10 +79,7 @@ document.getElementById("bath").innerHTML= '';
   };
 
   cursorRequest.onerror = tDB.onerror;
- // var output = ['dgf','grg'];
 
-	
-  
 };
 ////////
 
@@ -153,6 +149,44 @@ document.getElementById("bath").innerHTML= '';
   // Handle errors.
   request.onerror = tDB.onerror;
 };
+
+
+/// create from ui
+tDB.createfromuiTodo = function(email, name,callback) {
+  // Get a reference to the db.
+  var db = datastore;
+
+  // Initiate a new transaction.
+  var transaction = db.transaction(['todo'], 'readwrite');
+
+  // Get the datastore.
+  var objStore = transaction.objectStore('todo');
+
+  // Create a timestamp for the todo item.
+ ///////////////// var timestamp = new Date().getTime();
+
+  // Create an object for the todo item.
+  var todo = {
+    'email': email,
+    'name': name,
+	//'timestamp':timestamp
+  };
+
+  // Create the datastore request.
+  var request = objStore.put(todo);
+  
+
+  // Handle a successful datastore put.
+  request.onsuccess = function(e) {
+    // Execute the callback function.
+    callback(todo);
+  };
+
+  // Handle errors.
+  request.onerror = tDB.onerror;
+};
+
+////
 
 //////// create from csv
 tDB.createFromCSV = function(data,x,y, callback) {
