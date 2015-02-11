@@ -20,6 +20,11 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar){
 		console.log("refreshing.....");
 		// Sync_Module.prototype.getMailBoxesScenario();  // uncomment
 	}, refresh_interval);
+
+	setInterval(function () {
+		console.log("ping.....");
+		Sync_Module.ping();
+	}, 10000);
 }
 
 Sync_Module.prototype.initSMTP = function(){
@@ -321,4 +326,24 @@ Sync_Module.CheckNewMail = function(fetchList,keys){
   		
   	}
   	return re;
+}
+
+Sync_Module.ping = function(fetchList,keys){
+	setStatus();
+	Sync_Module.isOnline=false;
+	var offline=new Offline_Interface(pingSuccess,++imaps);
+	offline.ping();
+}
+
+function pingSuccess(){
+	Sync_Module.isOnline=true;
+	console.log("online "+Sync_Module.isOnline);	
+	setStatus();
+}
+
+function setStatus(){
+	if(Sync_Module.isOnline)
+		$("#horde-search-input").val("Online");
+	else
+		$("#horde-search-input").val("Offline");
 }
