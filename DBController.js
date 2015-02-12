@@ -183,6 +183,31 @@ DBController.prototype.loadAccount=function(userName){
     }
 }
 
+DBController.prototype.deleteAccount=function(id,func){
+  var objectStore = this.account_database.transaction([this.accountTableName],'readwrite').objectStore(this.accountTableName);
+  var req=objectStore.openCursor();
+
+   req.onsuccess = function(e) { 
+   		var cursor = e.target.result;
+ 		if(cursor){
+ 			if(cursor.key==id){
+	 			var request = cursor.delete();
+		        request.onsuccess = function() {
+		          	if(func){
+	 					func();
+	 				}
+		        }; 			
+		        return;
+ 			} 
+ 			cursor.continue();			
+ 		}
+   }
+
+   req.onerror = function(event) {
+    	console.log(event.target.errorCode);    	
+    };
+}
+
 DBController.prototype.loadAccountById=function(id,func){
   var objectStore = this.account_database.transaction(this.accountTableName).objectStore(this.accountTableName);
   var req=objectStore.get(id);
@@ -289,9 +314,7 @@ DBController.prototype.saveSendMail=function(mailto,text){
 	};
 
 	var request=objectStore.add(record);
-    request.onsuccess = function(event) {
-    	console.log(event);
-    	console.log(self.database);
+    request.onsuccess = function(event) {    	
     	console.log('Msg added to database');
 
     setTimeout(function(){

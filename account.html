@@ -445,7 +445,7 @@ function selectAccout(e){
 				var name=accs[i].getElementsByClassName('accountName')[0];
 				console.log(name.textContent);
 				var id=parseInt(accs[i].getAttribute('id'));
-				console.log(id);
+				// console.log(id);
 				accs[i].classList.add('accountBoxSelect');		
 				db.loadAccountById(id,showConfigReadonly);
 			}				
@@ -508,6 +508,12 @@ function showConfigAdd(){
 
 function removeAccount(id){
 	console.log('removeAccount '+id);	
+  db.deleteAccount(id,
+    function(){
+      alert("deleted");
+      location.reload();
+    }
+    );
 }
 
 function showConfig(acc){

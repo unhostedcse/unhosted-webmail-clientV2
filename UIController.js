@@ -247,7 +247,7 @@ function addMsg(mails){
 		if(msg.size=='-')
 			var size=msg.size;
 		else
-			var size=Math.ceil(msg.size/1024);
+			var size=msg.size;
 
         $('.msglist').append('<div class="vpRowHoriz vpRow DragElt ' + (seen ? "" : 'flagUnseen') +'" id="'+msg.id+'" style="-moz-user-select: none;"></div>');
 		

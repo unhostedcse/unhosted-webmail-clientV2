@@ -146,7 +146,13 @@ IMAP_Interface.prototype.fetchList = function() {
             //ids[i++]=[getid[2],getflag[2]];
           }
         }
-        return ids;
+
+        var obj={};
+        obj.ids=ids;
+        obj.sizes=sizes;
+        return obj;
+        // return ids;
+
       }
 
     this.tag++;

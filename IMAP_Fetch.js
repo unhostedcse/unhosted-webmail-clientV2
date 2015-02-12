@@ -87,7 +87,10 @@ IMAP_Fetch.prototype.fetchList=function(){
   cmd=IMAP_Fetch.imap.fetchList();
   IMAP_Fetch.imap.onTheResponse=cmd.onResponse;
   IMAP_Fetch.imap.setVal=function(val,nextFunc,para){
-      result.fetchList=val;
+      result.fetchList=val.ids;
+      result.fetchListSize=val.sizes;
+      // console.log("val.sizes "+val.sizes);
+      // result.fetchList=val;
       printCmd("id= "+this.imaps+" result fetchList= "+result.fetchList);
       nextFunc(para);
   }
@@ -126,6 +129,7 @@ IMAP_Fetch.prototype.fetchBody=function(id){
         this.body="";
         this.seen="";
         this.attachments=new Array();
+        this.size=0;
       };
 
        var DateParse = function(date) {
@@ -145,7 +149,8 @@ IMAP_Fetch.prototype.fetchBody=function(id){
       head.Subject=part.getHeader('Subject');
       head.Date=DateParse(part.getHeader('Date'));           
       head.body=part.toHtml();
-      head.size=val.length; 
+      //head.size=val.length; 
+      // head.size=Math.ceil(result.fetchListSize[id]/1024);
 
       ///////////////////////////////////
       head.body = SimpleMailText.replaceURLs(head.body,
@@ -190,10 +195,11 @@ IMAP_Fetch.prototype.fetchBody=function(id){
       //console.log(head);
 
       head.body=false;
+      head.size=Math.ceil(result.fetchListSize[id]/1024);
       //skip buferering, save directly at here
       $.event.trigger({type:"mailheaderDownloaded",id:id,record:head});
       
-      printCmd("id= "+this.imaps+" result fetchBody= "+id+" "+result.fetchBody[id]);
+      printCmd("id= "+this.imaps+" result fetchBody= "+id+" "+head.size);
       nextFunc(para);      
   }
 }
