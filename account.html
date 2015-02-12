@@ -24,7 +24,7 @@
 <body class="container-form">
 
 <button class="" id="back" type="button" onclick="location.href='./index.html'">Back to Home</button>    
-<button id="" type="button" onclick="showConfigAdd();" >Add Account</button>           
+<button id="addaccount" type="button" onclick="showConfigAdd();" >Add Account</button>           
 
 <div id="displaydiv" class="container-form-nest">
 
@@ -381,7 +381,7 @@ function selectAccout(e){
 				var name=accs[i].getElementsByClassName('accountName')[0];
 				console.log(name.textContent);
 				var id=parseInt(accs[i].getAttribute('id'));
-				console.log(id);
+				// console.log(id);
 				accs[i].classList.add('accountBoxSelect');		
 				db.loadAccountById(id,showConfigReadonly);
 			}				
@@ -426,6 +426,12 @@ function showConfigAdd(){
 
 function removeAccount(id){
 	console.log('removeAccount '+id);	
+  db.deleteAccount(id,
+    function(){
+      alert("deleted");
+      location.reload();
+    }
+    );
 }
 
 function showConfig(acc){
