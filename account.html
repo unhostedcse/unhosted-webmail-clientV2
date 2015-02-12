@@ -8,7 +8,8 @@
 <link href="ui/webkit.css" rel="stylesheet" type="text/css" />  
 <link type="image/x-icon" href="graphics/favicon.ico" rel="shortcut icon" /> 
 <link rel="stylesheet" type="text/css" href="ui/style.css">
-      
+<link href="css/bootstrap.min.css" rel="stylesheet">  
+<link href="css/custom.css" rel="stylesheet">    
 <script type="text/javascript" src="DBController.js"></script>
 <script type="text/javascript" src="Mail_Settings.js"></script>
 <script type="text/javascript" src="Auto_Config_Get.js"></script>
@@ -16,40 +17,40 @@
 <script type="text/javascript" src="logger.js"></script>
 <script type="text/javascript" src="TCP_Interface.js"></script>
 <script type="text/javascript" src="TCP_Interface_Chrome.js"></script>
-
-<script type="text/javascript"  src="ui/jquery-2.1.1.js"></script>
-
+<script type="text/javascript" src="ui/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 </head>
 
-<body class="container-form">
+<body style="background-color:#EEF0F7">
 
-<button class="" id="back" type="button" onclick="location.href='./index.html'">Back to Home</button>    
-<button id="" type="button" onclick="showConfigAdd();" >Add Account</button>           
+<div class="container-form" style="padding:10px;">
+  <div class="panel panel-default">
+  <div class="panel-heading text-center custom_text_c1">
+      <h3>Manage Account</h3>
+  </div>
+  <div class="panel-body">
+    <div class="container-fluid custom_margin_lgbottom">
+      <div class="row">
+          <div class="col-md-6 right_border">
+              <button id="back" type="button" class="btn btn-link btn-lg btn-block" onclick="location.href='./select.html'">Back to Sign in</button>    
+          </div>
+          <div class="col-md-6">
+              <button id="" class="btn btn-link btn-lg btn-block" type="button" onclick="showConfigAdd();" >Add Account</button>
+          </div> 
+      </div>          
+    </div>
 
-<div id="displaydiv" class="container-form-nest">
 
-<div class="accountHolder" id="accountHolder">
-	<!-- <div class="accountBox" id="0321">
-		<div class="accountName">ruky@gmail.com</div>
-		<div class="iconU accountEdit"></div>
-		<div class="iconU accountRemove"></div>                
-	</div>
-  <div class="accountBox" id="1321" >
-		<div class="accountName"><span>ruky@outlook.com</span></div>
-		<div class="iconU accountEdit"></div>
-		<div class="iconU accountRemove"></div>                
-	</div> -->
-</div>
 
-</div>
- 
-<div id="configdiv" class="container-form-nest" style="visibility: hidden;">    
-    <table>
-    <col width="115">
-    <tr id="accountsConfig">
-        	<td>Account</td>
-            <td>
-                <select id="accounts" onchange="setSetting()">
+<div id="configdiv" class="container-fluid">
+    <div id="accountsConfig" class="row" style="margin-bottom: 20px; display:none;">
+        <div class="col-md-12">
+          <div id="account_select" class="row custom_margin_bottom">
+            <div class="col-md-6">
+            Account
+            </div>
+            <div class="col-md-6">
+                <select id="accounts" class="form-control" onchange="setSetting()">
                   <option value="gmail">Gmail</option>
                   <option value="gmail">cse.mrt.ac.lk</option>
                   <option value="hotmail">Outlook</option>  
@@ -57,62 +58,119 @@
                   <option value="uom.lk">uom.lk</option>
                   <option value="other" selected>other</option>
                 </select>
-           </td>
-   	</tr>  
-      <tr>
-        <td>Username:</td>
-        <td><input type="text" id="user" value=""></td>
-      </tr> 
-      <tr>
-        <td>Password:</td>
-        <td><input type="password" id="pass" value=""></td>
-      </tr>  
-      <tr>
-      	<td>SMTP Hostname:</td>
-        <td><input type="text" id="smtp" value=""></td>
-      </tr>
-      <tr>
-      	<td>SMTP Port:</td>
-        <td><input type="text" id="smtpport" value=""></td>
-      </tr>
-      <tr>
-      	<td>SMTP Security:</td>      	        
-      	<td><select id="smtpsec" onchange="">
-            <option value="ssl">SSL</option>
-            <option value="tls">TLS</option>  
-            <option value="no">NO</option>  
-            </select>
-    	 </td>
-      </tr>          
-      <tr> 
-       <td>
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            Username:
+            </div>
+            <div class="col-md-6">
+              <input type="text" id="user" value="" class="cover_parent">
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            Password:
+            </div>
+            <div class="col-md-6">
+              <input type="password" id="pass" value="" class="cover_parent">
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            SMTP Hostname:
+            </div>
+            <div class="col-md-6">
+              <input type="text" id="smtp" value="" class="cover_parent">
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            SMTP Port:
+            </div>
+            <div class="col-md-6">
+              <input type="text" id="smtpport" value="" class="cover_parent">
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            SMTP Security:
+            </div>
+            <div class="col-md-6">
+              <select id="smtpsec" class="form-control" onchange="">
+                  <option value="ssl">SSL</option>
+                  <option value="tls">TLS</option>  
+                  <option value="no">NO</option>  
+              </select>
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            IMAP Hostname:
+            </div>
+            <div class="col-md-6">
+              <input type="text" id="imap" value="" class="cover_parent">
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            IMAP Port:
+            </div>
+            <div class="col-md-6">
+              <input type="text" id="imapport" value="" class="cover_parent">
+            </div>
+          </div>
+          <div class="row custom_margin_bottom">
+            <div class="col-md-6">
+            IMAP Security:
+            </div>
+            <div class="col-md-6">
+              <select id="imapsec" class="form-control" onchange="">
+                  <option value="ssl">SSL</option>
+                  <option value="tls">TLS</option>  
+                  <option value="no">NO</option>  
+              </select>
+            </div>
+          </div>
+          <div class="row custom_margin_xlgtop custom_margin_lgbottom">
+            <div class="col-md-6">
+              <button id="check" type="button" class="btn btn-default btn-block cover_parent" onclick="Check();">Setup Configuration</button>    
+            </div>
+            <div class="col-md-6">
+              <button id="addDb" class="btn btn-success btn-block cover_parent" type="button" onclick="addDB();" >Add New Account</button>
+              <button id="updateDB" class="btn btn-success btn-block cover_parent" type="button" onclick="updateDB();" style="display: none;">Update Account</button>  
+            </div> 
+          </div>
+          <div class="row">
+             <div class="col-md-6">
+             </div>
+             <div class="col-md-6">
+                 <button id="cancel" class="btn btn-danger btn-block cover_parent" type="button" onclick="closeAbovePanel()" >Cancel</button>
+             </div>
+          </div>
+        </div>
+    </div>
 
-        
-       </td>       
-      </tr>
-      <tr>
-      	<td>IMAP Hostname:</td>
-        <td><input type="text" id="imap" value=""></td>
-      </tr>
-      <tr>
-      	<td>IMAP Port:</td>
-      	<td><input type="text" id="imapport" value=""></td>        
-      </tr>
-      <tr>
-      	<td>IMAP Security:</td>
-      	<td><select id="imapsec" onchange="">
-          	<option value="ssl">SSL</option>
-          	<option value="tls">TLS</option>  
-          	<option value="no">NO</option>  
-        	</select>
-    	  </td>        
-        <!-- <td><input type="text" id="msgid" value=""></td> -->
-      </tr>           
-    </table>  
+ 
+                
+  </div>
+</div>
+</div>
+</div>
+
+
+
+<div class="container-form" style="padding:10px;">
+<div class="panel panel-default">
+  <div class="panel-heading text-center">
+      <h3>Edit Account</h3>
+  </div>
+  <div class="panel-body">
     
-  	<button id="check" type="button" onclick="Check();" style="visibility: hidden;">Set Config</button>
-    <button id="updateDB" type="button" onclick="updateDB();" style="visibility: hidden;">Update Account</button>   
-	<button id="addDb" type="button" onclick="addDB();" style="visibility: hidden;">Add</button> 
+            <div class="accountHolder" id="accountHolder"></div>
+        
+  </div>
+  </div>
 </div>
 </body>
 
@@ -349,11 +407,17 @@ function removeAccout(e){
 }
 
 function addAccountToView(acc){
-var acc='<div class="accountBox" id="'+acc.id+'">'+
+var acc='<div class="container-fluid">'+
+      '<div class = "row">'+
+      '<div class="col-md-12">'+
+      '<div class="accountBox cover_parent" id="'+acc.id+'">'+
 			'<div class="accountName">'+acc.username+'</div>'+
-			'<div class="iconU accountEdit"></div>'+
-			'<div class="iconU accountRemove"></div>'+                
-		'</div>';
+			'<div class="iconU accountEdit tooltips"><span>Edit Account</span></div>'+
+			'<div class="iconU accountRemove tooltips"><span>Remove Account</span></div>'+                
+		  '</div>'+
+      '</div>'+
+      '</div>'+
+      '</div>';
 		
 		var $good=$("#accountHolder").last();
 		$good.append(acc);		
@@ -389,10 +453,15 @@ function selectAccout(e){
 }
 
 function showConfigReadonly(acc){
-	document.getElementById("accountsConfig").style.visibility="hidden";
-	document.getElementById("addDb").style.visibility="hidden";
-	document.getElementById("check").style.visibility="hidden";
-	document.getElementById("updateDB").style.visibility="hidden";
+	document.getElementById("accountsConfig").style.display="inline";
+	//document.getElementById("addDb").style.visibility="hidden";
+  document.getElementById("addDb").style.display="none";
+	//document.getElementById("check").style.visibility="hidden";
+  document.getElementById("check").style.display="none";
+  document.getElementById("account_select").style.visibility="hidden";
+	//document.getElementById("updateDB").style.visibility="hidden";
+  document.getElementById("updateDB").style.display="none";
+  document.getElementById("cancel").style.display="none";
 	document.getElementById("configdiv").style.visibility="visible";	
 	//document.getElementById("back").style.visibility="hidden";	
 	
@@ -400,20 +469,33 @@ function showConfigReadonly(acc){
 }
 
 function showConfigUpdate(acc){
-	document.getElementById("accountsConfig").style.visibility="hidden";
-	document.getElementById("addDb").style.visibility="hidden";
-	document.getElementById("check").style.visibility="visible";
-	document.getElementById("updateDB").style.visibility="visible";
+	//document.getElementById("accountsConfig").style.visibility="hidden";
+  if(document.getElementById("accountsConfig").style.display == "none"){
+    document.getElementById("accountsConfig").style.display="inline";
+  }  
+	//document.getElementById("addDb").style.visibility="hidden";
+  document.getElementById("addDb").style.display="none";
+  document.getElementById("account_select").style.visibility="hidden";
+	document.getElementById("check").style.display="inline";
+	//document.getElementById("updateDB").style.visibility="visible";
+  document.getElementById("updateDB").style.display="inline";
+  document.getElementById("cancel").style.display="inline";
 	document.getElementById("configdiv").style.visibility="visible";	
 	//document.getElementById("back").style.visibility="hidden";	
 	showConfig(acc);
 }
 
 function showConfigAdd(){
-	document.getElementById("accountsConfig").style.visibility="visible";
-	document.getElementById("addDb").style.visibility="visible";
-	document.getElementById("check").style.visibility="visible";
-	document.getElementById("updateDB").style.visibility="hidden";
+  
+	//document.getElementById("accountsConfig").style.visibility="visible";
+  document.getElementById("accountsConfig").style.display="inline";
+	//document.getElementById("addDb").style.visibility="visible";
+  document.getElementById("addDb").style.display="inline";
+	document.getElementById("check").style.display="inline";
+  document.getElementById("account_select").style.visibility="visible";
+  document.getElementById("cancel").style.display="inline";
+	//document.getElementById("updateDB").style.visibility="hidden";
+  document.getElementById("updateDB").style.display="none";
 	document.getElementById("configdiv").style.visibility="visible";
 	
 	document.getElementById('user').value='';
@@ -437,6 +519,10 @@ function showConfig(acc){
   document.getElementById('imapport').value=acc.imapport;  
   document.getElementById('imapsec').value=acc.imapsecurity; 
   document.getElementById('smtpsec').value=acc.smtpsecurity;
+}
+
+function closeAbovePanel(){
+   document.getElementById("accountsConfig").style.display="none";
 }
 
 </script>
