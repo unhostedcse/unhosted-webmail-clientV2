@@ -398,8 +398,14 @@ function removeAccout(e){
 				console.log(name.textContent);
 				var id=parseInt(accs[i].getAttribute('id'));
 				console.log(id);
-				accs[i].classList.add('accountBoxSelect');
-				removeAccount(id);		
+				accs[i].classList.add('accountBoxSelect');				
+
+        var r = confirm("Delete '"+name.textContent+"' Account?");
+        if (r == true) {
+            removeAccount(id);    
+        } else {
+            
+        }
 				//db.loadAccountById(id,showConfigReadonly);				
 			}
 				

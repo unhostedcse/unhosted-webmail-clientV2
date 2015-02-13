@@ -6,7 +6,7 @@ var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Const
 var isChrome = !!window.chrome && !isOpera;              // Chrome 1+
 var isIE = /*@cc_on!@*/false || !!document.documentMode; 
 
-  this.imaps=0;
+  this.imaps=i;
   this.type='offline';
   if(isFirefox){
     this.tcp=new TCP_Interface(this);
@@ -22,21 +22,40 @@ Offline_Interface.prototype.result=function(value,id){
   Offline_Interface.onResponse(value,id);  
 }
 
-Offline_Interface.prototype.ping = function(){
-  var cmd=new Command(null, null, "\\* OK", "\r\n");
+Offline_Interface.prototype.connect = function(){
+  //var cmd=new SMTPCommand(null, null, "\\* OK", "\r\n");
+  var cmd=new SMTPCommand(null, null, null,null);
   var obj={
-        host : 'imap.gmail.com',
-        port : 993,
+        host : 'smtp.gmail.com',
+        port : 465,
         sec : 'ssl'
   };
+  // var obj={
+  //       host : 'autoconfig.thunderbird.net',
+  //       port : 443,
+  //       sec : 'ssl'
+  // };
 
   this.tcp.connect('connect',JSON.stringify(cmd),JSON.stringify(obj));
   return cmd;
 }
 
-function Command(request, onResponse, responseStart, responseEnd) {
-      this.request = request;
-      this.onResponse = onResponse;
-      this.responseStart = responseStart;
-      this.responseEnd = responseEnd;
+Offline_Interface.prototype.ping = function(){
+  // var cmd=new SMTPCommand("EHLO unhosted",null,null, /2\d* .*\r\n$/);
+  // this.tcp.connect('ehlo',JSON.stringify(cmd));
+  // return cmd;
+  var domain="gmail.com";
+  var req='GET /v1.1/'+domain+' HTTP/1.1'+'\r\n'+
+      'Host: autoconfig.thunderbird.net:443'+'\r\n'+      
+      '\r\n';
+  var cmd=new SMTPCommand(req, null, /^HTTP/, /\r\n/);  
+  this.tcp.connect('HTTPGet',JSON.stringify(cmd));
+  return cmd;
+}
+
+function SMTPCommand(request, onResponse, responseStart, responseEnd) {
+  this.request = request;
+  this.onResponse = onResponse;
+  this.responseStart = responseStart || /^2/;
+  this.responseEnd = responseEnd || /\r\n$/;
 }

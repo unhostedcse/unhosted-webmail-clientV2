@@ -339,6 +339,15 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 	var db=new DBController();
 	db.create_openDB(username ,"",
             function(){
+
+            	var row=$('.vpRowHoriz.vpRow.DragElt.flagUnseen.vpRowSelected');
+            	if(row.length>0){
+            		console.log("Unseen msg Selected");
+            		db.setMailFlagById(mid,selectFolder,function(){
+            			row.removeClass("flagUnseen");
+            		});
+            	}
+
               	db.getMailById(mid,selectFolder,function(msg){
               	var body=msg.body;
 
