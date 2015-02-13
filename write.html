@@ -265,6 +265,7 @@ action.       </li>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="File.js"></script>
 <script type="text/javascript" src="toggleccbc.js"></script>
+<script type="text/javascript" src="Offline_Interface.js"></script>  
 
 <!-- address Module -->
 <!-- <script type="text/javascript"  src="address_module/ui/jquery-2.1.1.js"></script> -->
@@ -296,6 +297,7 @@ action.       </li>
 
   
   var atta=new Array();
+  var offNo=0;
 
   function handleFileSelect(evt) {
     var atFile;
@@ -385,7 +387,7 @@ action.       </li>
   var db=new DBController();
   db.create_open_account_DB(load);
 
-  window.sync;  
+  var sync;  
 
   function load(){
     var id= parseInt(getParameterByName('id'));
@@ -396,7 +398,7 @@ action.       </li>
     db.loadAccountById(id,setFunc);        
 
     function setFunc(cursor){
-          // window.sync=new Sync_Module(startSmtp);
+          sync=new Sync_Module(startSmtp);
           var user=cursor.username;
           // console.log('got user '+user);
           if(action=='compose'){
@@ -426,6 +428,18 @@ action.       </li>
 
   function startSmtp(){
     console.log('Starting SMTP...');
+    Sync_Module.offline=new Offline_Interface(function(){
+      db.getSaveSendMail(
+        function(msg){
+          //console.log(msg);
+          console.log('SMTP command starting');
+          body=msg.body;
+          mailto=msg.mailto;
+          var smtp=new SMTP_Sendmail(++offNo);
+          smtp.sendmail(SendMailReady);
+        }
+      );
+    },offNo);
     // window.sync.initSMTP();
   }
 
@@ -574,6 +588,8 @@ function sendMail(to){
   body=txt;
   // sync.SendMail();
   saveSendMail(mailto,body);
+  // Sync_Module.ping();
+
 
 }
 
