@@ -154,9 +154,9 @@ div.container-form .submit-button {
 }
 
 .dimpactionPreviousPage{
-    background-image: url("../graphics/nav/left.png");
+    background-image: url("../ui/graphics/copied/left.png");
 }
 
 .dimpactionNextPage {
-    background-image: url("../graphics/nav/right.png");
+    background-image: url("../ui/graphics/copied/right.png");
 }
