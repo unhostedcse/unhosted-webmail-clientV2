@@ -563,3 +563,14 @@ function loadSettings(){
 	maxMsg=localStorage.getItem("maxMsg");
 	console.log("Settings loaded");
 }
+
+$(function() {
+    $( "#dialog-message" ).dialog({
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+  });
