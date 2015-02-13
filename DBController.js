@@ -344,7 +344,7 @@ DBController.prototype.getSaveSendMail=function(callback){
 
 	var objectStore = this.database.transaction(this.offlineMboxName).objectStore(this.offlineMboxName);
 	    objectStore.openCursor().onsuccess = function(event) {
-	    	var cursor = event.target.result;    	
+	    	var cursor = event.target.result;	    	    	
 	    	if (cursor) {	    	
 	    		if(cursor.value){
 	    			var status=cursor.value.status;

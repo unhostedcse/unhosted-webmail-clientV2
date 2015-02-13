@@ -21,11 +21,16 @@ $(document).ready(function() {
 		$('#sendbcc div input').focus();
 		
 	});
-	$('body').on("click",'.KeyNavList ul li',function() {	
-		var currentparent_id=$(this).parent().parent().attr('data-belongs');
+	$('body').on("click",'.KeyNavList ul li',function(e) {	
+		
+		var currentparent_id=$(this).parent().parent().attr('data-belongs');		
 		var content=this.innerText;		
+
 		var t=new SMTP_Sendmail();
-		var SimpleMailAddressObject=t.parse(content);
+
+		content=e.target.firstChild.textContent;
+		var SimpleMailAddressObject=t.parse(content);		
+		
 		if(!SimpleMailAddressObject && SimpleMailAddressObject.name==''){
 			//alert('empty name');
 			SimpleMailAddressObject.name=SimpleMailAddressObject.email;
@@ -98,3 +103,4 @@ function del(current_id,title,$r){
 	$("#"+current_id).val(p);
 	$r.parent().remove();
 }
+

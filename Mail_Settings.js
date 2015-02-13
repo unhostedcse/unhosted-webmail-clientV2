@@ -35,7 +35,7 @@ function getRefresh_interval(){
 
 function getAutoSync(){
 	var val=localStorage.getItem("refresh_interval");
-	return val ? val :false;
+	return val=="true" ? true :false;
 }
 
 function getMsgPP(){

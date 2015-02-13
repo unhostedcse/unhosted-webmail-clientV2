@@ -81,7 +81,7 @@
               <input style="width: 80px;" class="hordeACTrigger impACTrigger" autocomplete="off">
             </li>
           </ul>
-          <textarea style="display: true;" cols="75" id="to" name="to" rows="1"></textarea>
+          <textarea style="display: none;" cols="75" id="to" name="to" rows="1"></textarea>
         </div>
       </td>
     </tr>
@@ -555,17 +555,18 @@ function sendMail(to){
 
   //mailto=msg.to.split(",");
 
+
   if(msg.cc){
-    var mailcc=msg.cc.split(",");
-    for(var i=0;i<mailcc.length;i++){
-      mailto.push(mailcc[i]);
+    var ccl=se.parseList(msg.cc);    
+    for(var i=0;i<ccl.length;i++){
+      mailto.push(ccl[i].email);
     }
   }
 
   if(msg.bcc){
-    var mailbcc=msg.bcc.split(",");  
-    for(var i=0;i<mailbcc.length;i++){
-      mailto.push(mailbcc[i]);
+    var bccl=se.parseList(msg.bcc);    
+    for(var i=0;i<bccl.length;i++){
+      mailto.push(bccl[i].email);
     }
   }
   
@@ -582,10 +583,10 @@ function sendMail(to){
     var to=$("#to").val();//data[0].value;
 
     // var to=data[0].value;
-    var to=     "Unhosted project < unhostedcse@gmail.com > ";
+    // var to=     "Unhosted project < unhostedcse@gmail.com > ";
 
-    var cc=data[1].value;
-    var bcc=data[2].value;
+    var cc=$("#cc").val();//data[1].value;
+    var bcc=$("#bcc").val();//data[2].value;
 
     var message = new NewMessageModel();
     //message.accountId = technalxs.simplemail.SimpleMailDom.get("from").selectedItem.value;
