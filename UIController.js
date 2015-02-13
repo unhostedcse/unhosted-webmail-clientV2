@@ -80,6 +80,7 @@ function initUnhosted(){
 	a[3].setAttribute("style","display: none");
 	a[4].setAttribute("style","display: none");
 	a[5].setAttribute("style","display: none");
+	loadSettings();
 }
 
 function startSMTP(){ 
@@ -554,3 +555,11 @@ function DeleteMessages(){
 $(document).on("test",function(event){
 	console.log('test');
 });
+
+function loadSettings(){
+	refresh_interval=localStorage.getItem("refresh_interval");	;
+	autoSync=localStorage.getItem("autoSync");
+	msgPP=localStorage.getItem("msgPP");	;
+	maxMsg=localStorage.getItem("maxMsg");
+	console.log("Settings loaded");
+}
