@@ -434,8 +434,8 @@ var pub = {};
                 function(text, url) {
                   // console.log(text);
                   // console.log(url);
-
-                if (!url.match(/^simplemail:/)) //!url || 
+                if (url.match(/^simplemail:/)==null) //!url || 
+                //if (!url.match(/^simplemail:/)) //!url || 
                   return text;
                         // var name = technalxs.simplemail.SimpleMailFile.getFileName(url);
                         var ind = url.replace('file://', "");
