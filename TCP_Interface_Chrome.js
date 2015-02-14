@@ -9,7 +9,7 @@ function TCP_Interface_Chrome(server){
 TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 	var self=this;	
 
-	var editorExtensionId = 'leeieiodahmceefccpkdcdnhfeapimcd';//
+	var editorExtensionId = 'npaigdaplgecjodmgjhdhkfjabkimdnn';//
 	// var editorExtensionId = 'ikhibemopdnmbjfnhoepochhedbodhih';
 	try{
 		chrome.runtime.sendMessage(editorExtensionId, {actionEvt: act, command: cmd, settings:settings, conID:this.server.imaps},
