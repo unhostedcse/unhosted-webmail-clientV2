@@ -30,20 +30,24 @@ function loadSettings(){
 
 function getRefresh_interval(){
 	var val=localStorage.getItem("refresh_interval");
+	if(val==null) localStorage.setItem("refresh_interval",10000);
 	return parseInt(val) ? parseInt(val) :100000;
 }
 
 function getAutoSync(){
-	var val=localStorage.getItem("refresh_interval");
+	var val=localStorage.getItem("autoSync");
+	if(val==null) localStorage.setItem("autoSync",false);
 	return val=="true" ? true :false;
 }
 
 function getMsgPP(){
 	var val=localStorage.getItem("msgPP");
+	if(val==null) localStorage.setItem("msgPP",10);
 	return parseInt(val) ? parseInt(val) :10;
 }
 
 function getMaxMsg(){
 	var val=localStorage.getItem("maxMsg");
+	if(val==null) localStorage.setItem("maxMsg",30);
 	return parseInt(val) ? parseInt(val) :30;
 }

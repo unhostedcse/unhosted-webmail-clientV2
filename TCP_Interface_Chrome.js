@@ -1,24 +1,13 @@
 // Interface for Chrome
 function TCP_Interface_Chrome(server){
 	this.server=server;
+	// console.log(server);
 }
 
-var self;
+// var self;
 
 TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
-	self=this;
-	var element = document.createElement("MyExtensionDataElement");		
-	element.setAttribute("action",act);		
-	element.setAttribute("command",cmd);		
-	element.setAttribute("server",this.server.type);
-	element.setAttribute("conID",this.server.imaps);
-	printReq('request '+this.server.imaps+' '+act +'< '+JSON.parse(cmd).request+' \>');
-	element.setAttribute("settings",settings);		
-	document.documentElement.appendChild(element);
-	// var evt = document.createEvent("Events");
-	// evt.initEvent("MyExtensionEvent", true, false);
-	// element.dispatchEvent(evt);
-
+	var self=this;	
 
 	var editorExtensionId = 'leeieiodahmceefccpkdcdnhfeapimcd';//
 	// var editorExtensionId = 'ikhibemopdnmbjfnhoepochhedbodhih';
@@ -28,18 +17,12 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 			if(response){
 
 				if(self.server){
-					// var msg=response.message;
-					// console.log(msg);
-					// var obj={
-					// 	msg:msg
-					// };
-					// $.event.trigger({type:"onChromeData",obj:obj}); 
-					self.server.result(response.message);
+					if(self.server.imaps==response.id)
+					self.server.result(response.message,response.id);
+				}else{
+					console.log('no server ');	
+					console.log(response);
 				}
-					
-				else
-					console.log('no server');	
-				//console.log(response.message);
 			}
 			else
 				console.log('error');

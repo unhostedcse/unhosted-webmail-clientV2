@@ -289,7 +289,7 @@ function createAttachmentLink(file){
 	var size=Math.ceil(file.uri.length/1024);
 	var msg=''+
 	'<div class="att">'+
-	'<img src="ui/attachment.png" alt="" width="18" height="18" class="iconU logo"/>'+
+	'<img src="ui/graphics/attachment.png" alt="" width="18" height="18" class="iconU logo"/>'+
 	'<span class="name">'+file.name+'</span>'+
 	'<span class="size"> ('+size+' KB)</span>'+
 	'<a mid="5" class="iconU downloadU" title="Download" download="'+file.name+'" href="'+file.uri+'"> </a>'+
