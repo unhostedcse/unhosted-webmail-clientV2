@@ -948,7 +948,7 @@ span.logoutIcon {
     background-image: url("../graphics/folders/trash.png");
 }
 #ctx_mbox_export span.iconImg, #ctx_mbox_import span.iconImg, #ctx_preview_save span.iconImg {
-    background-image: url("../ui/graphics/download.png");
+    background-image: url("./graphics/download.png");
 }
 #ctx_message_spam span.iconImg {
     background-image: url("../graphics/spam.png");

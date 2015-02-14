@@ -511,7 +511,7 @@ span.mimePartInfoSize {
     margin-left: 1px;
 }
 .downloadAtc, .saveAsImg {
-    background-image: url("graphics/download.png");
+    background-image: url("./graphics/download.png");
 }
 .downloadZipAtc {
     background-image: url("graphics/mime/compressed.png");
