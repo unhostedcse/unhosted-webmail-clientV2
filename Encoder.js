@@ -139,17 +139,21 @@ var self = this;
                 return "";
                 var body = source.substr(start + 4);
                 var encoding = self.getHeader("Content-Transfer-Encoding");
-                if (encoding.match(/base64/i)) {
-        var end = body.lastIndexOf("=");
+        if (encoding.match(/base64/i)) {
+                var end = body.lastIndexOf("=");
                 if (end != - 1)
                 body = body.substr(0, end + 1);
-                //body = atob_fixed(stripCRLFs(body));
-                var type = self.getHeader('Content-Type');
-                type = type.split(';')[0];
+                body = atob_fixed(stripCRLFs(body));
+
+                // var type = self.getHeader('Content-Type');
+                // type = type.split(';')[0];
+                // return 'data:' + type + ';base64,' + stripCRLFs(body);
+
                 // console.log(type);
                 //data:application/zip;base64,
                 //return encoding+'*'+type+'*'+stripCRLFs(body);
-                return 'data:' + type + ';base64,' + stripCRLFs(body);
+
+                
         }
         else if (encoding.match(/quoted-printable/i)) {
         body = qp(body);
