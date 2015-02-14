@@ -906,7 +906,7 @@ span.logoutIcon {
     background-image: url("../graphics/seen.png");
 }
 #ctx_mbox_poll span.iconImg, #ctx_mbox_nopoll span.iconImg, #ctx_mbox_flag_unseen span.iconImg {
-    background-image: url("../uixx/graphics/copied/unseen.png");
+    background-image: url("../graphics/copied/unseen.png");
 }
 #ctx_message_setflag span.iconImg, #ctx_oa_setflag span.iconImg, #ctx_mbox_setflag span.iconImg, span.iconImg.flagFlagged {
     background-image: url("../graphics/flagged.png");
@@ -975,7 +975,7 @@ span.logoutIcon {
     background-image: url("../ui/graphics/copied/reload.png");
 }
 #ctx_preview_allparts span.iconImg, #msg_all_parts span.iconImg {
-    background-image: url("../ui/graphics/copied/attachment.png");
+    background-image: url("../graphics/copied/attachment.png");
 }
 #ctx_preview_thread span.iconImg {
     background-image: url("../graphics/thread.png");

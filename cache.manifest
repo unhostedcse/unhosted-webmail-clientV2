@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 572
+# rev 575
 CACHE:
 .\account.html
 .\address_module\addbrowsecontacts.js
@@ -169,6 +169,7 @@ CACHE:
 .\ui\graphics\feed.png
 .\ui\graphics\filter-topbar.png
 .\ui\graphics\filter.png
+.\ui\graphics\flags\attachment-inv.png
 .\ui\graphics\flags\unseen.png
 .\ui\graphics\folders\inbox.png
 .\ui\graphics\google.png
@@ -220,6 +221,7 @@ CACHE:
 .\ui\graphics\radiobox_on.png
 .\ui\graphics\redbox_spinner.gif
 .\ui\graphics\reload.png
+.\ui\graphics\reply.png
 .\ui\graphics\required.png
 .\ui\graphics\rhand.png
 .\ui\graphics\save.png
