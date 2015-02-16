@@ -24,10 +24,10 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar,loadaccCllback
 	}, refresh_interval);
 
 	Sync_Module.offline=new Offline_Interface(pingSuccess,offNo);
-	// Sync_Module.connect();
+	// Sync_Module.ping();
 	setInterval(function () {
 		console.log("ping.....");
-		//Sync_Module.ping();
+		// Sync_Module.ping();
 	}, 10000);
 	// setInterval(function () {		
 	// 	Sync_Module.offline=new Offline_Interface(pingSuccess,offNo);
@@ -177,7 +177,7 @@ Sync_Module.prototype.getHeadersReady = function(){
 	result.fetchMIME=new Array();
 	console.log("finished adding DB");
 
-	$('#checkmaillink').removeClass('imp-loading');
+	$('#div_checkmaillink').removeClass('imp-loading');
 	
 }
 

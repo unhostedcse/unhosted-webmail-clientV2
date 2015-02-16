@@ -111,7 +111,7 @@ function showAccountName(){
 $(document).on("click",'#checkmaillink',
 	function(e) {
 
-		$('#checkmaillink').addClass('imp-loading');
+		$('#div_checkmaillink').addClass('imp-loading');
 		console.log('refresh mail boxes');
 
 		if(autoSync){
