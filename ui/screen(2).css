@@ -42,6 +42,7 @@ input {
 .horde-buttonbar,
 #msglistHeaderHoriz .msgSize {
     padding-right: 12px;
+    background-color: #d4dcec;
 }
 #msglistHeaderHoriz {
     border-bottom: 0;
@@ -118,7 +119,7 @@ span.vpEmpty {
 div.vpRow {
     border-bottom: 1px solid #d0d0d0;
     cursor: pointer;
-    height: 21px;
+    height: 25px;
     overflow: hidden;
 }
 div.vpRow div {
@@ -398,12 +399,10 @@ div.vpRowVert div.msgSubject {
 
 /* Headers styles. */
 .msgHeaders {
-    padding: 10px 6px 10px 4px;
-    background-color: #eceff0;
-    border-bottom: 1px solid #d0d0d0;
-    max-height: 300px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    padding: 5px 6px 5px 4px;
+    background-color: #cdcdcd;
+    max-height: 50px;
+    
 }
 .msgHeaders a {
     color: #000;

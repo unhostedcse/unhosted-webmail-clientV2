@@ -24,7 +24,7 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar,loadaccCllback
 	Sync_Module.offline=new Offline_Interface(pingSuccess);
 	setInterval(function () {
 		console.log("ping.....");
-		Sync_Module.ping();
+		//Sync_Module.ping();
 	}, 10000);
 }
 
@@ -334,7 +334,6 @@ Sync_Module.CheckNewMail = function(fetchList,keys){
 Sync_Module.ping = function(fetchList,keys){
 	setStatus();
 	Sync_Module.isOnline=false;	
-
 	Sync_Module.offline.ping();
 }
 
@@ -345,8 +344,8 @@ function pingSuccess(){
 }
 
 function setStatus(){
-	if(Sync_Module.isOnline){
-		$("#horde-search-input").val("Online");
+	/*if(Sync_Module.isOnline){
+		$(".con_status").val("Online");
 		try{
 			whenOnline();
 		}catch(e){
@@ -354,7 +353,19 @@ function setStatus(){
 		}
 	}
 	else
-		$("#horde-search-input").val("Offline");
+		$(".con_status").val("Offline");*/
+	var str;
+	if(Sync_Module.isOnline){
+		str = 'Online';		
+		try{
+			whenOnline();
+		}catch(e){
+			console.log(e);
+		}
+	}else{
+		str = 'Offline';	
+	}
+	$( ".con_status" ).html( str );
 }
 
 function whenOnline(){
