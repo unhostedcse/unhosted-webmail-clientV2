@@ -1,14 +1,15 @@
-<html lang="en-US"><head>
+<html lang="en-US" manifest="./cache.manifest">
+<head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
   <!-- <meta content="IE=EmulateIE10" http-equiv="X-UA-Compatible"> -->
 
   <link href="./ui/style.css" rel="stylesheet" type="text/css">
-  <link href="./js/mime.css" rel="stylesheet" type="text/css">
-  <link href="./js/screen_002.css" rel="stylesheet" type="text/css">
-  <link href="./js/screen_003.css" rel="stylesheet" type="text/css">
-  <link href="./js/screen.css" rel="stylesheet" type="text/css">
-  <link href="./js/mozilla.css" rel="stylesheet" type="text/css">
+  <link href="./ui/mime.css" rel="stylesheet" type="text/css">
+  <link href="./ui/screen_002.css" rel="stylesheet" type="text/css">
+  <link href="./ui/screen_003.css" rel="stylesheet" type="text/css">
+  <link href="./ui/screen.css" rel="stylesheet" type="text/css">
+  <link href="./ui/mozilla.css" rel="stylesheet" type="text/css">
   <link type="image/x-icon" href="http://cse.rukspot.com/horde/imp/themes/default/graphics/favicon.ico" rel="shortcut icon">    
   <title>Mail :: New Message</title>
  </head>
@@ -81,7 +82,7 @@
               <input style="width: 80px;" class="hordeACTrigger impACTrigger" autocomplete="off">
             </li>
           </ul>
-          <textarea style="display: true;" cols="75" id="to" name="to" rows="1"></textarea>
+          <textarea style="display: none;" cols="75" id="to" name="to" rows="1"></textarea>
         </div>
       </td>
     </tr>
@@ -265,6 +266,7 @@ action.       </li>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="File.js"></script>
 <script type="text/javascript" src="toggleccbc.js"></script>
+<script type="text/javascript" src="Offline_Interface.js"></script>  
 
 <!-- address Module -->
 <!-- <script type="text/javascript"  src="address_module/ui/jquery-2.1.1.js"></script> -->
@@ -296,6 +298,7 @@ action.       </li>
 
   
   var atta=new Array();
+  var offNo=0;
 
   function handleFileSelect(evt) {
     var atFile;
@@ -385,7 +388,7 @@ action.       </li>
   var db=new DBController();
   db.create_open_account_DB(load);
 
-  window.sync;  
+  var sync;  
 
   function load(){
     var id= parseInt(getParameterByName('id'));
@@ -396,7 +399,7 @@ action.       </li>
     db.loadAccountById(id,setFunc);        
 
     function setFunc(cursor){
-          // window.sync=new Sync_Module(startSmtp);
+          sync=new Sync_Module(startSmtp);
           var user=cursor.username;
           // console.log('got user '+user);
           if(action=='compose'){
@@ -426,6 +429,18 @@ action.       </li>
 
   function startSmtp(){
     console.log('Starting SMTP...');
+    Sync_Module.offline=new Offline_Interface(function(){
+      db.getSaveSendMail(
+        function(msg){
+          //console.log(msg);
+          console.log('SMTP command starting');
+          body=msg.body;
+          mailto=msg.mailto;
+          var smtp=new SMTP_Sendmail(++offNo);
+          smtp.sendmail(SendMailReady);
+        }
+      );
+    },offNo);
     // window.sync.initSMTP();
   }
 
@@ -467,7 +482,7 @@ function setForwardWindow(msg){
 
   document.getElementById('subject').value=mail.subject;
   var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
-  data[0].value=mail.from;
+  // data[0].value=mail.from;
 }
 
   // var text=document.getElementById('composeMessageParent').innerHTML='Hi, this is test text!';
@@ -555,17 +570,18 @@ function sendMail(to){
 
   //mailto=msg.to.split(",");
 
+
   if(msg.cc){
-    var mailcc=msg.cc.split(",");
-    for(var i=0;i<mailcc.length;i++){
-      mailto.push(mailcc[i]);
+    var ccl=se.parseList(msg.cc);    
+    for(var i=0;i<ccl.length;i++){
+      mailto.push(ccl[i].email);
     }
   }
 
   if(msg.bcc){
-    var mailbcc=msg.bcc.split(",");  
-    for(var i=0;i<mailbcc.length;i++){
-      mailto.push(mailbcc[i]);
+    var bccl=se.parseList(msg.bcc);    
+    for(var i=0;i<bccl.length;i++){
+      mailto.push(bccl[i].email);
     }
   }
   
@@ -573,6 +589,8 @@ function sendMail(to){
   body=txt;
   // sync.SendMail();
   saveSendMail(mailto,body);
+  // Sync_Module.ping();
+
 
 }
 
@@ -582,10 +600,10 @@ function sendMail(to){
     var to=$("#to").val();//data[0].value;
 
     // var to=data[0].value;
-    var to=     "Unhosted project < unhostedcse@gmail.com > ";
+    // var to=     "Unhosted project < unhostedcse@gmail.com > ";
 
-    var cc=data[1].value;
-    var bcc=data[2].value;
+    var cc=$("#cc").val();//data[1].value;
+    var bcc=$("#bcc").val();//data[2].value;
 
     var message = new NewMessageModel();
     //message.accountId = technalxs.simplemail.SimpleMailDom.get("from").selectedItem.value;

@@ -1,4 +1,6 @@
-var imaps=0;
+var imaps=1;
+var offNo=0;
+
 var mboxCount=0;
 function Sync_Module(clearBody){
 	clearBody();
@@ -21,11 +23,15 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar,loadaccCllback
 		// Sync_Module.prototype.getMailBoxesScenario();  // uncomment
 	}, refresh_interval);
 
-	Sync_Module.offline=new Offline_Interface(pingSuccess);
+	Sync_Module.offline=new Offline_Interface(pingSuccess,offNo);
+	// Sync_Module.connect();
 	setInterval(function () {
 		console.log("ping.....");
 		//Sync_Module.ping();
 	}, 10000);
+	// setInterval(function () {		
+	// 	Sync_Module.offline=new Offline_Interface(pingSuccess,offNo);
+	// }, 90000);
 }
 
 Sync_Module.prototype.initSMTP = function(){
@@ -60,9 +66,11 @@ Sync_Module.prototype.getMailBoxesScenario = function(){
 	var imap=new IMAP_Fetch(++imaps);
 	imap.getMailBoxesScenario(this.getMailBoxesReady);
 	console.log('created imap mailboxs service');
+	$("#foldersLoading").show();
 }
 
 Sync_Module.prototype.getMailBoxesReady = function(mailBoxes){
+
 	console.log('getMailBoxesReady');
 	console.log("id= "+this.imaps+" result ListFolder= ");
 	var val=result.ListFolder;
@@ -80,6 +88,7 @@ Sync_Module.prototype.getMailBoxesReady = function(mailBoxes){
 			console.log('mailBoxesCreated '+e.folder);
 			
 			if(i==val.length){
+				$("#foldersLoading").hide();
 				if(autoSync){
 					$.event.trigger({type:"mailBoxesDownloaded"});				
 				}else{
@@ -207,6 +216,7 @@ $(document).on("mailbodyDownloaded",
 
 //start to fetch Mail body
 Sync_Module.prototype.getBody = function(id){
+	$("#bodyloading").show();
 	// alert('came');
 	var imap=new IMAP_Fetch(++imaps);
 	imap.getBodyScenario(Sync_Module.prototype.getBodyFinished,id);
@@ -214,6 +224,7 @@ Sync_Module.prototype.getBody = function(id){
 }
 
 Sync_Module.prototype.getBodyFinished = function(){
+	$("#bodyloading").hide();
 	// if(result.fetchOnlyBody){
 	// 	for (var i = 0; result.fetchOnlyBody && i < result.fetchOnlyBody.length; i++) {
 	// 		var record=result.fetchOnlyBody[i];
@@ -330,15 +341,25 @@ Sync_Module.CheckNewMail = function(fetchList,keys){
 }
 
 
+Sync_Module.connect = function(){
+	Sync_Module.offline.connect();
+}
 
-Sync_Module.ping = function(fetchList,keys){
+Sync_Module.initPing= function(){
+	Sync_Module.offline=new Offline_Interface(pingSuccess,offNo);
+}
+
+Sync_Module.ping = function(){	
 	setStatus();
 	Sync_Module.isOnline=false;	
 	Sync_Module.offline.ping();
+
 }
 
-function pingSuccess(){
+function pingSuccess(val){
+	// console.log(val);	
 	Sync_Module.isOnline=true;
+	whenOnline();
 	console.log("online "+Sync_Module.isOnline);	
 	setStatus();
 }
@@ -347,7 +368,7 @@ function setStatus(){
 	/*if(Sync_Module.isOnline){
 		$(".con_status").val("Online");
 		try{
-			whenOnline();
+			// whenOnline();
 		}catch(e){
 			console.log(e);
 		}

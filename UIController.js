@@ -95,6 +95,7 @@ function initUnhosted(){
 	a[3].setAttribute("style","display: none");
 	a[4].setAttribute("style","display: none");
 	a[5].setAttribute("style","display: none");
+	loadSettings();
 }
 
 function startSMTP(){ 
@@ -304,7 +305,7 @@ function createAttachmentLink(file){
 	var size=Math.ceil(file.uri.length/1024);
 	var msg=''+
 	'<div class="att">'+
-	'<img src="ui/attachment.png" alt="" width="18" height="18" class="iconU logo"/>'+
+	'<img src="ui/graphics/attachment.png" alt="" width="18" height="18" class="iconU logo"/>'+
 	'<span class="name">'+file.name+'</span>'+
 	'<span class="size"> ('+size+' KB)</span>'+
 	'<a mid="5" class="iconU downloadU" title="Download" download="'+file.name+'" href="'+file.uri+'"> </a>'+
@@ -355,6 +356,7 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 	var db=new DBController();
 	db.create_openDB(username ,"",
             function(){
+            	
 				var row=$('.vpRowHoriz.vpRow.DragElt.flagUnseen.vpRowSelected');
 					if(row.length>0){
 						console.log("Unseen msg Selected");
@@ -572,3 +574,22 @@ function DeleteMessages(){
 $(document).on("test",function(event){
 	console.log('test');
 });
+
+function loadSettings(){
+	refresh_interval=localStorage.getItem("refresh_interval");	;
+	autoSync=localStorage.getItem("autoSync");
+	msgPP=localStorage.getItem("msgPP");	;
+	maxMsg=localStorage.getItem("maxMsg");
+	console.log("Settings loaded");
+}
+
+$(function() {
+    $( "#dialog-message" ).dialog({
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+  });
