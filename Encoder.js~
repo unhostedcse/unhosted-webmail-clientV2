@@ -145,10 +145,12 @@ var self = this;
                 body = body.substr(0, end + 1);
                 body = stripCRLFs(body);
 
-                // var type = self.getHeader('Content-Type');
-                // type = type.split(';')[0];
-                // return 'data:' + type + ';base64,' + stripCRLFs(body);
-
+                var type = self.getHeader('Content-Type');
+                type = type.split(';')[0];
+		if(type!="text/html")
+	                return 'data:' + type + ';base64,' + stripCRLFs(body);
+		else
+			body = atob_fixed(stripCRLFs(body));
                 // console.log(type);
                 //data:application/zip;base64,
                 //return encoding+'*'+type+'*'+stripCRLFs(body);
