@@ -362,7 +362,8 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 					if(row.length>0){
 						console.log("Unseen msg Selected");
 						db.setMailFlagById(mid,selectFolder,function(){
-							row.removeClass("flagUnseen");
+							row.removeClass("flagUnseen");							
+							row.find(".iconImg.msgflags.flagUnseen").removeClass("flagUnseen");							
 						});
 					}
 
