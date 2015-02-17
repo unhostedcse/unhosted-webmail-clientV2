@@ -16,17 +16,17 @@
 	<script src="htmlEditor/jquery-ui.min.js"></script>
 <script>
         $(function () {
-            //var height = $('html').hasClass('touch') ? 500 : 350;
-			var h=$(window).height();
-            $("#htmlEditor").igHtmlEditor({ height: h, width:750}); //
+             $("#htmlEditor").igHtmlEditor({ height: 500-20, width:750}); //
         });
 </script>
 <script>
   $( window ).resize(function() {
-		var h=$(window).height();
+	var h=$('html').height();
+		//var h=$(window).height();
 		var w = window.innerWidth;
-		var x = window.innerHeight;
-		$("#htmlEditor").igHtmlEditor({ height:x, width:w});
+		//var x = window.innerHeight;
+		//var height = $('html').hasClass('touch') ? 500 : 350;
+		$("#htmlEditor").igHtmlEditor({ height:600, width:w});
 });
 </script>
   
@@ -689,10 +689,5 @@ function search($str){
 <div style="position: fixed; padding: 10px; z-index: 50000; display: none; bottom: 0px; right: 0px;" id="Growler"></div>
 <iframe style="display: none;" src="javascript:false" name="submit_frame"></iframe>
 <div style="display: none;" class="KeyNavList"><ul><li>High</li><li class="selected">Normal</li><li>Low</li></ul></div>
-
-<div id='bath'>
-</div> 
-
-
 </body>
 </html>
