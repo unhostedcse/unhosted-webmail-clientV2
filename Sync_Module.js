@@ -207,9 +207,12 @@ $(document).on("mailbodyDownloaded",
 			links+='</br></br>';
 		}
 
-		body=links+body;
+		var css='<link href="ui/style.css" rel="stylesheet">';
+		body=css+links+body;
 		// document.getElementById('bodyDisplay').innerHTML=body;
-		document.getElementById('bodyDisplay').src = "data:text/html;charset=utf-8," + escape(body);
+		
+		var dis=document.getElementById('bodyDisplay');
+		dis.srcdoc=body;
 
 		Sync_Module.db.update(e.id,e.record.body,e.record.attachments,dbSelectFolder);
 			

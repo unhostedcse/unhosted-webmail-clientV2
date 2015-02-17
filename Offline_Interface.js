@@ -62,6 +62,7 @@ function SendMailReady(){
                   "animationIn" : 'bounce',
                   "animationOut" : 'drop'
   });   
+  
 }
 
 function whenOffline(){

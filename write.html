@@ -483,15 +483,15 @@ function setForwardWindow(msg){
   // var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
   // data[0].value=msg.From;
 
-  
+  try{
   var mail=NewMessage.createForward(msg);
-  
+  }catch(e){}
   // document.getElementById('composeMessageParent').innerHTML=mail.body;
 
   // $("#htmlEditor").igHtmlEditor("setContent", "This is text content.", "text");
   $("#htmlEditor").igHtmlEditor("setContent",mail.body, "html");
 
-  document.getElementById('subject').value=mail.subject;
+  //document.getElementById('subject').value=mail.subject;
   var data=document.getElementsByClassName('hordeACTrigger impACTrigger');
   // data[0].value=mail.from;
 }
