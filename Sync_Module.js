@@ -19,17 +19,17 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar,loadaccCllback
 
 	self=this;
 	setInterval(function () {
-		console.log("refreshing.....");
+		//console.log("refreshing.....");
 		// Sync_Module.prototype.getMailBoxesScenario();  // uncomment
 	}, refresh_interval);
 
 	Sync_Module.initPing();
 	Sync_Module.ping();
 	setInterval(function () {
-		console.log("ping.....");
+		//console.log("ping.....");
 		Sync_Module.ping();
 	}, 10000);
-	
+
 	// setInterval(function () {		
 	// 	Sync_Module.offline=new Offline_Interface(pingSuccess,offNo);
 	// }, 90000);
@@ -207,8 +207,12 @@ $(document).on("mailbodyDownloaded",
 			links+='</br></br>';
 		}
 
-		body=links+body;
-		document.getElementById('bodyDisplay').innerHTML=body;
+		var css='<link href="ui/style.css" rel="stylesheet">';
+		body=css+links+body;
+		// document.getElementById('bodyDisplay').innerHTML=body;
+		
+		var dis=document.getElementById('bodyDisplay');
+		dis.srcdoc=body;
 
 		Sync_Module.db.update(e.id,e.record.body,e.record.attachments,dbSelectFolder);
 			

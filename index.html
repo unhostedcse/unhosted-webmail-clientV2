@@ -105,7 +105,6 @@
 </div>
 </div>
 
-
 <div id="progress_row" class="row" style="height:0px;">
 <div class="col-md-*">
 <div class="progress">
@@ -142,7 +141,9 @@
 </div>
 
 
-  <div class="col-md-10 left_border">   
+
+
+  <div class="col-md-10 left_border" >   
     <div class="row light_blue">
         <div id="div_checkmaillink" class="col-md-2 right_border horde-icon">
             <button id="checkmaillink" type="button" class="btn btn-link btn-lg btn-block"><span class="grey">Refresh</span></button>
@@ -216,17 +217,21 @@
 
 
 <!-- Msg body start-->
-    <div class="row" style="overflow-y:scroll; height:300px; background-color:#ffffff;">
-      <div class="col-md-12">
-        <div id="messageBody" class="messageBody allowTextSelection">
+    <div class="row" style="height: 250px;background-color:#ffffff;">
+      
+        <div id="messageBody"  class="allowTextSelection">
           <div class="mimePartBase">
               <div class="mimePartData">
-  <!-- display --> 
-                 <div class="fixed leftAlign editable" id='bodyDisplay'>         
-                 </div> 
+  <!-- display -->
+                 <!-- <div class="fixed leftAlign editable" id='bodyDisplay'></div>  -->
+
+                 <iframe  id='bodyDisplay' frameBorder="0"  style="height: 250px;" width="100%"></iframe>
+
+
               </div>
           </div>
         </div>
+		
 
         <div id="bodyloading" style="display: none; height:50px; width:50px; background: url('ui/graphics/loading.gif') no-repeat scroll center"> 
         loading......
@@ -235,10 +240,11 @@
       </div>      
     </div>    
 <!-- Msg body end-->
-
-
- 
 </div>
+
+</div>
+</div>
+
 </div>
 
 <script>
