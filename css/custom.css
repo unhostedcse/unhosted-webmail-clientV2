@@ -102,6 +102,10 @@
     color:#23A65F !important;
 }
 
+.light_red{
+  color:#ff4444 !important;
+}
+
 .msglist_body{
 	background-color: #EEF0F7;
 }
@@ -140,6 +144,17 @@
   line-height: 40px;  
 }
 
+.text-lg-padding{
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.padding-address-form{
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 .icon-refresh-animate {
 animation-name: rotateThis;

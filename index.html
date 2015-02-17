@@ -25,7 +25,7 @@
 <script src="./ui/notification/jquery-ui.min.js"></script>
 <script src="./ui/notification/notifier.js"></script>
 <script type="text/javascript" src="js/bootstrap-notify.js"></script>
-<script type="text/javascript" src="js/bootstrap-dialog.js"></script>
+<script type="text/javascript" src="navigation_utils.js"></script>  
 <body>
 
 
@@ -53,9 +53,9 @@
      Address Book <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
-        <li role="presentation"><a role="menuitem" tabindex="1" href="NewContact.html">Add Contact</a></li>
-		<li role="presentation"><a role="menuitem" tabindex="1" href="LoadCSV.html">Add Contact Book</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="1" href="BrowseContact.html">Browse Contact</a></li>
+        <li role="presentation" onclick="redirectToAddContact();"><a role="menuitem" tabindex="1" href="#">Add Contact</a></li>
+		<li role="presentation" onclick="redirectToLoadCSV();"><a role="menuitem" tabindex="2" href="#">Add Contact Book</a></li>
+        <li role="presentation" onclick="redirectToBrowseContact();"><a role="menuitem" tabindex="3" href="#">Browse Contact</a></li>
     </ul>
   </li>
   
@@ -241,24 +241,6 @@
 </div>
 </div>
 
-<div class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <p>One fine body…</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <script>
    $( document ).ready(function() {
       document.getElementById("div_button_reply").style.visibility="hidden";
@@ -273,6 +255,8 @@
       document.getElementById("div_button_delete").style.visibility="visible";
    }
 
+   
+
 </script>
 
 <script type="text/javascript" src="Mail_Settings.js"></script>
@@ -286,14 +270,14 @@
 <script type="text/javascript" src="IMAP_Fetch.js"></script>  <!-- -->
 <script type="text/javascript" src="SMTP_Interface.js"></script>  <!-- -->
 <script type="text/javascript" src="SMTP_Sendmail.js"></script>  <!-- -->
-<script type="text/javascript" src="Offline_Interface.js"></script>    
-
+<script type="text/javascript" src="Offline_Interface.js"></script> 
 <script type="text/javascript" src="Sync_Module.js"></script>
 <script type="text/javascript" src="DBController.js"></script>
 <script type="text/javascript" src="BrowserSetUp.js"></script>  
 <script type="text/javascript" src="Encoder.js"></script>
 <script type="text/javascript" src="File.js"></script>  
 <script type="text/javascript" src="UIController.js"></script>
-<script type="text/javascript" src="utils.js"></script>  
+<script type="text/javascript" src="utils.js"></script> 
+
 </body>
 </html>
