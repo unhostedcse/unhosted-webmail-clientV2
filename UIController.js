@@ -324,7 +324,8 @@ function createAttachmentLink(file){
 
 //show the body after after select a msg
 $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
-	document.getElementById('bodyDisplay').innerHTML="";
+	// document.getElementById('bodyDisplay').innerHTML="";	
+	document.getElementById('bodyDisplay').srcdoc="";
 	// sync.getbody();
 
 	var a=document.getElementsByClassName('horde-icon');
@@ -385,8 +386,16 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 					links+='</br></br>';
 				}
 
-				body=links+body;
-				document.getElementById('bodyDisplay').innerHTML=body;
+				var css='<link href="ui/style.css" rel="stylesheet">';
+				
+				body=css+links+body;
+				//document.getElementById('bodyDisplay').innerHTML=body;				
+
+				var dis=document.getElementById('bodyDisplay');
+				dis.srcdoc=body;
+
+				// dis.src = "data:text/html;charset=utf-8," + escape(body);				
+
               });
             }
     );	

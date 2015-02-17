@@ -208,7 +208,8 @@ $(document).on("mailbodyDownloaded",
 		}
 
 		body=links+body;
-		document.getElementById('bodyDisplay').innerHTML=body;
+		// document.getElementById('bodyDisplay').innerHTML=body;
+		document.getElementById('bodyDisplay').src = "data:text/html;charset=utf-8," + escape(body);
 
 		Sync_Module.db.update(e.id,e.record.body,e.record.attachments,dbSelectFolder);
 			
