@@ -175,9 +175,11 @@ Sync_Module.prototype.getHeadersReady = function(){
 	}
 
 	result.fetchMIME=new Array();
+	$('#progress_row').css('height', '0px');
+	$('#progress_bar').css('display', 'none');
 	console.log("finished adding DB");
 
-	$('#checkmaillink').removeClass('imp-loading');
+	//$('#checkmaillink').removeClass('imp-loading');
 	
 }
 

@@ -36,8 +36,11 @@ function showOtherAcc(msgs){
     $("#otherAcc").append( '<li role="presentation"><a role="menuitem" tabindex="1" href="'+refLink+'">' + msg.username + '</a></li>' );
   };
   var logout="Sign out";
+  var configuration="Configuration";
   $("#otherAcc").append('<li role="presentation" class="divider"></li>');
-  $("#otherAcc").append( '<li role="presentation"><a role="menuitem" tabindex="1" href="./select.html">' + logout+ '</a></li>' ); 
+  $("#otherAcc").append('<li role="presentation" class="dropdown-header">Settings</li>');  
+  $("#otherAcc").append( '<li role="presentation"><a role="menuitem" tabindex="1" href="./settings.html">' + configuration+ '</a></li>' ); 
+  $("#otherAcc").append( '<li role="presentation"><a role="menuitem" tabindex="2" href="./select.html">' + logout+ '</a></li>' ); 
 }
 
 var sync;
@@ -110,8 +113,10 @@ function showAccountName(){
 //checkmaillink
 $(document).on("click",'#checkmaillink',
 	function(e) {
+		$('#progress_row').css('height', '10px');
+		$('#progress_bar').css('display', 'inline');
+		//$('#checkmaillink').addClass('imp-loading');
 
-		$('#checkmaillink').addClass('imp-loading');
 		console.log('refresh mail boxes');
 
 		if(autoSync){
@@ -124,6 +129,7 @@ $(document).on("click",'#checkmaillink',
 				sync.getMailBoxesScenario();
 			}
 		}
+
 	}
 );
 
@@ -356,7 +362,7 @@ $(document).on("click",'.vpRowHoriz.vpRow.DragElt',function() {
 	var db=new DBController();
 	db.create_openDB(username ,"",
             function(){
-            	
+
 				var row=$('.vpRowHoriz.vpRow.DragElt.flagUnseen.vpRowSelected');
 					if(row.length>0){
 						console.log("Unseen msg Selected");
