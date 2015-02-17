@@ -120,8 +120,6 @@ class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-gear ui-btn-icon-lef
 </div>
 </div>
 </div>
-
-
 <div class="container-fluid">
 <div class="row" style="background-color:#E9F6EF;">
   <div class="col-md-2">
@@ -147,7 +145,9 @@ class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-gear ui-btn-icon-lef
 </div>
 
 
-  <div class="col-md-10 left_border">   
+
+
+  <div class="col-md-10 left_border" >   
     <div class="row light_blue">
        
         <div id="div_checkmaillink" class="col-md-2 horde-icon right_border dimpactionRefresh">
@@ -223,19 +223,20 @@ class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-gear ui-btn-icon-lef
 
 
 <!-- Msg body start-->
-    <div class="row" style="overflow-y:scroll; height:300px; background-color:#ffffff;">
-      <div class="col-md-12">
-        <div id="messageBody" class="messageBody allowTextSelection">
+    <div class="row"  id='mm'  style="height: 250px;background-color:#ffffff;">
+      
+        <div id="messageBody"  class="allowTextSelection">
           <div class="mimePartBase">
               <div class="mimePartData">
   <!-- display -->
                  <!-- <div class="fixed leftAlign editable" id='bodyDisplay'></div>  -->
 
-                 <iframe class="fixed leftAlign editable" id='bodyDisplay' width="800px"></iframe>
+                 <iframe  id='bodyDisplay' frameBorder="0"  style="height: 250px;" width="100%"></iframe>
 
               </div>
           </div>
         </div>
+		
 
         <div id="bodyloading" style="display: none; height:50px; width:50px; background: url('ui/graphics/loading.gif') no-repeat scroll center"> 
         loading......
@@ -244,29 +245,11 @@ class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-gear ui-btn-icon-lef
       </div>      
     </div>    
 <!-- Msg body end-->
-
-
- 
-</div>
 </div>
 
-<div class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <p>One fine body…</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div>
+</div>
+</div>
 
 <script>
    $( document ).ready(function() {
