@@ -70,7 +70,7 @@ var self = this;
                 });
                 try {
                 // string = technalxs.simplemail.SimpleMailText.toUnicode(string, technalxs.simplemail.SimpleMailMessageEncoder.charset);
-                toUnicode(string); // need to fix
+                //toUnicode(string); // need to fix
                 }
         catch (e) {
         }
