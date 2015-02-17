@@ -12,6 +12,24 @@
   <link href="./ui/mozilla.css" rel="stylesheet" type="text/css">
   <link type="image/x-icon" href="http://cse.rukspot.com/horde/imp/themes/default/graphics/favicon.ico" rel="shortcut icon">    
   <title>Mail :: New Message</title>
+  <script src="htmlEditor/jquery-1.9.1.min.js"></script>
+	<script src="htmlEditor/jquery-ui.min.js"></script>
+<script>
+        $(function () {
+            //var height = $('html').hasClass('touch') ? 500 : 350;
+			var h=$(window).height();
+            $("#htmlEditor").igHtmlEditor({ height: h, width:750}); //
+        });
+</script>
+<script>
+  $( window ).resize(function() {
+		var h=$(window).height();
+		var w = window.innerWidth;
+		var x = window.innerHeight;
+		$("#htmlEditor").igHtmlEditor({ height:x, width:w});
+});
+</script>
+  
  </head>
 
  <body class="horde-ajax">
@@ -192,20 +210,13 @@ action.       </li>
 <link href="htmlEditor/infragistics.css" rel="stylesheet" />
 
 <script src="htmlEditor/modernizr-latest.js"></script>
-<script src="htmlEditor/jquery-1.9.1.min.js"></script>
-<script src="htmlEditor/jquery-ui.min.js"></script>
+
 
 <!-- Ignite UI Required Combined JavaScript Files -->
 <script src="htmlEditor/infragistics.core.js"></script>
 <script src="htmlEditor/infragistics.lob.js"></script>
 
-<script>
-        $(function () {
-            var height = $('html').hasClass('touch') ? 500 : 350;
 
-            $("#htmlEditor").igHtmlEditor({ height: height, width:750}); //
-        });
-</script>
 <style type="text/css">
     /* Override sample's browser styles */
       #htmlEditor h1, #htmlEditor h2, #htmlEditor h3, #htmlEditor h4, #htmlEditor h5, #htmlEditor h6 { margin: 0px; }
@@ -681,4 +692,7 @@ function search($str){
 
 <div id='bath'>
 </div> 
-</body></html>
+
+
+</body>
+</html>
