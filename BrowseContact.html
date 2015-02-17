@@ -87,23 +87,5 @@
 </div>
 </div>
 </div>
- <script>	
-	var uid;
-	$( document ).ready(function() {
-      	uid=getParameterByName('uid');
-   });
-
-   function showInbox(){
-   	 var domainName = document.domain;
-   	 var redirectUrl = 'http://'+domainName+'/unhosted-webmail-client/index.html?uid='+uid+'&pid=0';
-     window.location = redirectUrl;
-   }
-
-	function getParameterByName(name) {
-    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),results = regex.exec(location.href);
-    	return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
-</script>
 </body>
 </html>
