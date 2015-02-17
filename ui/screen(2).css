@@ -853,6 +853,8 @@ span.logoutIcon {
 }
 .dimpactionRefresh {
     background-image: url("../ui/graphics/copied/reload.png");
+    background-repeat: no-repeat;
+
 }
 .imp-loading {
     background-image: url("../ui/graphics/reload.gif");

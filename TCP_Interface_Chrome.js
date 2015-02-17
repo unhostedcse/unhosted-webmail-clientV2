@@ -9,8 +9,7 @@ function TCP_Interface_Chrome(server){
 TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 	var self=this;	
 
-	var editorExtensionId = 'ikhibemopdnmbjfnhoepochhedbodhih';//
-	// var editorExtensionId = 'ikhibemopdnmbjfnhoepochhedbodhih';
+	var editorExtensionId = chromeKey;
 	try{
 		chrome.runtime.sendMessage(editorExtensionId, {actionEvt: act, command: cmd, settings:settings, conID:this.server.imaps},
   		function(response) {
@@ -23,18 +22,16 @@ TCP_Interface_Chrome.prototype.connect = function(act,cmd,settings){
 					console.log('no server ');	
 					console.log(response);
 				}
-			}
-			else
+			}else{
 				console.log('error');
+				alert("Connection error, Check the Chrome App permission");
+			}
 
   		});
  	}catch(e){
 		console.log(e);
+		alert("Connection error, Check the Chrome App");
  	}
 }
 
-// $(document).on("onChromeData",function(event){
-// 	// console.log(event);
-// 	// self.server.result(event.obj.msg);
-// });
 

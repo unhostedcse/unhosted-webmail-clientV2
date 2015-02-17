@@ -11,7 +11,7 @@ var smtpsecurity="";
 var result={};
 var selectFolder;
 var dbSelectFolder;
-var Unhosted_version=0.1;
+var Unhosted_version=2.0;
 var dbVersion=10;
 var pid=0;
 
@@ -19,6 +19,7 @@ var refresh_interval=getRefresh_interval();
 var autoSync=getAutoSync();
 var msgPP=getMsgPP();
 var maxMsg=getMaxMsg();
+var chromeKey=getChromeKey();
 
 function loadSettings(){
 	refresh_interval=localStorage.getItem("refresh_interval");
@@ -26,6 +27,16 @@ function loadSettings(){
 	msgPP=localStorage.getItem("msgPP");	;
 	maxMsg=localStorage.getItem("maxMsg");
 	console.log("Settings loaded");
+}
+
+function getChromeKey(){
+	var val=localStorage.getItem("chromeKey");
+	if(val==null){
+		localStorage.setItem("chromeKey","");
+		return "";
+	}else{
+		return val;
+	}
 }
 
 function getRefresh_interval(){

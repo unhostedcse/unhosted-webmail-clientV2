@@ -356,7 +356,7 @@ DBController.prototype.getSaveSendMail=function(callback){
 						msg.key=cursor.key;
 
 						//send
-						console.log('send mail: '+msg.body+' id: '+cursor.key);
+						//console.log('send mail: '+msg.body+' id: '+cursor.key);
 						self.updateSaveSendMail(cursor.key);
 						if(callback){
 			    			callback(msg)

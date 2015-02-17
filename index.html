@@ -54,6 +54,7 @@
     </a>
     <ul class="dropdown-menu" role="menu">
         <li role="presentation"><a role="menuitem" tabindex="1" href="NewContact.html">Add Contact</a></li>
+		<li role="presentation"><a role="menuitem" tabindex="1" href="LoadCSV.html">Add Contact Book</a></li>
         <li role="presentation"><a role="menuitem" tabindex="1" href="BrowseContact.html">Browse Contact</a></li>
     </ul>
   </li>
@@ -128,7 +129,10 @@
 <div class="row">
 <div class="col-md-*">
 <!-- Mail box showing area -->
-<div id="imp-specialmboxes"></div>
+<div id="foldersLoading" style="display: none;">Loading...</div>
+<div id="imp-specialmboxes">
+
+</div>
 
 </div>
 </div>   
@@ -223,6 +227,11 @@
               </div>
           </div>
         </div>
+
+        <div id="bodyloading" style="display: none; height:50px; width:50px; background: url('ui/graphics/loading.gif') no-repeat scroll center"> 
+        loading......
+        <div>
+
       </div>      
     </div>    
 <!-- Msg body end-->
@@ -277,13 +286,14 @@
 <script type="text/javascript" src="IMAP_Fetch.js"></script>  <!-- -->
 <script type="text/javascript" src="SMTP_Interface.js"></script>  <!-- -->
 <script type="text/javascript" src="SMTP_Sendmail.js"></script>  <!-- -->
+<script type="text/javascript" src="Offline_Interface.js"></script>    
+
 <script type="text/javascript" src="Sync_Module.js"></script>
 <script type="text/javascript" src="DBController.js"></script>
-<script type="text/javascript" src="UIController.js"></script>
 <script type="text/javascript" src="BrowserSetUp.js"></script>  
-<script type="text/javascript" src="Encoder.js"></script>  
-<script type="text/javascript" src="utils.js"></script>  
+<script type="text/javascript" src="Encoder.js"></script>
 <script type="text/javascript" src="File.js"></script>  
-<script type="text/javascript" src="Offline_Interface.js"></script>    
+<script type="text/javascript" src="UIController.js"></script>
+<script type="text/javascript" src="utils.js"></script>  
 </body>
 </html>
