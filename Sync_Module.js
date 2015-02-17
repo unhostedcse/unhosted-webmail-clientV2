@@ -19,17 +19,17 @@ Sync_Module.prototype.init = function(addMsg,folder,setMailBoxBar,loadaccCllback
 
 	self=this;
 	setInterval(function () {
-		console.log("refreshing.....");
+		//console.log("refreshing.....");
 		// Sync_Module.prototype.getMailBoxesScenario();  // uncomment
 	}, refresh_interval);
 
 	Sync_Module.initPing();
 	Sync_Module.ping();
 	setInterval(function () {
-		console.log("ping.....");
+		//console.log("ping.....");
 		Sync_Module.ping();
 	}, 10000);
-	
+
 	// setInterval(function () {		
 	// 	Sync_Module.offline=new Offline_Interface(pingSuccess,offNo);
 	// }, 90000);
