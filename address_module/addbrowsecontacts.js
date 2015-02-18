@@ -18,6 +18,7 @@ $( document ).ready(function() {
 		if (searchEntry.replace(/ /g,'') != '') {
 			todoDB.fetchMy(searchEntry,function(result){
 				if(result.length != 0){
+					$( "#horde-content table" ).remove();
 					$( "#horde-content" ).append('<table cellspacing="0" width="100%" class="linedRow"><thead><tr><th class="turba-browse-icon item" width="1%" style="cursor:pointer" nowrap="nowrap"><label for="checkAll" class="hidden">Check All/None</label><input type="checkbox" id="checkAll" name="checkAll" title="Check All/None (Accesskey A)" accesskey="A"></th><th class="turba-browse-icon item" width="1%"><span class="iconImg editImg" title="Edit"></span></th><th class="turba-browse-icon item" width="1%"><span class="iconImg vcardImg" title="Download vCard"></span></th><th class="turba-browse-icon item" width="1%"><span class="iconImg groupImg" title="List"></span></th><th class="item leftAlign" width="90%" nowrap="nowrap">Name</th></tr></thead><tbody id="QuickFinderContacts"></tbody>');		
 					for(var i = 0; i < result.length; i++) {	
 					//var st=output[i].name.concat(' <').concat(' ' +output[i].email+ ' ').concat('>');
@@ -25,6 +26,7 @@ $( document ).ready(function() {
 		
 					}
 				}else{
+					$( "#horde-content table" ).remove();
 					$( "#horde-content" ).append('<div><span class="light_red">No matching contacts!</span></div>');
 				}				
 			});
