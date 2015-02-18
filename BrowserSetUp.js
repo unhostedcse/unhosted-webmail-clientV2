@@ -31,8 +31,10 @@ function setupFirefox(){
   var x = document.createElement("a");
   x.setAttribute("id", "click"); 
   x.setAttribute("type", "hidden"); 
-  x.setAttribute("href", "../xpi/unhosted@unhosted.projects.uom.lk.xpi"); 
-  x.setAttribute("iconURL", "../xpi/icon.png"); 
+  // x.setAttribute("href", "../xpi/unhosted@unhosted.projects.uom.lk.xpi"); 
+  // x.setAttribute("iconURL", "../xpi/icon.png"); 
+  x.setAttribute("href", "http://unhostedcse.github.io/xpi/unhosted@unhosted.projects.uom.lk.xpi"); 
+  x.setAttribute("iconURL", "http://unhostedcse.github.io/xpi/icon.png"); 
   x.setAttribute("onclick", "return install(event);"); 
   x.click();
 }
