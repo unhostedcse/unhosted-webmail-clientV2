@@ -11,6 +11,7 @@ $( document ).ready(function() {
 		var searchEntry = valsearchcontacts.value; 
 		if(searchEntry==''){
 			$( "#horde-content table" ).remove();
+			document.getElementById("horde-content").innerHTML = "";
 			event.preventDefault();
 			return false;
 		}
@@ -19,6 +20,7 @@ $( document ).ready(function() {
 			todoDB.fetchMy(searchEntry,function(result){
 				if(result.length != 0){
 					$( "#horde-content table" ).remove();
+					document.getElementById("horde-content").innerHTML = "";
 					$( "#horde-content" ).append('<table cellspacing="0" width="100%" class="linedRow"><thead><tr><th class="item leftAlign" width="90%" nowrap="nowrap">Name</th><th class="item leftAlign" width="90%" nowrap="nowrap">Surname</th><th class="item leftAlign" width="90%" nowrap="nowrap">Email</th></tr></thead><tbody id="QuickFinderContacts"></tbody></table>');		
 					for(var i = 0; i < result.length; i++) {	
 					//var st=output[i].name.concat(' <').concat(' ' +output[i].email+ ' ').concat('>');
@@ -26,6 +28,7 @@ $( document ).ready(function() {
 		
 					}
 				}else{
+					document.getElementById("horde-content").innerHTML = "";
 					$( "#horde-content table" ).remove();
 					$( "#horde-content" ).append('<div><span class="light_red">No matching contacts!</span></div>');
 				}				
