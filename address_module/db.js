@@ -56,8 +56,10 @@ console.log('fetch');
 
   transaction.oncomplete = function(e) {
 	for(var i = 0; i < todos.length; i++) {		
-			var t=todos[i].email;
-			if(t.indexOf(text) > -1){
+			var t=todos[i];
+			if(t.email.indexOf(text) > -1){
+				output.push(todos[i]);
+			}else if(t.name.indexOf(text) > -1){
 				output.push(todos[i]);
 			}
 		

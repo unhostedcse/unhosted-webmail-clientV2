@@ -140,11 +140,11 @@ todoDB.open(function(){
 
 function Address_Module(){};
 
-Address_Module.prototype.suggestMails=function(email,currentparent_id){
+Address_Module.prototype.suggestMails=function(suggestKey,currentparent_id){
 	var d=$("#"+currentparent_id+" div.hordeACBox.impACBox");
 	var pos=d.position();
 
-	todoDB.fetchMy(email,function(output){
+	todoDB.fetchMy(suggestKey,function(output){
 	
 	$('body').append('<div class="KeyNavList" data-belongs="'+currentparent_id+'" style="left:'+pos.left+' ; top: '+(pos.top+24)+';"><ul></ul></div>');	
 	for(var i = 0; i < output.length; i++) {	
