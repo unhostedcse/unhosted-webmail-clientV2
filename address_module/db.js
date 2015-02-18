@@ -152,7 +152,7 @@ console.log('fetch');
 
 
 // create from ui
-tDB.createfromuiTodo = function(email, name,callback) {
+tDB.createfromuiTodo = function(name,surname,email,callback) {
   // Get a reference to the db.
   var db = datastore;
 
@@ -168,8 +168,8 @@ tDB.createfromuiTodo = function(email, name,callback) {
   // Create an object for the todo item.
   var todo = {
     'email': email,
+	'surname':surname,
     'name': name,
-	//'timestamp':timestamp
   };
 
   // Create the datastore request.

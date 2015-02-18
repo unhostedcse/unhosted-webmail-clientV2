@@ -175,9 +175,9 @@ function displayContents(contents) {
   //element.innerHTML = contents;
   var data = $.csv.toArrays(contents);
    
-  var name= document.getElementById('name').value;
+  var name= document.getElementById('object_firstname_').value;
   var surname = document.getElementById('surname').value;
-  var email = document.getElementById('email').value;
+  var email = document.getElementById('object_email').value;
   var x,y,z;
   var d=String(data[0]);
   var res = d.split(',');

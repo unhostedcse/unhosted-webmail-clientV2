@@ -41,11 +41,13 @@ $( document ).ready(function() {
 	$( "#turba_form_addcontact" ).submit(function( event ) {
 		var object_firstname_ = document.getElementById('object_firstname_');
 		var object_lastname_ = document.getElementById('object_lastname_');
+		var object_surname_ = document.getElementById('object_surname_');
 		var fname = object_firstname_.value;
+		var surname = object_surname_.value;
 		var usermail = object_lastname_.value;
 		
 		var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;        
-        if (!filter.test(usermail )) {
+        if (!filter.test(usermail)) {
           alert('Please provide a valid email address'); 
 		  event.preventDefault();
           return;
@@ -57,8 +59,11 @@ $( document ).ready(function() {
 		if (usermail.replace(/ /g,'') != '') {
 			//alert(usermail);
 		}
-		todoDB.createfromuiTodo(usermail,fname,function(){
-			alert('enrty created '+fname+" "+usermail);
+		if (surname.replace(/ /g,'') != '') {
+			//alert(usermail);
+		}
+		todoDB.createfromuiTodo(fname,surname,usermail,function(){
+			alert('enrty created '+fname+" "+usermail+" "+usermail);
 		});
 		// Reset the input field.
 		object_firstname_.value = '';
